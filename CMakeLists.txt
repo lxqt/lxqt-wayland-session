@@ -15,29 +15,11 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-option(UPDATE_TRANSLATIONS "Update source translation translations/*.ts files" OFF)
-option(WITH_LIBUDEV "Build with libudev support" ON)
-
 # Minimum Versions
 set(LXQT_MINIMUM_VERSION "2.0.0")
-set(QTXDG_MINIMUM_VERSION "4.0.0")
-set(QT_MINIMUM_VERSION "6.6.0")
-set(SHELLQT_MINIMUM_VERSION "6.0.0")
 
-find_package(Qt6Widgets ${QT_MINIMUM_VERSION} REQUIRED)
 find_package(lxqt ${LXQT_MINIMUM_VERSION} REQUIRED)
-find_package(qtxdg-tools ${QTXDG_MINIMUM_VERSION} REQUIRED)
-find_package(X11 REQUIRED)
-find_package(LayerShellQt ${SHELLQT_MINIMUM_VERSION} REQUIRED)
-message(STATUS "Building with Qt${Qt6Core_VERSION}")
 find_package(PkgConfig REQUIRED)
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    pkg_search_module(PROCPS REQUIRED libproc2 libprocps)
-    message(STATUS "Using PROCPS -> ${PROCPS_MODULE_NAME} v${PROCPS_VERSION}")
-    if (PROCPS_VERSION VERSION_GREATER_EQUAL 4.0.0)
-        add_definitions("-DUSING_LIBPROC2")
-    endif()
-endif()
 
 # Please don't move, must be after lxqt
 find_package(XdgUserDirs REQUIRED)

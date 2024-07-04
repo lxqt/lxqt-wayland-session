@@ -8,12 +8,15 @@ display managers and default configurations for actually supported compositors w
 * Sway
 * Hyprland
 
+At startup default configuration files for compositors will be copied to `$XDG_CONFIG_HOME/lxqt/wayland` directory
+if not existing.
 
 ### Compiling source code
 
-Runtime dependencies are xdg-user-dirs, [liblxqt](https://github.com/lxqt/liblxqt), [qtxdg-tools](https://github.com/lxqt/qtxdg-tools) and layer-shell-qt.
+Runtime dependencies are [liblxqt](https://github.com/lxqt/liblxqt)and [lxqt-session](https://github.com/lxqt/lxqt-session).
 Additional build dependencies are CMake and optionally Git to pull latest VCS checkouts.
 
-Code configuration is handled by CMake. CMake variable `CMAKE_INSTALL_PREFIX` has to be set to `/usr` on most operating systems.  
+Code configuration is handled by CMake. CMake variable `CMAKE_INSTALL_PREFIX` has to be set
+to `/usr` on most operating systems.  
 
 To build run `make`, to install `make install` which accepts variable `DESTDIR` as usual.  
