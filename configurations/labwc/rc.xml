@@ -65,7 +65,7 @@
     </keybind>
     <!-- For qterminal dropdown -->
     <keybind key="F12">
-      <action name="Execute" command="toggledropdown" />
+      <action name="Execute" command="qterminal -d" />
     </keybind>
     <!-- Powerbutton-->
     <keybind key="XF86PowerOff">

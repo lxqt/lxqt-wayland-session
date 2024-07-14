@@ -1,4 +1,4 @@
-# install default config files to /etc/xdg
+# install default config files to /usr/share/lxqt/wayland
 
 install(FILES
     lxqt-hyprland.conf
@@ -9,6 +9,7 @@ install(FILES
 )
 install(DIRECTORY
     labwc
+    firstrun
     DESTINATION "${CMAKE_INSTALL_DATADIR}/lxqt/wayland"
     COMPONENT Runtime
 )

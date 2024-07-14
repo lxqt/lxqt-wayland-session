@@ -9,7 +9,11 @@ display managers and default configurations for actually supported compositors w
 * Hyprland
 
 At startup default configuration files for compositors will be copied to `$XDG_CONFIG_HOME/lxqt/wayland` directory
-if not existing.
+if not existing, except for labwc and `kwin_wayland` where their default configuration location is used.
+
+### Other compositors
+
+Any wlroots-based compositor should work. The line `lxqt-session && <exit_command>` is needed in the autostart section of the compositor.
 
 ### Compiling source code
 
@@ -19,4 +23,7 @@ Additional build dependencies are CMake and optionally Git to pull latest VCS ch
 Code configuration is handled by CMake. CMake variable `CMAKE_INSTALL_PREFIX` has to be set
 to `/usr` on most operating systems.  
 
-To build run `make`, to install `make install` which accepts variable `DESTDIR` as usual.  
+To build run `make`, to install `make install` which accepts variable `DESTDIR` as usual.
+
+
+

@@ -74,22 +74,18 @@ fi
 
 if grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
     COMPOSITOR=`cat "$XDG_CONFIG_HOME"/lxqt/session.conf|grep compositor |awk -F'=' '{print $2}'`
-else
-    echo "No compositor set in configuration or configuration not found, trying labwc ..."
-    COMPOSITOR=labwc
 fi
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
-if
-    [[ $COMPOSITOR == "labwc" ]]; then
-    # Copy default labwc configuration if not existing
+if [[ $COMPOSITOR == "labwc" ]]; then
+    # Copy default configuration if not existing and set keyboard layout if different from us
     if [[ ! -d "$XDG_CONFIG_HOME/labwc" ]]; then
         cp -av /usr/share/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
+        if [[ "${LANG:0:2}" != "en" ]]; then
+            echo "XKB_DEFAULT_LAYOUT=$(echo $LANG|cut -c 1,2)" >> $XDG_CONFIG_HOME/labwc/environment
+        fi
     fi
-
-# Import keyboard layout and  cursor settings
-    lxqt2labwcexporter
 
 # enable cursor on VM
     VIRT=$(systemd-detect-virt)
@@ -99,35 +95,60 @@ if
     fi
     exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
 
-elif
-    [[ $COMPOSITOR = "kwin_wayland" ]]; then
+elif [[ $COMPOSITOR = "kwin_wayland" ]]; then
     # Prevent illegibile text in some KDE apps like systemsettings
     export QT_QUICK_CONTROLS_STYLE=org.kde.desktop
+    if [[ "${LANG:0:2}" != "en" ]]; then
+        kxkbrc=$XDG_CONFIG_HOME/kxkbrc
+        layout_list="LayoutList=$(echo $LANG|cut -c 1,2)"
+        if [ -f $XDG_CONFIG_HOME/kxkbrc ]; then
+            if grep -q "LayoutList" "$kxkbrc"; then
+            echo rimuovi
+            else
+                echo $layout_list >> $XDG_CONFIG_HOME/kxkbrc
+            fi
+        else
+            echo "[Layout]" > $XDG_CONFIG_HOME/kxkbrc
+            echo $layout_list >> $XDG_CONFIG_HOME/kxkbrc
+        fi
+    fi
     exec kwin_wayland --no-kactivities --exit-with-session lxqt-session --xwayland
 
-elif
-    [[ $COMPOSITOR = "wayfire" ]]; then
+elif [[ $COMPOSITOR = "wayfire" ]]; then
     if [[ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini" ]]; then
         cp /usr/share/lxqt/wayland/lxqt-wayfire.ini "$XDG_CONFIG_HOME"/lxqt/wayland/
+        if [[ "${LANG:0:2}" != "en" ]]; then
+        layout="xkb_layout = $(echo $LANG|cut -c 1,2)"
+        sed -i '/xkb_layout/d' $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
+        sed -i "/\[input\]/a $layout" $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
+        fi
     fi
     exec wayfire -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
 
-elif
-    [[ $COMPOSITOR = "sway" ]]; then
+elif [[ $COMPOSITOR = "sway" ]]; then
     if [[ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config" ]]; then
         cp /usr/share/lxqt/wayland/lxqt-sway.config "$XDG_CONFIG_HOME"/lxqt/wayland/
+        if [[ "${LANG:0:2}" != "en" ]]; then
+        layout="xkb_layout $(echo $LANG|cut -c 1,2)"
+        sed -i '/xkb_layout/d' $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
+        sed -i "/input \"type\:keyboard\"/a $layout" $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
+        fi
     fi
     exec sway -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
 
-elif
-    [[ $COMPOSITOR = "Hyprland" ]]; then
+elif [[ $COMPOSITOR = "Hyprland" ]]; then
     if [[ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]]; then
         cp /usr/share/lxqt/wayland/lxqt-hyprland.conf "$XDG_CONFIG_HOME"/lxqt/wayland/
+        if [[ "${LANG:0:2}" != "en" ]]; then
+            layout="kb_layout = $(echo $LANG|cut -c 1,2)"
+            sed -i "s/kb_layout = us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf"
+        fi
     fi
     exec Hyprland -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
-else
-    echo "No supported compositor found!"
-    echo "The command `lxqt-session && killall $COMPOSITOR` has to be added manually to autostart in $COMPOSITOR."
-    exec $COMPOSITOR
-fi
 
+else
+    echo "No supported compositor found or set!"
+    export XDG_CURRENT_DESKTOP="LXQt:wlroots"
+    #exec labwc -S "xmessage 'No wayland compositor selected, please choose one in session settings'"
+    exec labwc -C /usr/share/lxqt/wayland/firstrun -S lxqt-config-session
+fi
