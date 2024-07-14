@@ -100,16 +100,14 @@ elif [[ $COMPOSITOR = "kwin_wayland" ]]; then
     export QT_QUICK_CONTROLS_STYLE=org.kde.desktop
     if [[ "${LANG:0:2}" != "en" ]]; then
         kxkbrc=$XDG_CONFIG_HOME/kxkbrc
-        layout_list="LayoutList=$(echo $LANG|cut -c 1,2)"
+        layout="LayoutList=$(echo $LANG|cut -c 1,2)"
         if [ -f $XDG_CONFIG_HOME/kxkbrc ]; then
-            if grep -q "LayoutList" "$kxkbrc"; then
-            echo rimuovi
-            else
-                echo $layout_list >> $XDG_CONFIG_HOME/kxkbrc
+            if ! grep -q "LayoutList" "$kxkbrc"; then
+                echo $layout >> $XDG_CONFIG_HOME/kxkbrc
             fi
         else
             echo "[Layout]" > $XDG_CONFIG_HOME/kxkbrc
-            echo $layout_list >> $XDG_CONFIG_HOME/kxkbrc
+            echo $layout >> $XDG_CONFIG_HOME/kxkbrc
         fi
     fi
     exec kwin_wayland --no-kactivities --exit-with-session lxqt-session --xwayland
