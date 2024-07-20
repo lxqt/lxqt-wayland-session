@@ -1,6 +1,6 @@
-# lxqt-wayland
+# lxqt-wayland-session
 Files needed for the LXQt Wayland Session: wayland session start script, its desktop entry for
-display managers and default configurations for actually supported compositors which are:
+display managers and default configurations for supported compositors which actually are:
 
 * Labwc
 * Wayfire
@@ -9,7 +9,11 @@ display managers and default configurations for actually supported compositors w
 * Hyprland
 
 At startup default configuration files for compositors will be copied to `$XDG_CONFIG_HOME/lxqt/wayland` directory
-if not existing, except for labwc and `kwin_wayland` where their default configuration location is used.
+if not existing, except for labwc and `kwin_wayland` where their default configuration location is used. In `lxqt-config-session` a "Wayland Settings" page will be enabled.
+
+
+![Wayland Settings](lxqt-config-session.png)
+
 
 ### Other compositors
 
