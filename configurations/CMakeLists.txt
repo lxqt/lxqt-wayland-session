@@ -7,9 +7,16 @@ install(FILES
     DESTINATION "${CMAKE_INSTALL_DATADIR}/lxqt/wayland"
     COMPONENT Runtime
 )
+install(FILES
+    lxqt-labwc.png
+    DESTINATION "${LXQT_SHARE_DIR}/graphics"
+    COMPONENT Runtime
+)
 install(DIRECTORY
     labwc
     firstrun
     DESTINATION "${CMAKE_INSTALL_DATADIR}/lxqt/wayland"
     COMPONENT Runtime
 )
+add_subdirectory(labwc/themes)
+add_subdirectory(labwc/wallpaper)

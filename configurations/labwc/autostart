@@ -2,7 +2,7 @@
 # Applications started here won't be closed by `lxqt-leave --logout` and settings can be lost
 # Preferred place for starting wayland-only applications
 
-# Set background color or image (below the desktop)):
+# Set background color or image (below the desktop):
 swaybg -i /usr/share/lxqt/wallpapers/origami-dark-labwc.png  >/dev/null 2>&1 &
 
 # Faster startup for GTK apps:
@@ -27,6 +27,6 @@ dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY > /dev/null
 #
 # Suspending can be configured in LXQt power management settings
 # Screen locking can be configured in Session Settings
-# Turn off display(s) after 5 minutes
+# Turn off display(s) after 5 minutes:
 swayidle -w timeout 300 "wlopm --off \*" resume "wlopm --on \*" > /dev/null 2>1 &
 

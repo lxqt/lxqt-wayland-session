@@ -1,0 +1,58 @@
+### WINDOW
+
+border.width: 2
+padding.height: 4
+titlebar.height: 38
+window.active.border.color: #33679a
+window.inactive.border.color: #000000
+window.active.indicator.toggled-keybind.color: #b62b19
+window.active.label.text.color: #484848
+window.inactive.label.text.color: #777777
+window.active.title.bg.color: #ffffff
+window.active.label.bg.color: #ffffff
+window.inactive.title.bg.color: #e1e4e7
+window.inactive.label.text.color: #b0b3b5
+window.label.text.justify: center
+
+### MENU
+
+menu.items.padding.x: 7
+menu.items.padding.y: 4
+menu.overlap.x: 0
+menu.overlap.y: 0
+menu.width.min: 100
+menu.width.max: 250
+menu.separator.width: 2
+menu.separator.padding.width: 10
+menu.separator.padding.height: 2
+menu.separator.color: #78a2fc
+menu.items.text.color: #5a5a5a
+menu.items.active.text.color: #000000
+menu.items.bg.color: #ffffff
+menu.items.active.bg.color: #aac9fc
+
+### OSD
+
+osd.bg.color: #ffffff
+osd.border.color: #3294a8
+osd.border.width: 3
+osd.label.text.color: #5a5a5a
+osd.window-switcher.width: 800
+osd.window-switcher.padding: 10
+osd.window-switcher.item.padding.x: 5
+osd.window-switcher.item.padding.y: 5
+osd.window-switcher.item.active.border.width: 2
+osd.workspace-switcher.boxes.width: 40
+osd.workspace-switcher.boxes.height: 30
+
+## BUTTONS
+
+window.active.button.iconify.unpressed.image.color: #f59335
+window.active.button.max.unpressed.image.color: #a1d569
+window.active.button.close.unpressed.image.color: #ef6b7b
+window.active.button.menu.unpressed.image.color: #4e88e8
+
+window.inactive.button.iconify.unpressed.image.color: #b1b4b6
+window.inactive.button.max.unpressed.image.color:#b1b4b6
+window.inactive.button.close.unpressed.image.color: #b1b4b6
+window.inactive.button.menu.unpressed.image.color: #b1b4b6
