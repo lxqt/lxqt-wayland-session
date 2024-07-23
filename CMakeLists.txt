@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.18.0 FATAL_ERROR)
 # The cmake_minimum_required(VERSION) command implicitly invokes the cmake_policy(VERSION)
 # command to specify that the current project code is written for the given range of CMake
 # versions.
-project(lxqt-wayland)
+project(lxqt-wayland-session)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
@@ -24,13 +24,10 @@ find_package(PkgConfig REQUIRED)
 # Please don't move, must be after lxqt
 find_package(XdgUserDirs REQUIRED)
 
-# Patch Version
-set(LXQT_WAYLAND_PATCH_VERSION 0)
-
-set(LXQT_WAYLAND_VERSION ${LXQT_MAJOR_VERSION}.${LXQT_MINOR_VERSION}.${LXQT_WAYLAND_PATCH_VERSION})
-add_definitions(
-    "-DLXQT_WAYLAND_VERSION=\"${LXQT_WAYLAND_VERSION}\""
-)
+set(LXQT_WAYLAND_SESSION_MAJOR_VERSION 0)
+set(LXQT_WAYLAND_SESSION_MINOR_VERSION 1)
+set(LXQT_WAYLAND_SESSION_PATCH_VERSION 0)
+set(LXQT_WAYLAND_SESSION_VERSION ${LXQT_WAYLAND_SESSION_MAJOR_VERSION}.${LXQT_WAYLAND_SESSION_MINOR_VERSION}.${LXQT_WAYLAND_SESSION_PATCH_VERSION})
 
 include(LXQtPreventInSourceBuilds)
 include(LXQtCompilerSettings NO_POLICY_SCOPE)
