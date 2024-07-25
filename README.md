@@ -9,7 +9,7 @@ display managers and default configurations for supported compositors which actu
 * Hyprland
 
 At startup default configuration files for compositors will be copied to `$XDG_CONFIG_HOME/lxqt/wayland` directory
-if not existing, except for labwc and `kwin_wayland` where their default configuration location is used. In `lxqt-config-session` a "Wayland Settings" page will be enabled.
+if not existing, except for labwc and `kwin_wayland` where their default configuration location is used. In `lxqt-config-session` a "Wayland Settings" page will be enabled. By default no compositor is set and if empty a session with a temporary setting for labwc is used, showing a notification about choosing a compositor.
 
 
 ![Wayland Settings](lxqt-config-session.png)
