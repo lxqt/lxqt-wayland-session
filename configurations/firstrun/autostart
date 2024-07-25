@@ -1,6 +1,6 @@
-sleep 3 && lxqt-notificationd >/dev/null 2>&1 &
-notify-send -a "Welcome to LXQt - Wayland Session" -i dialog-information -t 20000 "No preferred compositor is selected, please choose one in Wayland Settings and restart the session." >/dev/null 2>&1 &
-sleep 2 && lxqt-config-session >/dev/null 2>&1 &
+lxqt-notificationd >/dev/null 2>&1 &
+notify-send -a "Welcome to LXQt - Wayland Session" -i dialog-information -t 30000 "No compositor is selected, please choose one in Wayland Settings." "The session will be restarted after closing the window." >/dev/null 2>&1 &
+
 
 
 
