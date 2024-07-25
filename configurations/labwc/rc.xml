@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 
-<!--
-  This is a very basic config file for labwc with LXQt with many options missing. For a complete
-  set of options with comments, see docs/rc.xml.all
-  Theme "Vent-dark" has to be copied to ~/.local/share/themes/Vent-dark"
--->
+    <!--
+    This is a very basic config file for labwc with LXQt Session. For all supported
+    config elements & attributes with default values see /usr/share/labwc/docs/rc.xml.all
+    -->
 
 <labwc_config>
 
@@ -12,9 +11,10 @@
     <gap>10</gap>
   </core>
 
- <theme>
+  <theme>
     <name>Vent</name>
     <cornerRadius>10</cornerRadius>
+    <dropShadows>yes</dropShadows>
     <font place="ActiveWindow">
       <name>sans</name>
       <size>13</size>
@@ -48,14 +48,15 @@
       <action name="Reconfigure"/>
     </keybind>
     <!-- LXQt Keybindings -->
-    <keybind key="W-Return">
-      <action name="Execute" command="qterminal" />
-    </keybind>
     <keybind key="W-p">
       <action name="Execute" command="pcmanfm-qt" />
     </keybind>
+    <!-- To ensure applications are gently closed when exiting lxqt-session use this command format: -->
+    <keybind key="W-Return">
+      <action name="Execute" command="pcmanfm-qt '/usr/share/applications/qterminal.desktop'"/>
+    </keybind>
     <keybind key="W-f">
-      <action name="Execute" command="fpad" />
+      <action name="Execute" command="pcmanfm-qt '/usr/share/applications/featherpad.desktop'"/>
     </keybind>
     <keybind key="A-Space">
       <action name="Execute" command="lxqt-runner" />

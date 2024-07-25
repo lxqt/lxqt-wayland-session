@@ -1,4 +1,4 @@
-# install openbox themes
+# install labwc themes
 install(DIRECTORY
     Vent
     Vent-dark

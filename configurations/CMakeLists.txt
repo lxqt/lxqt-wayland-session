@@ -18,5 +18,3 @@ install(DIRECTORY
     DESTINATION "${CMAKE_INSTALL_DATADIR}/lxqt/wayland"
     COMPONENT Runtime
 )
-add_subdirectory(labwc/themes)
-add_subdirectory(labwc/wallpaper)
