@@ -8,15 +8,3 @@ window.inactive.shadow.color: #00000080
 
 # Overlay color when window touches screen borders
 snapping.overlay.edge.bg.color: #9ba3a150
-
-
-
-
-
-
-
-
-
-
-
-
