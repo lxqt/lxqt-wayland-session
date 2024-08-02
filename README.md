@@ -21,7 +21,7 @@ Any wlroots-based compositor should work. The line `lxqt-session && <exit_comman
 
 ### Compiling source code
 
-Runtime dependencies are [liblxqt](https://github.com/lxqt/liblxqt)and [lxqt-session](https://github.com/lxqt/lxqt-session).
+Runtime dependencies are - beside a compositor - [liblxqt](https://github.com/lxqt/liblxqt), [lxqt-session](https://github.com/lxqt/lxqt-session) and optionally swaybg for splash screen.
 Additional build dependencies are CMake and optionally Git to pull latest VCS checkouts.
 
 Code configuration is handled by CMake. CMake variable `CMAKE_INSTALL_PREFIX` has to be set
