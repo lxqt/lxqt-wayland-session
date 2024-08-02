@@ -48,15 +48,16 @@
       <action name="Reconfigure"/>
     </keybind>
     <!-- LXQt Keybindings -->
+    <!-- For advanced shortcut handling please consult
+    https://github.com/lxqt/lxqt/wiki/Wayland#global-shortcuts -->
     <keybind key="W-p">
       <action name="Execute" command="pcmanfm-qt" />
     </keybind>
-    <!-- To ensure applications are gently closed when exiting lxqt-session use this command format: -->
     <keybind key="W-Return">
-      <action name="Execute" command="pcmanfm-qt '/usr/share/applications/qterminal.desktop'"/>
+      <action name="Execute" command="qterminal"/>
     </keybind>
     <keybind key="W-f">
-      <action name="Execute" command="pcmanfm-qt '/usr/share/applications/featherpad.desktop'"/>
+      <action name="Execute" command="featherpad"/>
     </keybind>
     <keybind key="A-Space">
       <action name="Execute" command="lxqt-runner" />
