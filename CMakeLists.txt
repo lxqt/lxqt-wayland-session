@@ -60,8 +60,9 @@ install(PROGRAMS
 #    COMPONENT Runtime
 #)
 
-# default config files
 add_subdirectory(configurations)
+add_subdirectory(wallpaper)
+add_subdirectory(labwc-themes)
 
-# *.desktop files for display managers
+# *.desktop file for display managers
 add_subdirectory(waylandsession)
