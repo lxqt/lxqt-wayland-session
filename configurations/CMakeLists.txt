@@ -4,6 +4,7 @@ install(FILES
     lxqt-hyprland.conf
     lxqt-wayfire.ini
     lxqt-sway.config
+    lxqt-river-init
     DESTINATION "${CMAKE_INSTALL_DATADIR}/lxqt/wayland"
     COMPONENT Runtime
 )
