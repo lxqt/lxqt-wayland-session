@@ -98,6 +98,7 @@ if [[ $COMPOSITOR == "labwc" ]]; then
 elif [[ $COMPOSITOR = "kwin_wayland" ]]; then
     # Prevent illegibile text in some KDE apps like systemsettings
     export QT_QUICK_CONTROLS_STYLE=org.kde.desktop
+    export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR"
     if [[ "${LANG:0:2}" != "en" ]]; then
         kxkbrc=$XDG_CONFIG_HOME/kxkbrc
         layout="LayoutList=$(echo $LANG|cut -c 1,2)"
