@@ -126,6 +126,12 @@ riverctl map normal Super F11 enter-mode passthrough
 # Super+F11 to return to normal mode
 riverctl map passthrough Super F11 enter-mode normal
 
+# Powerbutton
+for mode in normal
+do
+    riverctl map $mode None XF86PowerOff spawn lxqt-leave
+done
+
 # Various media key mapping examples for both normal and locked mode which do
 # not have a modifier
 for mode in normal locked
