@@ -111,6 +111,7 @@ elif [[ $COMPOSITOR = "kwin_wayland" ]]; then
             echo $layout >> $XDG_CONFIG_HOME/kxkbrc
         fi
     fi
+    # WARNING: Option '--no-kactivities' can result in crashes with animations and corner actions.
     exec kwin_wayland_wrapper --exit-with-session lxqt-session --xwayland
 
 elif [[ $COMPOSITOR = "wayfire" ]]; then
