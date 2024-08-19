@@ -145,6 +145,17 @@ elif [[ $COMPOSITOR = "Hyprland" ]]; then
     fi
     exec Hyprland -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
 
+elif [[ $COMPOSITOR = "river" ]]; then
+    if [[ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]]; then
+        cp /usr/share/lxqt/wayland/lxqt-river-init "$XDG_CONFIG_HOME"/lxqt/wayland/
+        chmod a+x "$XDG_CONFIG_HOME"/lxqt/wayland/lxqt-river-init
+        if [[ "${LANG:0:2}" != "en" ]]; then
+            layout="riverctl keyboard-layout $(echo $LANG|cut -c 1,2)"
+            sed -i "s/riverctl keyboard-layout us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init"
+        fi
+    fi
+    exec river -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init
+
 elif  [ -z ${COMPOSITOR} ]; then
     echo "No compositor is set in session settings, trying labwc..."
     export XDG_CURRENT_DESKTOP="LXQt:wlroots"
