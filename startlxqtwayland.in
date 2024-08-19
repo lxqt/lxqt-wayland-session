@@ -111,7 +111,7 @@ elif [[ $COMPOSITOR = "kwin_wayland" ]]; then
             echo $layout >> $XDG_CONFIG_HOME/kxkbrc
         fi
     fi
-    exec kwin_wayland_wrapper --no-kactivities --exit-with-session lxqt-session --xwayland
+    exec kwin_wayland_wrapper --exit-with-session lxqt-session --xwayland
 
 elif [[ $COMPOSITOR = "wayfire" ]]; then
     if [[ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini" ]]; then
