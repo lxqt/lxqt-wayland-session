@@ -14,7 +14,7 @@ Certain configuration files are licensed under different, more permissive licens
 
 2. Some configuration files in the /configurations directory are licensed under the BSD 3-Clause License. See the LICENSE.BSD file in the folder for details.
 
-3. One configuration file in the /configurations directory is licensed under the GNU General Public License v3.0. See the COPYING file  in the folder for details.
+3. One configuration file in the /configurations directory is licensed under the GNU General Public License v3.0. See the COPYING file for details.
 
 4. Configuration files in the /configurations/labwc directory are licensed under GNU General Public License v2.0. See the LICENSE.GPLv2 file in the folder for details.
 
@@ -41,5 +41,5 @@ Files for Each License:
 COPYING: Full text of the GPL v3.0.
 COPYING.LESSER: Full text of the LGPL v2.1.
 /configurations/LICENSE.MIT: Full text of the MIT License.
-/configurations/labwc/LICENSE.GPLv2: Full text of GNU General Public License v2.0
+/configurations/labwc/LICENSE.GPLv2: Full text of GNU General Public License v2.0.
 /configurations/LICENSE.BSD: Full text of the BSD 3-Clause License.
