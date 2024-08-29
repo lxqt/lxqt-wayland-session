@@ -1,26 +1,33 @@
 LICENSE
 
-1. GNU Lesser General Public License v2.1
+This project is licensed under the GNU General Public License v3.0.
 
-Most of the code in this repository is licensed under the GNU Lesser General Public License v2.1. You can find the full text of the license in the COPYING.LESSER file.
+Licensing Overview
 
-2. MIT License
+Some code in this project was originally licensed under the GNU Lesser General Public License v2.1. This code has been relicensed under GPL-3.0 for inclusion in this project.
 
-Some configuration files are licensed under the MIT License. The full text of the MIT License is included in the LICENSE.MIT file.
+The full text of the GNU Lesser General Public License v2.1 is available in the COPYING.LESSER file, but all code in this repository is now governed by the terms of the GPL-3.0, as detailed in the COPYING file.
 
-3. GNU General Public License v3.0
+Certain configuration files are licensed under different, more permissive licenses (MIT, BSD-3-Clause). These licenses apply to the respective files only, and the overall project must be distributed under the GPL-3.0 license.
 
-Some parts of the project are licensed under the GNU General Public License v3.0. The full text of the license is available in the COPYING file.
+1. Some configuration files in the /configurations directory are licensed under the MIT License. See the LICENSE.MIT file in the folder for details.
 
-4. BSD 3-Clause License
+2. Some configuration files in the /configurations directory are licensed under the BSD 3-Clause License. See the LICENSE.BSD file in the folder for details.
 
-One configuration file is licensed under the BSD 3-Clause License. The full text of the license is included in the LICENSE.BSD file.
+3. One configuration file in the /configurations directory is licensed under the GNU General Public License v3.0. See the COPYING file  in the folder for details.
+
+4. Configuration files in the /configurations/labwc directory are licensed under GNU General Public License v2.0. See the LICENSE.GPLv2 file in the folder for details.
+
+5. Some files and code snippets are licensed under the GNU Lesser General Public License v2.1 and have been relicensed under GPL v3.0 for inclusion in this project.
+
 
 License Attribution
 
-* GNU Lesser General Public License v2.1: Applies to the majority of the source code, except for the components specifically mentioned below.
+* GNU Lesser General Public License v3.0: Applies to the majority of the source code, except for the components specifically mentioned below.
 
 * MIT License: Applies to lxqt-sway.conf and lxqt-wayfire.conf files in /configurations directory.
+
+* GNU General Public License v2.0:  Applies to files in /configurations/labwc directory.
 
 * GNU General Public License v3.0: Applies to lxqt-river.conf file located in /configurations directory and themes in /labwc-themes directory.
 
@@ -31,7 +38,8 @@ License Attribution
 
 Files for Each License:
 
-    COPYING.LESSER: Full text of the LGPL v2.1.
-    LICENSE.MIT: Full text of the MIT License.
-    COPYING: Full text of the GPL v3.0.
-    LICENSE.BSD: Full text of the BSD 3-Clause License.
+COPYING: Full text of the GPL v3.0.
+COPYING.LESSER: Full text of the LGPL v2.1.
+/configurations/LICENSE.MIT: Full text of the MIT License.
+/configurations/labwc/LICENSE.GPLv2: Full text of GNU General Public License v2.0
+/configurations/LICENSE.BSD: Full text of the BSD 3-Clause License.
