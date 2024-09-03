@@ -79,13 +79,14 @@ fi
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
 valid_layouts=$(localectl list-x11-keymap-layouts)
+trylayout=$(echo $LANG | cut -c 1,2)
 
 if [ $COMPOSITOR = "labwc" ]; then
     # Copy default configuration if not existing and set keyboard layout if different from us
     if [ ! -d "$XDG_CONFIG_HOME/labwc" ]; then
        cp -av /usr/share/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
-       if echo "$valid_layouts" | grep -q "$(echo $LANG | cut -c 1,2)"; then
-          echo "XKB_DEFAULT_LAYOUT=$(echo $LANG|cut -c 1,2)" >> $XDG_CONFIG_HOME/labwc/environment
+       if echo "$valid_layouts" | grep -q "$trylayout"; then
+          echo "XKB_DEFAULT_LAYOUT=$trylayout" >> $XDG_CONFIG_HOME/labwc/environment
        fi
     fi
 
@@ -101,9 +102,9 @@ elif [ $COMPOSITOR = "kwin_wayland" ]; then
     # Prevent illegibile text in some KDE apps like systemsettings
     export QT_QUICK_CONTROLS_STYLE=org.kde.desktop
     export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR"
-    if echo "$valid_layouts" | grep -q "$(echo $LANG | cut -c 1,2)"; then
+    if echo "$valid_layouts" | grep -q "$trylayout"; then
         kxkbrc=$XDG_CONFIG_HOME/kxkbrc
-        layout="LayoutList=$(echo $LANG|cut -c 1,2)"
+        layout="LayoutList=$trylayout"
         if [ -f $XDG_CONFIG_HOME/kxkbrc ]; then
             if ! grep -q "LayoutList" "$kxkbrc"; then
                 echo $layout >> $XDG_CONFIG_HOME/kxkbrc
@@ -119,8 +120,8 @@ elif [ $COMPOSITOR = "kwin_wayland" ]; then
 elif [ $COMPOSITOR = "wayfire" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini" ]; then
         cp /usr/share/lxqt/wayland/lxqt-wayfire.ini "$XDG_CONFIG_HOME"/lxqt/wayland/
-        if echo "$valid_layouts" | grep -q "$(echo $LANG | cut -c 1,2)"; then
-        layout="xkb_layout = $(echo $LANG|cut -c 1,2)"
+        if echo "$valid_layouts" | grep -q "$trylayout"; then
+        layout="xkb_layout = $trylayout"
         sed -i '/xkb_layout/d' $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
         sed -i "/\[input\]/a $layout" $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
         fi
@@ -130,8 +131,8 @@ elif [ $COMPOSITOR = "wayfire" ]; then
 elif [ $COMPOSITOR = "sway" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config" ]; then
         cp /usr/share/lxqt/wayland/lxqt-sway.config "$XDG_CONFIG_HOME"/lxqt/wayland/
-        if echo "$valid_layouts" | grep -q "$(echo $LANG | cut -c 1,2)"; then
-        layout="xkb_layout $(echo $LANG|cut -c 1,2)"
+        if echo "$valid_layouts" | grep -q "$trylayout"; then
+        layout="xkb_layout $trylayout"
         sed -i '/xkb_layout/d' $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
         sed -i "/input \"type\:keyboard\"/a $layout" $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
         fi
@@ -141,8 +142,8 @@ elif [ $COMPOSITOR = "sway" ]; then
 elif [ $COMPOSITOR = "Hyprland" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]; then
         cp /usr/share/lxqt/wayland/lxqt-hyprland.conf "$XDG_CONFIG_HOME"/lxqt/wayland/
-        if echo "$valid_layouts" | grep -q "$(echo $LANG | cut -c 1,2)"; then
-            layout="kb_layout = $(echo $LANG|cut -c 1,2)"
+        if echo "$valid_layouts" | grep -q "$trylayout"; then
+            layout="kb_layout = $trylayout"
             sed -i "s/kb_layout = us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf"
         fi
     fi
@@ -152,8 +153,8 @@ elif [ $COMPOSITOR = "river" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]; then
         cp /usr/share/lxqt/wayland/lxqt-river-init "$XDG_CONFIG_HOME"/lxqt/wayland/
         chmod a+x "$XDG_CONFIG_HOME"/lxqt/wayland/lxqt-river-init
-        if echo "$valid_layouts" | grep -q "$(echo $LANG | cut -c 1,2)"; then
-            layout="riverctl keyboard-layout $(echo $LANG|cut -c 1,2)"
+        if echo "$valid_layouts" | grep -q "$trylayout"; then
+            layout="riverctl keyboard-layout $trylayout"
             sed -i "s/riverctl keyboard-layout us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init"
         fi
     fi
