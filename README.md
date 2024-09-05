@@ -30,4 +30,4 @@ To build run `make`, to install `make install` which accepts variable `DESTDIR` 
 
 ### License
 
-This project is licensed under the GNU General Public License v3.0. However, some files (e.g., files in the `/configurations` directory) are licensed under different licenses. See LICENSE for details.
+This project is licensed under the GNU Lesser General Public License v2.1. However, some files (e.g., files in the `/configurations` directory) are licensed under different licenses. See LICENSE for details.
