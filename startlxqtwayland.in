@@ -160,7 +160,7 @@ elif [ $COMPOSITOR = "river" ]; then
     fi
     exec river -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init
 
-elif  [ -z $(COMPOSITOR) ]; then
+elif  [ -z $COMPOSITOR ]; then
     echo "No compositor is set in session settings, trying labwc..."
     export XDG_CURRENT_DESKTOP="LXQt:wlroots"
     exec labwc -C /usr/share/lxqt/wayland/firstrun -S lxqt-config-session
