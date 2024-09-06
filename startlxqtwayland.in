@@ -80,7 +80,7 @@ export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
 PID1=$(ps -p 1 -o comm=)
 
-if [ $PID1== systemd ];then
+if [ $PID1 = systemd ];then
     valid_layouts=$(localectl list-x11-keymap-layouts)
 else
     validlayouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
@@ -88,7 +88,7 @@ fi
 
 trylayout=$(echo $LANG | cut -c 1,2)
 
-if [ $COMPOSITOR = "labwc" ]; then
+if [ "$COMPOSITOR" = "labwc" ]; then
     # Copy default configuration if not existing and set keyboard layout if different from us
     if [ ! -d "$XDG_CONFIG_HOME/labwc" ]; then
        cp -av /usr/share/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
@@ -98,7 +98,7 @@ if [ $COMPOSITOR = "labwc" ]; then
     fi
     exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
 
-elif [ $COMPOSITOR = "kwin_wayland" ]; then
+elif [ "$COMPOSITOR" = "kwin_wayland" ]; then
     # Prevent illegibile text in some KDE apps like systemsettings
     export QT_QUICK_CONTROLS_STYLE=org.kde.desktop
     export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR"
@@ -117,7 +117,7 @@ elif [ $COMPOSITOR = "kwin_wayland" ]; then
     # WARNING: Option '--no-kactivities' can result in crashes with animations and corner actions.
     exec kwin_wayland_wrapper --exit-with-session lxqt-session --xwayland
 
-elif [ $COMPOSITOR = "wayfire" ]; then
+elif [ "$COMPOSITOR" = "wayfire" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini" ]; then
         cp /usr/share/lxqt/wayland/lxqt-wayfire.ini "$XDG_CONFIG_HOME"/lxqt/wayland/
         if echo "$valid_layouts" | grep -q "$trylayout"; then
@@ -128,7 +128,7 @@ elif [ $COMPOSITOR = "wayfire" ]; then
     fi
     exec wayfire -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
 
-elif [ $COMPOSITOR = "sway" ]; then
+elif [ "$COMPOSITOR" = "sway" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config" ]; then
         cp /usr/share/lxqt/wayland/lxqt-sway.config "$XDG_CONFIG_HOME"/lxqt/wayland/
         if echo "$valid_layouts" | grep -q "$trylayout"; then
@@ -139,7 +139,7 @@ elif [ $COMPOSITOR = "sway" ]; then
     fi
     exec sway -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
 
-elif [ $COMPOSITOR = "Hyprland" ]; then
+elif [ "$COMPOSITOR" = "Hyprland" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]; then
         cp /usr/share/lxqt/wayland/lxqt-hyprland.conf "$XDG_CONFIG_HOME"/lxqt/wayland/
         if echo "$valid_layouts" | grep -q "$trylayout"; then
@@ -149,7 +149,7 @@ elif [ $COMPOSITOR = "Hyprland" ]; then
     fi
     exec Hyprland -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
 
-elif [ $COMPOSITOR = "river" ]; then
+elif [ "$COMPOSITOR" = "river" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]; then
         cp /usr/share/lxqt/wayland/lxqt-river-init "$XDG_CONFIG_HOME"/lxqt/wayland/
         chmod a+x "$XDG_CONFIG_HOME"/lxqt/wayland/lxqt-river-init
@@ -168,4 +168,3 @@ else
     echo "Trying to start $COMPOSITOR..."
     exec $COMPOSITOR
 fi
-
