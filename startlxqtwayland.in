@@ -78,7 +78,9 @@ fi
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
-valid_layouts=$(localectl list-x11-keymap-layouts)
+#valid_layouts=$(localectl list-x11-keymap-layouts)
+validlayouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
+
 trylayout=$(echo $LANG | cut -c 1,2)
 
 if [ $COMPOSITOR = "labwc" ]; then
