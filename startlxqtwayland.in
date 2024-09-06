@@ -78,8 +78,13 @@ fi
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
-#valid_layouts=$(localectl list-x11-keymap-layouts)
-validlayouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
+PID1=$(ps -p 1 -o comm=)
+
+if [ $PID1== systemd ];then
+    valid_layouts=$(localectl list-x11-keymap-layouts)
+else
+    validlayouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
+fi
 
 trylayout=$(echo $LANG | cut -c 1,2)
 
@@ -160,7 +165,7 @@ elif  [ -z $(COMPOSITOR) ]; then
     export XDG_CURRENT_DESKTOP="LXQt:wlroots"
     exec labwc -C /usr/share/lxqt/wayland/firstrun -S lxqt-config-session
 else
-	echo "Trying to start $COMPOSITOR..."
+    echo "Trying to start $COMPOSITOR..."
     exec $COMPOSITOR
 fi
 
