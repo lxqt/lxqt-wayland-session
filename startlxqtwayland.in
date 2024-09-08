@@ -78,7 +78,7 @@ fi
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
-exort MOZ_ENABLE_WAYLAND=1
+export MOZ_ENABLE_WAYLAND=1
 
 share_dir=$(dirname $(dirname $(which $0)))/share
 

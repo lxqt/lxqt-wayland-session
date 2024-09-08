@@ -14,8 +14,5 @@
 # See https://github.com/swaywm/sway/issues/595
 _JAVA_AWT_WM_NONREPARENTING=1
 
-# Firefox
-MOZ_ENABLE_WAYLAND=1
-
 # Cursor theme and size are imported from LXQt at login. Configure under LXQt in "Appearance → Cursor".
 # Keyboard layout and toggle options are imported only once from LXQt, edit here to change
