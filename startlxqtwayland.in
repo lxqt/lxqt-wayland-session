@@ -78,13 +78,17 @@ fi
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
+exort MOZ_ENABLE_WAYLAND=1
+
+share_dir=$(dirname $(dirname $(which $0)))/share
+
 valid_layouts=$(localectl list-x11-keymap-layouts)
 trylayout=$(echo $LANG | cut -c 1,2)
 
 if [ $COMPOSITOR = "labwc" ]; then
     # Copy default configuration if not existing and set keyboard layout if different from us
     if [ ! -d "$XDG_CONFIG_HOME/labwc" ]; then
-       cp -av /usr/share/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
+       cp -av "$share_dir"/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
        if echo "$valid_layouts" | grep -q "$trylayout"; then
           echo "XKB_DEFAULT_LAYOUT=$trylayout" >> $XDG_CONFIG_HOME/labwc/environment
        fi
@@ -119,7 +123,7 @@ elif [ $COMPOSITOR = "kwin_wayland" ]; then
 
 elif [ $COMPOSITOR = "wayfire" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini" ]; then
-        cp /usr/share/lxqt/wayland/lxqt-wayfire.ini "$XDG_CONFIG_HOME"/lxqt/wayland/
+        cp "$share_dir"/lxqt/wayland/lxqt-wayfire.ini "$XDG_CONFIG_HOME"/lxqt/wayland/
         if echo "$valid_layouts" | grep -q "$trylayout"; then
         layout="xkb_layout = $trylayout"
         sed -i '/xkb_layout/d' $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
@@ -130,7 +134,7 @@ elif [ $COMPOSITOR = "wayfire" ]; then
 
 elif [ $COMPOSITOR = "sway" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config" ]; then
-        cp /usr/share/lxqt/wayland/lxqt-sway.config "$XDG_CONFIG_HOME"/lxqt/wayland/
+        cp "$share_dir"/lxqt/wayland/lxqt-sway.config "$XDG_CONFIG_HOME"/lxqt/wayland/
         if echo "$valid_layouts" | grep -q "$trylayout"; then
         layout="xkb_layout $trylayout"
         sed -i '/xkb_layout/d' $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
@@ -141,7 +145,7 @@ elif [ $COMPOSITOR = "sway" ]; then
 
 elif [ $COMPOSITOR = "Hyprland" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]; then
-        cp /usr/share/lxqt/wayland/lxqt-hyprland.conf "$XDG_CONFIG_HOME"/lxqt/wayland/
+        cp "$share_dir"/lxqt/wayland/lxqt-hyprland.conf "$XDG_CONFIG_HOME"/lxqt/wayland/
         if echo "$valid_layouts" | grep -q "$trylayout"; then
             layout="kb_layout = $trylayout"
             sed -i "s/kb_layout = us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf"
@@ -151,7 +155,7 @@ elif [ $COMPOSITOR = "Hyprland" ]; then
 
 elif [ $COMPOSITOR = "river" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]; then
-        cp /usr/share/lxqt/wayland/lxqt-river-init "$XDG_CONFIG_HOME"/lxqt/wayland/
+        cp "$share_dir"/lxqt/wayland/lxqt-river-init "$XDG_CONFIG_HOME"/lxqt/wayland/
         chmod a+x "$XDG_CONFIG_HOME"/lxqt/wayland/lxqt-river-init
         if echo "$valid_layouts" | grep -q "$trylayout"; then
             layout="riverctl keyboard-layout $trylayout"
@@ -163,7 +167,7 @@ elif [ $COMPOSITOR = "river" ]; then
 elif  [ -z $COMPOSITOR ]; then
     echo "No compositor is set in session settings, trying labwc..."
     export XDG_CURRENT_DESKTOP="LXQt:wlroots"
-    exec labwc -C /usr/share/lxqt/wayland/firstrun -S lxqt-config-session
+    exec labwc -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
 else
 	echo "Trying to start $COMPOSITOR..."
     exec $COMPOSITOR
