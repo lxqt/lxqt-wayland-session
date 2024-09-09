@@ -28,5 +28,6 @@ to `/usr` on most operating systems.
 
 To build run `make`, to install `make install` which accepts variable `DESTDIR` as usual.
 
+### License
 
-
+This project is licensed under the GNU Lesser General Public License v2.1. However, some files (e.g., files in the `/configurations` directory) are licensed under different licenses. See LICENSE for details.

@@ -1,0 +1,39 @@
+LICENSE
+
+1. GNU Lesser General Public License v2.1
+
+Most of the code in this repository is licensed under the GNU Lesser General Public License v2.1. You can find the full text of the license in the COPYING.LESSER file.
+
+2. Some configuration files in /configurations directory are licensed under the MIT License. See the LICENSE.MIT file  for details.
+
+3. Some configuration files in /configurations directory are licensed under the BSD 3-Clause License. See the LICENSE.BSD file for details.
+
+4. One configuration file in /configurations directory and files in /labwc-themes directory are licensed under the GNU General Public License v3.0. See the COPYING file for details.
+
+5. Configuration files in /configurations/labwc directory are licensed under GNU General Public License v2.0. See the LICENSE.GPLv2 file for details.
+
+6. Artwork in /wallpaper directory is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+
+
+Files for Each License:
+
+COPYING.LESSER: Full text of the LGPL v2.1.
+COPYING: Full text of the GPL v3.0.
+LICENSE.MIT: Full text of the MIT License.
+LICENSE.GPLv2: Full text of GNU General Public License v2.0.
+LICENSE.BSD: Full text of the BSD 3-Clause License.
+
+
+License Attribution
+
+*  GNU Lesser General Public License v2.1: Applies to the majority of the source code, except for the components specifically mentioned below, where the licenses below apply to the respective files only.
+
+* MIT License: Applies to lxqt-sway.conf and lxqt-wayfire.conf files in /configurations directory.
+
+* GNU General Public License v2.0:  Applies to files in /configurations/labwc directory.
+
+* GNU General Public License v3.0: Applies to lxqt-river.conf file located in /configurations directory and themes in /labwc-themes directory.
+
+* BSD 3-Clause License:  Applies to lxqt-hyprland.conf located in /configurations directory
+
+* Artwork in /wallpaper directory is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
