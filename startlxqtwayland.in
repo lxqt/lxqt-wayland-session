@@ -80,7 +80,7 @@ export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
 export MOZ_ENABLE_WAYLAND=1
 
-share_dir=$(dirname $(dirname $(which $0)))/share
+share_dir="$(dirname $(dirname "$0"))"/share
 
 valid_layouts=$(localectl list-x11-keymap-layouts)
 trylayout=$(echo $LANG | cut -c 1,2)
