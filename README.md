@@ -20,8 +20,8 @@ Please refer to each compositors documentation for tweaking.
 
 ### Other compositors
 
-Any compositor should work in general, but for a working taskbar `wlr-foreign-toplevel-management-unstable-v1` protocol support is mandatory.
-A line `lxqt-session && <exit_compositor_command>` is needed in the autostart section of the compositor.
+Any compositor  which supports at least `wlr-layer-shell-unstable-v1` and (for taskbar)`wlr-foreign-toplevel-management-unstable-v1` protocols should work.
+A line `lxqt-session && <exit_compositor_command>` is needed in the autostart configuration of the compositor.
 
 ### Compiling source code
 
