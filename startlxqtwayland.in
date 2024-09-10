@@ -82,7 +82,7 @@ export MOZ_ENABLE_WAYLAND=1
 
 share_dir="$(dirname $(dirname "$0"))"/share
 
-valid_layouts=$(localectl list-x11-keymap-layouts)
+valid_layouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
 trylayout=$(echo $LANG | cut -c 1,2)
 
 if [ $COMPOSITOR = "labwc" ]; then
@@ -95,11 +95,11 @@ if [ $COMPOSITOR = "labwc" ]; then
     fi
 
 # enable cursor on VM
-    VIRT=$(systemd-detect-virt)
-    if [ ! "$VIRT" = none ]; then
+    if [ $(hostnamectl | grep Virtualization) ];then
         export WLR_NO_HARDWARE_CURSORS=1
         echo "Running on virtualized hardware"
     fi
+
     exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
 
 elif [ $COMPOSITOR = "kwin_wayland" ]; then
