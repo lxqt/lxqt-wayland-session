@@ -94,16 +94,20 @@ if [ $COMPOSITOR = "labwc" ]; then
        fi
     fi
 
-# enable cursor on VM
-    if [ $(hostnamectl | grep Virtualization) ];then
-        export WLR_NO_HARDWARE_CURSORS=1
-        echo "Running on virtualized hardware"
+    # enable cursor on VM (systemd only)
+    PID1=$(ps -p 1 -o comm=)
+    if [ $PID1 = systemd ];then
+        VIRT=$(systemd-detect-virt)
+        if [ ! "$VIRT" = none ]; then
+            export WLR_NO_HARDWARE_CURSORS=1
+            echo "Running on virtualized hardware"
+        fi
     fi
 
     exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
 
 elif [ $COMPOSITOR = "kwin_wayland" ]; then
-    # Prevent illegibile text in some KDE apps like systemsettings
+    # Style KDE's QML apps like systemsettings
     export QT_QUICK_CONTROLS_STYLE=org.kde.desktop
     export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR"
     if echo "$valid_layouts" | grep -q "$trylayout"; then
@@ -169,7 +173,7 @@ elif  [ -z $COMPOSITOR ]; then
     export XDG_CURRENT_DESKTOP="LXQt:wlroots"
     exec labwc -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
 else
-	echo "Trying to start $COMPOSITOR..."
+    echo "Trying to start $COMPOSITOR..."
     exec $COMPOSITOR
 fi
 
