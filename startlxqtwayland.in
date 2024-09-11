@@ -97,8 +97,7 @@ if [ $COMPOSITOR = "labwc" ]; then
     # enable cursor on VM (systemd only)
     PID1=$(ps -p 1 -o comm=)
     if [ $PID1 = systemd ];then
-        VIRT=$(systemd-detect-virt)
-        if [ ! "$VIRT" = none ]; then
+        if [ ! "$(systemd-detect-virt)" = none ]; then
             export WLR_NO_HARDWARE_CURSORS=1
             echo "Running on virtualized hardware"
         fi
