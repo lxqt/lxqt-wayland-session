@@ -88,6 +88,12 @@ trylayout=$(echo $LANG | cut -c 1,2)
 if  [ -z "$COMPOSITOR" ]; then
     echo "No compositor configured yet in Session Settings, trying labwc..."
     export XDG_CURRENT_DESKTOP="LXQt:wlroots"
+
+    # enable cursor on VM (systemd only)
+    if type systemd-detect-virt > /dev/null 2>&1 && systemd-detect-virt --quiet; then
+        export WLR_NO_HARDWARE_CURSORS=1
+        echo "Running on virtualized hardware"
+    fi
     exec labwc -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
 
 elif [ "$COMPOSITOR" = "labwc" ]; then
