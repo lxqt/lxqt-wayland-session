@@ -95,12 +95,9 @@ if [ $COMPOSITOR = "labwc" ]; then
     fi
 
     # enable cursor on VM (systemd only)
-    PID1=$(ps -p 1 -o comm=)
-    if [ $PID1 = systemd ];then
-        if [ ! "$(systemd-detect-virt)" = none ]; then
-            export WLR_NO_HARDWARE_CURSORS=1
-            echo "Running on virtualized hardware"
-        fi
+    if type systemd-detect-virt > /dev/null 2>&1 && systemd-detect-virt --quiet; then
+        export WLR_NO_HARDWARE_CURSORS=1
+        echo "Running on virtualized hardware"
     fi
 
     exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
