@@ -25,14 +25,15 @@ A line `lxqt-session && <exit_compositor_command>` is needed in the autostart co
 
 ### Compiling source code
 
-Runtime dependencies are [liblxqt](https://github.com/lxqt/liblxqt), [qtxdg-tools](https://github.com/lxqt/qtxdg-tools),
+Runtime dependencies are [qtxdg-tools](https://github.com/lxqt/qtxdg-tools),
 [lxqt-session](https://github.com/lxqt/lxqt-session) and layer-shell-qt.
-Additional build dependencies are CMake and optionally Git to pull latest VCS checkouts.
+Additional build dependencies are [lxqt-build-tools](https://github.com/lxqt/lxqt-build-tools), CMake and optionally Git to pull latest VCS checkouts.
 
 Code configuration is handled by CMake. CMake variable `CMAKE_INSTALL_PREFIX` has to be set
 to `/usr` on most operating systems.  
 
 To build run `make`, to install `make install` which accepts variable `DESTDIR` as usual.
 
+### License
 
-
+This project is licensed under the GNU Lesser General Public License v2.1. However, some files (e.g., files in the `/configurations` directory) are licensed under different licenses. See LICENSE for details.
