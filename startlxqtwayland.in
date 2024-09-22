@@ -113,6 +113,16 @@ elif [ "$COMPOSITOR" = "labwc" ]; then
 
     exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
 
+elif [ "$COMPOSITOR" = "niri" ]; then
+    if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
+        cp -v "$share_dir"/lxqt/wayland/lxqt-niri.kdl "$XDG_CONFIG_HOME"/lxqt/wayland/
+        if echo "$valid_layouts" | grep -q "$trylayout"; then
+        layout="layout \"$trylayout\""
+        sed -i "s/layout \"us\"/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl"
+        fi
+    fi
+    exec niri -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl
+
 elif [ "$COMPOSITOR" = "kwin_wayland" ]; then
     # Style KDE's QML apps like systemsettings
     export QT_QUICK_CONTROLS_STYLE=org.kde.desktop

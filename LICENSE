@@ -8,7 +8,7 @@ Most of the code in this repository is licensed under the GNU Lesser General Pub
 
 3. Some configuration files in /configurations directory are licensed under the BSD 3-Clause License. See the LICENSE.BSD file for details.
 
-4. One configuration file in /configurations directory and files in /labwc-themes directory are licensed under the GNU General Public License v3.0. See the COPYING file for details.
+4. Some configuration files in /configurations directory and files in /labwc-themes directory are licensed under the GNU General Public License v3.0. See the COPYING file for details.
 
 5. Configuration files in /configurations/labwc directory are licensed under GNU General Public License v2.0. See the LICENSE.GPLv2 file for details.
 
@@ -32,7 +32,7 @@ License Attribution
 
 * GNU General Public License v2.0:  Applies to files in /configurations/labwc directory.
 
-* GNU General Public License v3.0: Applies to lxqt-river.conf file located in /configurations directory and themes in /labwc-themes directory.
+* GNU General Public License v3.0: Applies to lxqt-river.conf and lxqt-niri.kdl file located in /configurations directory and themes in /labwc-themes directory.
 
 * BSD 3-Clause License:  Applies to lxqt-hyprland.conf located in /configurations directory
 

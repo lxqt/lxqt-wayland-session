@@ -9,6 +9,7 @@ display managers and default configurations for actually supported compositors w
   
 * Tiling Wms
     * Hyprland
+    * Niri
     * river
     * Sway
   
