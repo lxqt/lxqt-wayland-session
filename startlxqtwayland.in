@@ -54,10 +54,7 @@ fi
 # Qt4 platform plugin
 export QT_PLATFORM_PLUGIN="lxqt"
 
-# Qt5 platform plugin
-export QT_QPA_PLATFORMTHEME="lxqt"
-
-# Qt5
+# Qt5/6
 export QT_QPA_PLATFORMTHEME="lxqt"
 export QT_EXCLUDE_GENERIC_BEARER=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
@@ -111,7 +108,7 @@ elif [ "$COMPOSITOR" = "labwc" ]; then
         echo "Running on virtualized hardware"
     fi
 
-    exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
+    exec labwc -C $XDG_CONFIG_HOME/labwc -S lxqt-session
 
 elif [ "$COMPOSITOR" = "niri" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
