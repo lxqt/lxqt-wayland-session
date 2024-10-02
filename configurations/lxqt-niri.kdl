@@ -275,6 +275,7 @@ binds {
     Alt+Space { spawn "lxqt-runner"; }
     Mod+P { spawn "pcmanfm-qt"; }
     Super+Alt+L { spawn "lxqt-leave"; }
+    Super+Shift+Escape { spawn "lxqt-leave" "--lockscreen"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.

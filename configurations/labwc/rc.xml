@@ -65,6 +65,9 @@
     <keybind key="A-F2">
       <action name="Execute" command="lxqt-runner" />
     </keybind>
+    <keybind key="W-l">
+      <action name="Execute" command="lxqt-leave --lockscreen" />
+    </keybind>
     <!-- For qterminal dropdown -->
     <keybind key="F12">
       <action name="Execute" command="qterminal -d" />
