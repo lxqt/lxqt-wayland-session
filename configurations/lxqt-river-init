@@ -19,6 +19,7 @@ riverctl keyboard-layout us
 riverctl map normal Super+Shift Return spawn qterminal
 riverctl map normal Super F12 spawn "qterminal -d"
 riverctl map normal Alt Space spawn lxqt-runner
+riverctl map normal Super+Shift Escape spawn "lxqt-leave --lockscreen"
 
 # Super+Q to close the focused view
 riverctl map normal Super Q close
