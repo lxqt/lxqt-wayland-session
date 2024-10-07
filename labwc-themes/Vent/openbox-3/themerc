@@ -50,9 +50,13 @@ osd.workspace-switcher.boxes.height: 30
 window.active.button.iconify.unpressed.image.color: #f59335
 window.active.button.max.unpressed.image.color: #a1d569
 window.active.button.close.unpressed.image.color: #ef6b7b
-window.active.button.menu.unpressed.image.color: #4e88e8
+window.active.button.menu.unpressed.image.color: #4ec2e8
+window.active.button.desk.unpressed.image.color: #4655b9
+window.active.button.shade.unpressed.image.color: #948b11
 
-window.inactive.button.iconify.unpressed.image.color: #b1b4b6
-window.inactive.button.max.unpressed.image.color:#b1b4b6
-window.inactive.button.close.unpressed.image.color: #b1b4b6
-window.inactive.button.menu.unpressed.image.color: #b1b4b6
+window.inactive.button.iconify.unpressed.image.color: #939597
+window.inactive.button.max.unpressed.image.color:#939597
+window.inactive.button.close.unpressed.image.color: #939597
+window.inactive.button.menu.unpressed.image.color: #939597
+window.inactive.button.desk.unpressed.image.color: #939597
+window.inactive.button.shade.unpressed.image.color: #939597

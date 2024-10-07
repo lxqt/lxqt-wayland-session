@@ -51,11 +51,15 @@ window.active.button.iconify.unpressed.image.color: #f59335
 window.active.button.max.unpressed.image.color: #a1d569
 window.active.button.close.unpressed.image.color: #ef6b7b
 window.active.button.menu.unpressed.image.color: #4ec2e8
+window.active.button.desk.unpressed.image.color: #9799f7
+window.active.button.shade.unpressed.image.color: #a6a228
 
 window.inactive.button.iconify.unpressed.image.color: #939597
 window.inactive.button.max.unpressed.image.color:#939597
 window.inactive.button.close.unpressed.image.color: #939597
 window.inactive.button.menu.unpressed.image.color: #939597
+window.inactive.button.desk.unpressed.image.color: #939597
+window.inactive.button.shade.unpressed.image.color: #939597
 
 
 

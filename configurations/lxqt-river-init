@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# This is the example configuration file for LXQt Session using river.
+# This is the example configuration file for river with some additions for LXQt.
+# There may be a newer file in /usr/share/river/example/init.
 #
 # See the river(1), riverctl(1), and rivertile(1) man pages for complete
 # documentation.
