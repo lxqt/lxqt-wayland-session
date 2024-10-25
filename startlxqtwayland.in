@@ -84,6 +84,7 @@ trylayout=$(echo $LANG | cut -c 1,2)
 
 if  [ -z "$COMPOSITOR" ]; then
     echo "No compositor configured yet in Session Settings, trying labwc..."
+    COMPOSITOR=labwc
     export XDG_CURRENT_DESKTOP="LXQt:wlroots"
 
     # enable cursor on VM (systemd only)
@@ -91,7 +92,7 @@ if  [ -z "$COMPOSITOR" ]; then
         export WLR_NO_HARDWARE_CURSORS=1
         echo "Running on virtualized hardware"
     fi
-    exec labwc -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
+    exec $COMPOSITOR -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
 
 elif [ "$COMPOSITOR" = "labwc" ]; then
     # Copy default configuration if not existing and set keyboard layout if different from us
@@ -108,7 +109,7 @@ elif [ "$COMPOSITOR" = "labwc" ]; then
         echo "Running on virtualized hardware"
     fi
 
-    exec labwc -C $XDG_CONFIG_HOME/labwc -S lxqt-session
+    exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
 
 elif [ "$COMPOSITOR" = "niri" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
@@ -118,7 +119,7 @@ elif [ "$COMPOSITOR" = "niri" ]; then
         sed -i "s/layout \"us\"/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl"
         fi
     fi
-    exec niri -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl
+    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl
 
 elif [ "$COMPOSITOR" = "kwin_wayland" ]; then
     # Style KDE's QML apps like systemsettings
@@ -137,7 +138,7 @@ elif [ "$COMPOSITOR" = "kwin_wayland" ]; then
         fi
     fi
     # WARNING: Option '--no-kactivities' can result in crashes with animations and corner actions.
-    exec kwin_wayland_wrapper --exit-with-session lxqt-session --xwayland
+    exec ${COMPOSITOR}_wrapper --exit-with-session lxqt-session --xwayland
 
 elif [ "$COMPOSITOR" = "wayfire" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini" ]; then
@@ -148,7 +149,7 @@ elif [ "$COMPOSITOR" = "wayfire" ]; then
         sed -i "/\[input\]/a $layout" $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
         fi
     fi
-    exec wayfire -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
+    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
 
 elif [ "$COMPOSITOR" = "sway" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config" ]; then
@@ -159,7 +160,7 @@ elif [ "$COMPOSITOR" = "sway" ]; then
         sed -i "/input \"type\:keyboard\"/a $layout" $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
         fi
     fi
-    exec sway -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
+    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
 
 elif [ "$COMPOSITOR" = "Hyprland" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]; then
@@ -169,7 +170,7 @@ elif [ "$COMPOSITOR" = "Hyprland" ]; then
             sed -i "s/kb_layout = us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf"
         fi
     fi
-    exec Hyprland -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
+    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
 
 elif [ "$COMPOSITOR" = "river" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]; then
@@ -180,7 +181,7 @@ elif [ "$COMPOSITOR" = "river" ]; then
             sed -i "s/riverctl keyboard-layout us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init"
         fi
     fi
-    exec river -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init
+    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init
 
 # unknown compositor
 else
