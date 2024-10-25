@@ -182,6 +182,11 @@ elif [ "$COMPOSITOR" = "river" ]; then
     fi
     exec river -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init
 
+elif [ "$COMPOSITOR" = "cosmic-comp" ]; then
+    # NOTE: Cosmic compositor creates default configurations on first start
+    #       which are located at $XDG_CONFIG_HOME/cosmic
+    exec cosmic-comp
+
 # unknown compositor
 else
     echo "Trying to start $COMPOSITOR..."
