@@ -7,6 +7,14 @@ contains()
     [ "$str" = "$substr" -o -z "${str##$substr:*}" -o -z "${str##*:$substr:*}" -o -z "${str%%*:$substr}" ]
 }
 
+wayland_library() {
+    case $COMPOSITOR in
+        cosmic-comp) echo 'smithay' ;;
+        *) echo 'wlroots' ;;
+    esac
+}
+
+
 if [ -z "$XDG_DATA_HOME" ]; then
     export XDG_DATA_HOME="$HOME/.local/share"
 fi
@@ -73,7 +81,7 @@ if grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
     COMPOSITOR=`cat "$XDG_CONFIG_HOME"/lxqt/session.conf|grep compositor |awk -F'=' '{print $2}'`
 fi
 
-export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
+export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:$(wayland_library)"
 
 export MOZ_ENABLE_WAYLAND=1
 
