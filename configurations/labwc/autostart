@@ -28,5 +28,5 @@ dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY > /dev/null
 # Suspending can be configured in LXQt power management settings
 # Screen locking can be configured in Session Settings
 # Turn off display(s) after 5 minutes:
-swayidle -w timeout 300 "wlopm --off \*" resume "wlopm --on \*" > /dev/null 2>1 &
+swayidle -w timeout 300 "wlopm --off \*" resume "wlopm --on \*" > /dev/null 2>&1 &
 
