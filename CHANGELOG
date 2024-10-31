@@ -1,0 +1,3 @@
+lxqt-wayland-session-0.1.0 / 2024-11-05
+=======================================
+ * First release. For choosing a Wayland LXQt session in LXQt Session Settings. Supports Labwc, KWin, Wayfire, Hyprland, Sway, River and Niri.
