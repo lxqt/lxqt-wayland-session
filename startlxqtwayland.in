@@ -70,7 +70,7 @@ if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
 fi
 
 if grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
-    COMPOSITOR=`cat "$XDG_CONFIG_HOME"/lxqt/session.conf|grep compositor |awk -F'=' '{print $2}'`
+    COMPOSITOR=`cat "$XDG_CONFIG_HOME"/lxqt/session.conf|grep compositor |awk -F'=' '{sub(".*/", "", $2); print $2}'`
 fi
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
