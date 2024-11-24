@@ -1,3 +1,9 @@
+lxqt-wayland-session-0.1.1 / 2024-11-24
+=======================================
+ * Fixed the issue which happened when full paths were used instead of the compositor's executable name.
+ * Updated lxqt-hyprland.conf for Hyprland v.0.45.
+ * Added `xdg-activation` to Wayfire's config.
+
 lxqt-wayland-session-0.1.0 / 2024-11-05
 =======================================
  * First release. For choosing a Wayland LXQt session in LXQt Session Settings. Supports Labwc, KWin, Wayfire, Hyprland, Sway, River and Niri.
