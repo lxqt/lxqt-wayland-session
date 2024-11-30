@@ -65,6 +65,9 @@ export QT_ACCESSIBILITY=1
 # use lxqt-applications.menu for main app menu
 export XDG_MENU_PREFIX="lxqt-"
 
+# Generic desktop session name
+export XDG_SESSION_DESKTOP="LXQt"
+
 if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
     mkdir -p $XDG_CONFIG_HOME/lxqt/wayland/
 fi
