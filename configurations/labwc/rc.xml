@@ -14,11 +14,11 @@
     <adaptiveSync>no</adaptiveSync>
     <allowTearing>no</allowTearing>
     <reuseOutputMode>no</reuseOutputMode>
-    <xwaylandPersistence>no</xwaylandPersistence>
+    <xwaylandPersistence>yes</xwaylandPersistence>
   </core>
 
   <placement>
-    <policy>center</policy>
+    <policy>cascade</policy>
     <!--
       When <placement><policy> is "cascade", the offset for cascading new
       windows can be overwritten like this:
@@ -29,7 +29,13 @@
   <!-- <font><theme> can be defined without an attribute to set all places -->
   <theme>
     <name>Vent</name>
+    <icon></icon>
+    <titlebar>
+      <layout>icon:iconify,max,close</layout>
+      <showTitle>yes</showTitle>
+    </titlebar>
     <cornerRadius>10</cornerRadius>
+    <keepBorder>yes</keepBorder>
     <dropShadows>yes</dropShadows>
     <font place="ActiveWindow">
       <name>sans</name>
@@ -42,6 +48,12 @@
       <size>13</size>
       <slant>normal</slant>
       <weight>bold</weight>
+    </font>
+    <font place="MenuHeader">
+      <name>sans</name>
+      <size>12</size>
+      <slant>normal</slant>
+      <weight>normal</weight>
     </font>
     <font place="MenuItem">
       <name>sans</name>
@@ -297,7 +309,7 @@
       <action name="SnapToEdge" direction="down" />
     </keybind>
     <keybind key="A-Space">
-      <action name="ShowMenu" menu="client-menu" />
+      <action name="ShowMenu" menu="client-menu" atCursor="no" />
     </keybind>
     <keybind key="XF86_AudioLowerVolume">
       <action name="Execute" command="amixer sset Master 5%-" />
@@ -342,6 +354,16 @@
     </keybind>
     <keybind key="W-KP_3">
       <action name="SnapToRegion" region="bottom-right" />
+    </keybind>
+  -->
+    <!-- keybind for client-list-combined-menu - will center in middle of screen -->
+  <!--
+    <keybind key="W-Space">
+      <action name="ShowMenu" menu="client-list-combined-menu" />
+      <position>
+        <x>center</x>
+        <y>center</y>
+      </position>
     </keybind>
   -->
   </keyboard>
@@ -465,10 +487,19 @@
 
     <context name="WindowMenu">
       <mousebind button="Left" action="Click">
-        <action name="ShowMenu" menu="client-menu" />
+        <action name="ShowMenu" menu="client-menu" atCursor="no" />
       </mousebind>
       <mousebind button="Right" action="Click">
-        <action name="ShowMenu" menu="client-menu" />
+        <action name="ShowMenu" menu="client-menu" atCursor="no" />
+      </mousebind>
+    </context>
+
+    <context name="Icon">
+      <mousebind button="Left" action="Click">
+        <action name="ShowMenu" menu="client-menu" atCursor="no" />
+      </mousebind>
+      <mousebind button="Right" action="Click">
+        <action name="ShowMenu" menu="client-menu" atCursor="no" />
       </mousebind>
     </context>
 
@@ -520,6 +551,8 @@
       </mousebind>
       <mousebind button="Middle" action="Press">
         <action name="ShowMenu" menu="root-menu" />
+        <!-- openbox default, swap with above line to activate -->
+        <!-- <action name="ShowMenu" menu="client-list-combined-menu" /> -->
       </mousebind>
       <mousebind direction="Up" action="Scroll">
         <action name="GoToDesktop" to="left" wrap="yes" />
@@ -540,8 +573,10 @@
 
     Direct cursor movement to a specified output. If the compositor is
     running in nested mode, this does not take effect.
+    If mouseEmulation is enabled, all touch up/down/motion events are
+    translated to mouse button and motion events.
   -->
-  <touch deviceName="" mapToOutput="" />
+  <touch deviceName="" mapToOutput="" mouseEmulation="no"/>
 
   <!--
     The tablet cursor movement can be restricted to a single output.
@@ -631,8 +666,9 @@
     #   - Criteria can also contain `matchOnce="true"` meaning that the rule
     #     must only apply to the first instance of the window with that
     #     particular 'identifier' or 'title'.
-    #   - Matching against patterns with '*' (wildcard) and '?' (joker) is
-    #     supported. Pattern matching is case-insensitive.
+    #   - Matching is case-insensitive and is performed using shell wildcard
+    #     patterns (see glob(7)) so '\*' (not between brackets) matches any string
+    #     and '?' matches any single character.
 
     <windowRules>
       <windowRule identifier="*"><action name="Maximize"/></windowRule>
