@@ -1,0 +1,27 @@
+.TH lxqt-wayland-session "1" "January 2025" "LXQt 2.1.0" "LXQt Wayland Session"
+.SH NAME
+\fBlxqt-wayland-session\fR \- Wayland session for \fBLXQt\fR
+.br
+.SH DESCRIPTION
+This module provides the files needed for the Wayland session of the \fBLXQt\fR desktop
+environment and enables the Wayland settings page in \fBlxqt-config-session\fR.
+.SH FILES
+startlxqtwayland: Script which starts the compositor and sets the keyboard layout.
+.P
+Desktop entry file stating \fBstartlxqtwayland\fR as binary needed to start LXQt Wayland sessions.
+Sourced e. g. by display managers.
+.P
+Basic configuration files for supported compositors where needed: Hyprland, kwin_wayland, labwc, niri, river, sway, wayfire.
+.SH "REPORTING BUGS"
+Report bugs to https://github.com/lxqt/lxqt-wayland-session/issues
+.SH "SEE ALSO"
+.BR startlxqtwayland(1)
+.P
+.BR lxqt-session(1)  "LXQt session"
+.P
+.BR lxqt-config-session(1)  "LXQt session settings"
+.P
+.BR lxqt-config(1)  "LXQt Configuration Center"
+.P
+.BR lxqt-leave(1)  "LXQt session logout, reboot, shutdown, suspend, hibernate"
+and lock screen

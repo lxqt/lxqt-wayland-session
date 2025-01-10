@@ -51,12 +51,8 @@ install(PROGRAMS
     DESTINATION "${CMAKE_INSTALL_BINDIR}"
     COMPONENT Runtime
 )
-#install(FILES /// evt. TODO manpage
-#    startlxqt.1
-#    DESTINATION "${CMAKE_INSTALL_MANDIR}/man1"
-#    COMPONENT Runtime
-#)
 
+add_subdirectory(man)
 add_subdirectory(configurations)
 add_subdirectory(wallpaper)
 add_subdirectory(labwc-themes)
