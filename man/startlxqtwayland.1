@@ -1,0 +1,28 @@
+.TH STARTLXQTWAYLAND "1" "January 2025" "LXQt 2.1.0" "LXQt Wayland session"
+.SH NAME
+startlxqtwayland \- script to initialize and launch LXQt Wayland sessions
+.SH SYNOPSIS
+.B startlxqtwayland
+.SH DESCRIPTION
+\fBstartlxqtwayland\fR is a shell script meant to initialize and launch LXQt Wayland
+sessions.
+.P
+Its main tasks are exporting environment variables, partly after performing
+corresponding checks, and launching the configured compositor which will launch
+\fBlxqt-session\fR, the LXQt session manager. It copies the basic configuration file(s) to
+$XDG_CONFIG_USER for the compositor configured in \fBlxqt-config-session\fR if not present
+and tries to set the keyboard layout accordingly to $LANG.
+.P
+It can be run directly from tty but rather it is invoked by display
+managers like SDDM or LightDM.
+.P
+Display managers are making use of scripts like \fBstartlxqtwayland\fR automatically.
+Information about available desktop environments is provided by files
+\fI$XDG_DATA_DIRS/wayland-sessions/*.desktop\fR, typically
+\fI/usr/share/wayland-sessions/*.desktop\fR.
+.SH BUGS
+ Bugs can be reported on https://github.com/lxqt/lxqt-wayland-session/issues.
+.SH SEE ALSO
+.BR lxqt-wayland-session (1)
+.BR startlxqt (1)
+.BR sddm (1)

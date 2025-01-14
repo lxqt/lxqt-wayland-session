@@ -1,0 +1,46 @@
+.TH lxqt-wayland-session "1" "January 2025" "LXQt 2.1.0" "LXQt Session Module"
+.SH NAME
+\fBlxqt-wayland-session\fR \- Wayland session for \fBLXQt\fR
+.br
+.SH DESCRIPTION
+This module provides the files needed for the Wayland session of the \fBLXQt\fR desktop
+environment and enables the Wayland settings page in \fBlxqt-config-session\fR.
+.SH FILES
+\fBstartlxqtwayland\fR: Script which starts the compositor and sets the keyboard layout.
+.P
+Desktop entry file stating \fBstartlxqtwayland\fR as binary needed to start LXQt Wayland
+sessions.
+Sourced e. g. by display managers.
+.P
+Basic configuration files for supported compositors where needed: Hyprland, kwin_wayland,
+labwc, niri, river, sway, wayfire.
+.SH UNSUPPORTED COMPOSITORS
+Any compositor can be launched by \fBstartlxqtwayland\fR but for starting and exiting
+the LXQt session a line \fBlxqt-session && <exit_compositor_command>\fR has to be added to
+its autostart configuration.
+.SH NOTES
+Some lxqt-configuration tools currently do not support Wayland and those settings have to
+be configured in the compositor's configuration:
+.P
+* lxqt-globalkeys
+.P
+* lxqt-config-monitor (though kwin_wayland is mostly supported)
+.P
+* lxqt-config-input
+.P
+Limitations in lxqt-panel:
+.P
+* Workspace support in lxqt-panel's taskbar plugin is supported
+only in kwin_wayland.
+.P
+* Showdesktop plugin and  workspace switcher ar currently supported only in kwin_wayland.
+.P
+* kbindicator and qeyes plugin are currently not supported under Wayland.
+.SH "REPORTING BUGS"
+Report bugs to https://github.com/lxqt/lxqt-wayland-session/issues
+.SH "SEE ALSO"
+.BR startlxqtwayland(1)
+.BR lxqt-session(1)
+.BR lxqt-config-session(1)
+.BR lxqt-config(1)
+.BR lxqt-leave(1)
