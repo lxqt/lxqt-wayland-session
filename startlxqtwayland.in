@@ -96,10 +96,10 @@ if  [ -z "$COMPOSITOR" ]; then
 
 elif [ "$COMPOSITOR" = "labwc" ]; then
     # Copy default configuration if not existing and set keyboard layout if different from us
-    if [ ! -d "$XDG_CONFIG_HOME/labwc" ]; then
-       cp -av "$share_dir"/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
+    if [ ! -d "$XDG_CONFIG_HOME/lxqt/labwc" ]; then
+       cp -av "$share_dir"/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/lxqt/labwc  # use default location here
        if echo "$valid_layouts" | grep -q "$trylayout"; then
-          echo "XKB_DEFAULT_LAYOUT=$trylayout" >> $XDG_CONFIG_HOME/labwc/environment
+          echo "XKB_DEFAULT_LAYOUT=$trylayout" >> $XDG_CONFIG_HOME/lxqt/labwc/environment
        fi
     fi
 
@@ -109,7 +109,7 @@ elif [ "$COMPOSITOR" = "labwc" ]; then
         echo "Running on virtualized hardware"
     fi
 
-    exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
+    exec $COMPOSITOR -C $XDG_CONFIG_HOME/lxqt/labwc -S lxqt-session
 
 elif [ "$COMPOSITOR" = "niri" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
