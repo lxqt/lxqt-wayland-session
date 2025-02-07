@@ -65,19 +65,26 @@ export QT_ACCESSIBILITY=1
 # use lxqt-applications.menu for main app menu
 export XDG_MENU_PREFIX="lxqt-"
 
+# identify the shared data directory
+share_dir="$(dirname $(dirname "$0"))"/share
+
 if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
     mkdir -p $XDG_CONFIG_HOME/lxqt/wayland/
 fi
 
+# determine user-set compositor to use
 if grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
     COMPOSITOR=`cat "$XDG_CONFIG_HOME"/lxqt/session.conf|grep compositor |awk -F'=' '{sub(".*/", "", $2); print $2}'`
+fi
+
+# if no user-set compositor and distributor set default exists, use that
+if [ -z "$COMPOSITOR" ] && [ -f "/usr/share/lxqt/wayland/default-compositor" ]; then
+    COMPOSITOR=$(cat "$share_dir"/lxqt/wayland/default-compositor)
 fi
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
 export MOZ_ENABLE_WAYLAND=1
-
-share_dir="$(dirname $(dirname "$0"))"/share
 
 valid_layouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
 trylayout=$(echo $LANG | cut -c 1,2)
