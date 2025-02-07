@@ -70,21 +70,23 @@ share_dir="$(dirname $(dirname "$0"))"/share
 if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
     mkdir -p $XDG_CONFIG_HOME/lxqt/wayland/
 fi
-# Check for default compositor set by distro
+# Check for default compositor and screenlocker eventually set by distribution
 if grep -q "compositor" "$share_dir/lxqt/session.conf"; then
-	echo Default Wayland compositor configured
-	default_compositor=$(cat $share_dir/lxqt/session.conf|grep compositor)
+    default_compositor=$(cat $share_dir/lxqt/session.conf|grep compositor)
+    default_screenlocker=$(cat $share_dir/lxqt/session.conf|grep lock_command_wayland)
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/session.conf" ]; then
-    	echo "No LXQt Settings found"
-    	cp -a $share_dir/lxqt/ $XDG_CONFIG_HOME/
+        cp -a $share_dir/lxqt/ $XDG_CONFIG_HOME/
     else
-    	echo lxqt-session-configured
-    	if ! grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
-        # file exists and doesn not contain "compositor"
-		config_file="$XDG_CONFIG_HOME/lxqt/session.conf"
-        sed -i '/^\[General\]/a '"$default_compositor" "$config_file"
-		fi
-	fi
+        config_file="$XDG_CONFIG_HOME/lxqt/session.conf"
+        if ! grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
+            # file exists and does not contain "compositor"
+            sed -i '/^\[General\]/a '"$default_compositor" "$config_file"
+        fi
+        if ! grep -q "lock_command_wayland" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
+            # file exists and does not contain "screenlocker"
+            sed -i '/^\[General\]/a '"$default_screenlocker" "$config_file"
+        fi
+    fi
 fi
 
 if grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
