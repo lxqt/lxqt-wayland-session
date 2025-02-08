@@ -75,7 +75,7 @@ if grep -q "compositor" "$share_dir/lxqt/session.conf"; then
     default_compositor=$(cat $share_dir/lxqt/session.conf|grep compositor)
     default_screenlocker=$(cat $share_dir/lxqt/session.conf|grep lock_command_wayland)
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/session.conf" ]; then
-        cp -a $share_dir/lxqt/ $XDG_CONFIG_HOME/
+        cp $share_dir/lxqt/session.conf $XDG_CONFIG_HOME/lxqt/session.conf
     else
         config_file="$XDG_CONFIG_HOME/lxqt/session.conf"
         if ! grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
