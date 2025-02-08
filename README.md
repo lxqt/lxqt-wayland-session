@@ -15,7 +15,14 @@ display managers and default configurations for actually supported compositors w
   
 At startup a basic configuration file for those compositors will be copied to `$XDG_CONFIG_HOME/lxqt/wayland` directory
 if not existing already, except for labwc and `kwin_wayland` where their default configuration location is used.
-If no compositor is already set in `lxqt-config-session` Labwc will be started opening "Session Settings".
+If no compositor is set in `lxqt-config-session` the default configuration in `/usr/share/lxqt/session.conf` or `/usr/locale/share/lxqt/session.conf` will be used to configure the session, example:
+```
+[General]
+leave_confirmation=true
+compositor=labwc
+lock_command_wayland=swaylock
+```
+If no compositor is found starting Labwc will be tried, opening "Session Settings"
 
 Please refer to each compositors documentation for tweaking.
 
