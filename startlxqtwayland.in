@@ -70,28 +70,13 @@ share_dir="$(dirname $(dirname "$0"))"/share
 if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
     mkdir -p $XDG_CONFIG_HOME/lxqt/wayland/
 fi
-# Check for default compositor and screenlocker eventually set by distribution
-if grep -q "compositor" "$share_dir/lxqt/session.conf"; then
-    default_compositor=$(cat $share_dir/lxqt/session.conf|grep compositor)
-    default_screenlocker=$(cat $share_dir/lxqt/session.conf|grep lock_command_wayland)
-    if [ ! -f "$XDG_CONFIG_HOME/lxqt/session.conf" ]; then
-        cp $share_dir/lxqt/session.conf $XDG_CONFIG_HOME/lxqt/session.conf
-    else
-        config_file="$XDG_CONFIG_HOME/lxqt/session.conf"
-        if ! grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
-            # file exists and does not contain "compositor"
-            sed -i '/^\[General\]/a '"$default_compositor" "$config_file"
-        fi
-        if ! grep -q "lock_command_wayland" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
-            # file exists and does not contain "screenlocker"
-            sed -i '/^\[General\]/a '"$default_screenlocker" "$config_file"
-        fi
-    fi
-fi
-
-if grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
-    COMPOSITOR=`cat "$XDG_CONFIG_HOME"/lxqt/session.conf|grep compositor |awk -F'=' '{sub(".*/", "", $2); print $2}'`
-fi
+# Check for compositor in user config file and fallback dirs
+for d in $(echo "$XDG_CONFIG_HOME:$XDG_CONFIG_DIRS" | tr : '\n'); do
+    config_file="$d/lxqt/session.conf"
+    [ -f "$config_file" ] && [ -r "$config_file" ] || continue
+    COMPOSITOR="$(sed -nre '/^compositor\s*=/ { s/^[^=]+=\s*(\S+.*)?$/\1/; p; }' "$config_file")"
+    [ -z "$COMPOSITOR" ] || break
+done
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
