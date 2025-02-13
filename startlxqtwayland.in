@@ -80,8 +80,6 @@ done
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
-export MOZ_ENABLE_WAYLAND=1
-
 valid_layouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
 trylayout=$(echo $LANG | cut -c 1,2)
 
