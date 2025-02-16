@@ -1,0 +1,42 @@
+#!/bin/sh
+
+unset WAYLAND_DISPLAY
+unset DISPLAY
+
+port=0
+while [ -e "${XDG_RUNTIME_DIR}/wayland-${port}" ]; do
+    let port+=1
+done
+wayland_display=wayland-${port}
+
+export WAYLAND_DISPLAY=${wayland_display}
+
+if command -v Xwayland > /dev/null
+then
+  export MIR_SERVER_ENABLE_X11=1
+  MIR_SERVER_XWAYLAND_PATH=$(which Xwayland)
+  export MIR_SERVER_XWAYLAND_PATH
+fi
+
+export MIRIWAY_CONFIG_DIR="lxqt"
+
+miriway-shell --display-config=static="${XDG_CONFIG_HOME}/miriway-shell.display-config" --add-wayland-extensions=all --lockscreen-app="lxqt-leave --lockscreen" &
+miriway_pid=$!
+
+# Wait until the server starts
+until [ -O "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}" ]
+do
+  if ! kill -0 ${miriway_pid} &> /dev/null
+  then
+    echo "ERROR: miriway-shell [pid=${miriway_pid}] is not running"
+    exit 1
+  fi
+  inotifywait -qq --timeout 5 --event create "$(dirname "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}")"
+done
+
+lxqt-session "$@"
+lxqt_session_exit_code=$?
+
+kill $miriway_pid
+
+exit $lxqt_session_exit_code
