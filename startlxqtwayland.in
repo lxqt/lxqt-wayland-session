@@ -74,7 +74,7 @@ fi
 for d in $(echo "$XDG_CONFIG_HOME:$XDG_CONFIG_DIRS" | tr : '\n'); do
     config_file="$d/lxqt/session.conf"
     [ -f "$config_file" ] && [ -r "$config_file" ] || continue
-    COMPOSITOR="$(sed -nre '/^compositor\s*=/ { s/^[^=]+=\s*(\S+.*)?$/\1/; p; }' "$config_file")"
+    COMPOSITOR="$(sed -nre '/^compositor\s*=/ { s@^[^=]+=\s*(/|\S+.*/)?([^/]+)?$@\2@; p; }' "$config_file")"
     [ -z "$COMPOSITOR" ] || break
 done
 
