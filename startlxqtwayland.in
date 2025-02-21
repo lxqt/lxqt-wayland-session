@@ -141,6 +141,16 @@ elif [ "$COMPOSITOR" = "kwin_wayland" ]; then
     # WARNING: Option '--no-kactivities' can result in crashes with animations and corner actions.
     exec ${COMPOSITOR}_wrapper --exit-with-session lxqt-session --xwayland
 
+elif [ "$COMPOSITOR" = "miriway" ]; then
+    export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:mir"
+    if [ ! -f "$XDG_CONFIG_HOME/lxqt/miriway-shell.config" ]; then
+        cp "$share_dir"/lxqt/wayland/miriway/miriway-shell.config "$XDG_CONFIG_HOME/lxqt/miriway-shell.config"
+       if echo "$valid_layouts" | grep -q "$trylayout"; then
+          echo "keymap=$trylayout" >> "$XDG_CONFIG_HOME/lxqt/miriway-shell.config"
+       fi
+    fi
+    exec "${share_dir}/lxqt/wayland/${COMPOSITOR}/lxqt-${COMPOSITOR}-wrapper"
+
 elif [ "$COMPOSITOR" = "wayfire" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini" ]; then
         cp "$share_dir"/lxqt/wayland/lxqt-wayfire.ini "$XDG_CONFIG_HOME"/lxqt/wayland/
