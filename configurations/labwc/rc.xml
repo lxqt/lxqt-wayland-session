@@ -7,7 +7,6 @@
 -->
 
 <labwc_config>
-
   <core>
     <decoration>server</decoration>
     <gap>0</gap>
@@ -30,7 +29,7 @@
   <!-- <font><theme> can be defined without an attribute to set all places -->
   <theme>
     <name>Vent</name>
-    <icon></icon>
+    <icon>breeze</icon>
     <fallbackAppIcon>labwc</fallbackAppIcon>
     <titlebar>
       <layout>icon:iconify,max,close</layout>
@@ -328,6 +327,9 @@
     </keybind>
     <keybind key="A-Space">
       <action name="ShowMenu" menu="client-menu" atCursor="no" />
+    </keybind>
+        <keybind key="C-Space">
+      <action name="ShowMenu" menu="applications" atCursor="yes" />
     </keybind>
     <keybind key="XF86_AudioLowerVolume">
       <action name="Execute" command="amixer sset Master 5%-" />
