@@ -1,4 +1,4 @@
-// Default niri config (v0.1.9) with some additions and modifications
+// Default niri config (v25.02) with some additions and modifications
 // for LXQt. You may find a more recent version in
 // /usr/share/doc/niri/default-config.kdl.
 // This config is in the KDL format: https://kdl.dev
@@ -28,6 +28,7 @@ input {
         tap
         dwt
         dwtp
+        // drag-lock
         natural-scroll
         accel-speed 0.6
         // accel-profile "flat"
@@ -194,6 +195,44 @@ layout {
         // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
     }
 
+    // You can enable drop shadows for windows.
+    shadow {
+        // Uncomment the next line to enable shadows.
+        // on
+
+        // By default, the shadow draws only around its window, and not behind it.
+        // Uncomment this setting to make the shadow draw behind its window.
+        //
+        // Note that niri has no way of knowing about the CSD window corner
+        // radius. It has to assume that windows have square corners, leading to
+        // shadow artifacts inside the CSD rounded corners. This setting fixes
+        // those artifacts.
+        //
+        // However, instead you may want to set prefer-no-csd and/or
+        // geometry-corner-radius. Then, niri will know the corner radius and
+        // draw the shadow correctly, without having to draw it behind the
+        // window. These will also remove client-side shadows if the window
+        // draws any.
+        //
+        // draw-behind-window true
+
+        // You can change how shadows look. The values below are in logical
+        // pixels and match the CSS box-shadow properties.
+
+        // Softness controls the shadow blur radius.
+        softness 40
+
+        // Spread expands the shadow.
+        spread 5
+
+        // Offset moves the shadow relative to the window.
+        offset x=0 y=5
+
+        // You can also change the shadow color and opacity.
+        color "#00000064"
+        inactive-color "#00000034"
+    }
+
     // Struts shrink the area occupied by windows, similarly to layer-shell panels.
     // You can think of them as a kind of outer gaps. They are set in logical pixels.
     // Left and right struts will cause the next window to the side to always be visible.
@@ -254,6 +293,7 @@ window-rule {
     default-column-width {}
 }
 
+// Open the Firefox picture-in-picture player as floating by default.
 window-rule {
     // This app-id regular expression will work for both:
     // - host Firefox (app-id is "firefox")
@@ -302,12 +342,12 @@ binds {
     Mod+Shift+A { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T { spawn "qterminal"; }
-    F12 { spawn "qterminal" "-d"; }
-    Alt+Space { spawn "lxqt-runner"; }
-    Mod+P { spawn "pcmanfm-qt"; }
-    Super+Alt+L { spawn "lxqt-leave"; }
-    Super+Shift+Escape { spawn "lxqt-leave" "--lockscreen"; }
+    Mod+T hotkey-overlay-title="QTerminal" { spawn "qterminal"; }
+    F12 hotkey-overlay-title="Dropdown QTerminal" { spawn "qterminal" "-d"; }
+    Alt+Space hotkey-overlay-title="lxqt-runner" { spawn "lxqt-runner"; }
+    Mod+P hotkey-overlay-title="Filemanager" { spawn "pcmanfm-qt"; }
+    Super+Alt+L hotkey-overlay-title="Exit Options" { spawn "lxqt-leave"; }
+    Super+Shift+Escape hotkey-overlay-title="Lock Screen" { spawn "lxqt-leave" "--lockscreen"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
@@ -481,6 +521,10 @@ binds {
     Mod+Ctrl+R { reset-window-height; }
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
+
+    // Expand the focused column to space not taken up by other fully visible columns.
+    // Makes the column "fill the rest of the space".
+    Mod+Ctrl+F { expand-column-to-available-width; }
     Mod+C { center-column; }
 
     // Finer width adjustments.
@@ -502,6 +546,11 @@ binds {
     Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
+    // Toggle tabbed column display mode.
+    // Windows in this column will appear as vertical tabs,
+    // rather than stacked on top of each other.
+    Mod+W { toggle-column-tabbed-display; }
+
     // Actions to switch layouts.
     // Note: if you uncomment these, make sure you do NOT have
     // a matching layout switch hotkey configured in xkb options above.
@@ -514,8 +563,19 @@ binds {
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 
+    // Applications such as remote-desktop clients and software KVM switches may
+    // request that niri stops processing the keyboard shortcuts defined here
+    // so they may, for example, forward the key presses as-is to a remote machine.
+    // It's a good idea to bind an escape hatch to toggle the inhibitor,
+    // so a buggy application can't hold your session hostage.
+    //
+    // The allow-inhibiting=false property can be applied to other binds as well,
+    // which ensures niri always processes them, even when an inhibitor is active.
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
     // The quit action will show a confirmation dialog to avoid accidental exits.
     Mod+Shift+E { quit; }
+    Ctrl+Alt+Delete { quit; }
 
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.

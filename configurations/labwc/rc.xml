@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 
 <!--
-  This file contains all supported config elements & attributes with
+  This file contains all supported Labwc v0.8.3 config elements & attributes with
   default values. Some LXQt specific settings have been added. You may have a
   updated version in /usr/share/docs/labwc/rc.xml.all
 -->
 
 <labwc_config>
-
   <core>
     <decoration>server</decoration>
     <gap>0</gap>
     <adaptiveSync>no</adaptiveSync>
     <allowTearing>no</allowTearing>
+    <autoEnableOutputs>yes</autoEnableOutputs>
     <reuseOutputMode>no</reuseOutputMode>
     <xwaylandPersistence>yes</xwaylandPersistence>
   </core>
@@ -29,7 +29,8 @@
   <!-- <font><theme> can be defined without an attribute to set all places -->
   <theme>
     <name>Vent</name>
-    <icon></icon>
+    <icon>breeze</icon>
+    <fallbackAppIcon>labwc</fallbackAppIcon>
     <titlebar>
       <layout>icon:iconify,max,close</layout>
       <showTitle>yes</showTitle>
@@ -130,6 +131,16 @@
     <popupShow>Never</popupShow>
     <!-- Let client redraw its contents while resizing -->
     <drawContents>yes</drawContents>
+    <!-- Borders are effectively 8 pixels wide regardless of visual appearance -->
+    <minimumArea>8</minimumArea>
+
+    <!--
+      Set cornerRange to a positive value to increase the size of corner
+      regions for mouse actions and diagonal window resizing. When omitted,
+      the default size of the corner region is half of the titlebar height.
+
+      <cornerRange>8</cornerRange>
+    -->
   </resize>
 
   <focus>
@@ -230,7 +241,10 @@
     your favourite terminal or application launcher. See rc.xml for an example.
   -->
   <keyboard>
-    <numlock>on</numlock>
+    <!--
+      # Numlock is not set by default
+      <numlock>on|off</numlock>
+    -->
     <layoutScope>global</layoutScope>
     <repeatRate>25</repeatRate>
     <repeatDelay>600</repeatDelay>
@@ -272,6 +286,9 @@
     <keybind key="A-Tab">
       <action name="NextWindow" />
     </keybind>
+    <keybind key="A-S-Tab">
+      <action name="PreviousWindow" />
+    </keybind>
     <keybind key="W-Return">
       <action name="Execute" command="alacritty" />
     </keybind>
@@ -310,6 +327,9 @@
     </keybind>
     <keybind key="A-Space">
       <action name="ShowMenu" menu="client-menu" atCursor="no" />
+    </keybind>
+        <keybind key="C-Space">
+      <action name="ShowMenu" menu="applications" atCursor="yes" />
     </keybind>
     <keybind key="XF86_AudioLowerVolume">
       <action name="Execute" command="amixer sset Master 5%-" />
@@ -703,6 +723,7 @@
 
   <menu>
     <ignoreButtonReleasePeriod>250</ignoreButtonReleasePeriod>
+    <showIcons>yes</showIcons>
   </menu>
 
   <!--
