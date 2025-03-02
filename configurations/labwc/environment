@@ -4,26 +4,6 @@
 ##
 
 ##
-## LXQt tries to set keyboard layout the first login, edit here to change and complete.
-## Use the XKB_DEFAULT_LAYOUT variable to set the keyboard layout. For example
-## to start with Swedish keyboard layout set it to 'se'. If you are unsure what
-## your country code is, refer to the layout section of:
-## /usr/share/X11/xkb/rules/evdev.lst
-##
-## Multiple keyboard layouts can be set by comma-separating the country codes.
-## If a variant layout is needed, the syntax is layout(variant)
-## If multiple layouts are used, specify the toggle-keybind using
-## XKB_DEFAULT_OPTIONS as show below.
-##
-## For further details, see xkeyboard-config(7)
-##
-
-# XKB_DEFAULT_LAYOUT=se
-# XKB_DEFAULT_LAYOUT=se,us(intl)
-# XKB_DEFAULT_OPTIONS=grp:alt_shift_toggle
-# XKB_DEFAULT_OPTIONS=grp:shift_caps_toggle
-
-##
 ## Cursor theme and size are set by LXQt and can be configured in"Appearance → Cursor".
 ## Keyboard layout and toggle options are imported only once from LXQt, edit here to change
 ## Set cursor theme and size. Find system icons themes with:
@@ -74,3 +54,23 @@
 ##
 
 # LABWC_FALLBACK_OUTPUT=NOOP-fallback
+
+##
+## LXQt tries to set keyboard layout the first login, edit here to change and complete.
+## Use the XKB_DEFAULT_LAYOUT variable to set the keyboard layout. For example
+## to start with Swedish keyboard layout set it to 'se'. If you are unsure what
+## your country code is, refer to the layout section of:
+## /usr/share/X11/xkb/rules/evdev.lst
+##
+## Multiple keyboard layouts can be set by comma-separating the country codes.
+## If a variant layout is needed, the syntax is layout(variant)
+## If multiple layouts are used, specify the toggle-keybind using
+## XKB_DEFAULT_OPTIONS as show below.
+##
+## For further details, see xkeyboard-config(7)
+##
+
+# XKB_DEFAULT_LAYOUT=se
+# XKB_DEFAULT_LAYOUT=se,us(intl)
+# XKB_DEFAULT_OPTIONS=grp:alt_shift_toggle
+# XKB_DEFAULT_OPTIONS=grp:shift_caps_toggle
