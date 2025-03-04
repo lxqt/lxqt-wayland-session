@@ -1,16 +1,79 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <openbox_menu>
+<!-- Note: for localization support of menu items "client-menu" has to be removed here -->
+<menu id="client-menu">
+  <item label="Minimize">
+    <action name="Iconify" />
+  </item>
+  <item label="Maximize">
+    <action name="ToggleMaximize" />
+  </item>
+  <item label="Fullscreen">
+    <action name="ToggleFullscreen" />
+  </item>
+  <item label="Roll Up/Down">
+    <action name="ToggleShade" />
+  </item>
+  <item label="Decorations">
+    <action name="ToggleDecorations" />
+  </item>
+  <item label="Always on Top">
+    <action name="ToggleAlwaysOnTop" />
+  </item>
+  <!--
+    Any menu with the id "workspaces" will be hidden
+    if there is only a single workspace available.
+  -->
+  <menu id="workspaces" label="Workspace">
+    <item label="Move Left">
+      <action name="SendToDesktop" to="left" />
+    </item>
+    <item label="Move Right">
+      <action name="SendToDesktop" to="right" />
+    </item>
+    <separator />
+    <item label="Always on Visible Workspace">
+      <action name="ToggleOmnipresent" />
+    </item>
+  </menu>
 
-<menu id="root-menu" label="">
-  <item label="QTerminal"><action name="Execute" command="qterminal" /></item>
-  <item label="Filemanager"><action name="Execute" command="pcmanfm-qt"/></item>
-  <item label="Start LXQt Session"><action name="Execute" command="lxqt-session"/></item>
+  <!--
+    openbox default workspace selector
+    to use replace above workspace menu with the example below
+    the label is required, but you can change the text.
+
+    <menu id="client-send-to-menu" label="Send to..." />
+  -->
+  <item label="Close">
+    <action name="Close" />
+  </item>
+</menu>
+
+<menu id="root-menu">
+  <item label="QTerminal" icon="qterminal"><action name="Execute" command="qterminal" /></item>
+  <item label="Filemanager" icon="pcmanfm-qt" ><action name="Execute" command="pcmanfm-qt" /></item>
+  <item label="Start LXQt Session"  icon="lxqt" ><action name="Execute" command="lxqt-session"/></item>
 
   <separator />
-  <item label="LXQt Settings"><action name="Execute" command="lxqt-config" /></item>
-  <item label="Reconfigure Labwc"><action name="Reconfigure" /></item>
+  <item label="LXQt Settings" icon="preferences-desktop" ><action name="Execute" command="lxqt-config" /></item>
+  <item label="Reconfigure Labwc" icon="labwc" ><action name="Reconfigure" /></item>
   <separator />
-  <item label="Logout"><action name="Exit" /></item>
+  <item label="Logout" icon="system-log-out" ><action name="Exit" /></item>
+</menu>
+
+<menu id="some-custom-menu">
+  <!--
+    Creates menu title.
+    To create an empty header with no text,
+    set label=" ", not label=""
+  -->
+  <separator label="custom menu" />
+  <item label="Reconfigure">
+    <action name="Reconfigure" />
+  </item>
+  <item label="Exit">
+    <action name="Exit" />
+  </item>
 </menu>
 
 </openbox_menu>
