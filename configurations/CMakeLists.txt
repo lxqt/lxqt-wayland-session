@@ -17,6 +17,8 @@ install(FILES
 install(DIRECTORY
     labwc
     firstrun
+    miriway
+    USE_SOURCE_PERMISSIONS
     DESTINATION "${CMAKE_INSTALL_DATADIR}/lxqt/wayland"
     COMPONENT Runtime
 )
