@@ -171,6 +171,9 @@ elif [ "$COMPOSITOR" = "Hyprland" ]; then
             sed -i "s/kb_layout = us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf"
         fi
     fi
+    # workaround for cursor
+    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_size| tr 'a-z' 'A-Z')
+    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_theme| tr 'a-z' 'A-Z')
     exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
 
 elif [ "$COMPOSITOR" = "river" ]; then
