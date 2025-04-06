@@ -47,7 +47,7 @@ mkdir -p "$XDG_DESKTOP_DIR"
 # Launch DBus if needed
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
     if [ -z "$XDG_RUNTIME_DIR" ] || ! [ -S "$XDG_RUNTIME_DIR/bus" ] || ! [ -O "$XDG_RUNTIME_DIR/bus" ]; then
-        eval "$(dbus-launch --sh-syntax --exit-with-session)" || echo "startlxqt: error executing dbus-launch" >&2
+        eval "$(dbus-launch --sh-syntax --exit-with-session)" || echo "startlxqtwayland: error executing dbus-launch" >&2
     fi
 fi
 
