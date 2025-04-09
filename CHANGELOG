@@ -1,3 +1,17 @@
+lxqt-wayland-session-0.2.0 / 2025-04-17
+=======================================
+ * Fixes and updates for Hyprland 0.48.
+ * Made Hyprland use our cursor settings.
+ * Updated rc.xml for Labwc 0.8.2.
+ * Added 2 manpages.
+ * Support default compositor and screenlocker.
+ * Search for compositor setting in fallback dirs.
+ * Use predefined build values in the startup script.
+ * Support full path of compositor.
+ * Removed obsolete mozilla env var.
+ * Updated default configurations.
+ * Corrected D-Bus error message.
+
 lxqt-wayland-session-0.1.1 / 2024-11-24
 =======================================
  * Fixed the issue which happened when full paths were used instead of the compositor's executable name.
