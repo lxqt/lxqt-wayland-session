@@ -264,9 +264,6 @@
     <keybind key="W-f">
       <action name="Execute" command="featherpad"/>
     </keybind>
-    <keybind key="A-Space">
-      <action name="Execute" command="lxqt-runner" />
-    </keybind>
     <keybind key="A-F2">
       <action name="Execute" command="lxqt-runner" />
     </keybind>
@@ -328,9 +325,6 @@
     <keybind key="A-Space">
       <action name="ShowMenu" menu="client-menu" atCursor="no" />
     </keybind>
-        <keybind key="C-Space">
-      <action name="ShowMenu" menu="applications" atCursor="yes" />
-    </keybind>
     <keybind key="XF86_AudioLowerVolume">
       <action name="Execute" command="amixer sset Master 5%-" />
     </keybind>
@@ -376,7 +370,7 @@
       <action name="SnapToRegion" region="bottom-right" />
     </keybind>
   -->
-    <!-- keybind for client-list-combined-menu - will center in middle of screen -->
+  <!-- keybind for client-list-combined-menu - will center in middle of screen -->
   <!--
     <keybind key="W-Space">
       <action name="ShowMenu" menu="client-list-combined-menu" />
