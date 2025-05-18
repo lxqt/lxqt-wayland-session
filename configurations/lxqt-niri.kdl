@@ -368,7 +368,7 @@ binds {
     XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
 
-    //Brightness
+    // Brightness
     XF86MonBrightnessUp { spawn "lxqt-config-brightness" "-i"; }
     XF86MonBrightnessDown { spawn "lxqt-config-brightness" "-d"; }
 
@@ -577,6 +577,10 @@ binds {
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
+    // To use ScreenGrab replace with
+    // Print { spawn "screengrab"; } // use last setting
+    // Ctrl+Print { spawn "screengrab" "-f"; }
+    // See "screengrab -h" for all options
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here

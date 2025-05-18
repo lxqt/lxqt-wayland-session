@@ -267,6 +267,9 @@
     <keybind key="A-F2">
       <action name="Execute" command="lxqt-runner" />
     </keybind>
+    <keybind key="Print">
+      <action name="Execute" command="screengrab" />
+    </keybind>
     <keybind key="W-l">
       <action name="Execute" command="lxqt-leave --lockscreen" />
     </keybind>
