@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  This file contains all supported Labwc v0.8.3 config elements & attributes with
+  This file contains all supported Labwc v0.9.0 config elements & attributes with mostly
   default values. Some LXQt specific settings have been added. You may have a
   updated version in /usr/share/docs/labwc/rc.xml.all
 -->
@@ -14,7 +14,8 @@
     <allowTearing>no</allowTearing>
     <autoEnableOutputs>yes</autoEnableOutputs>
     <reuseOutputMode>no</reuseOutputMode>
-    <xwaylandPersistence>yes</xwaylandPersistence>
+    <xwaylandPersistence>no</xwaylandPersistence>
+    <primarySelection>yes</primarySelection>
   </core>
 
   <placement>
@@ -38,6 +39,7 @@
     <cornerRadius>10</cornerRadius>
     <keepBorder>yes</keepBorder>
     <dropShadows>yes</dropShadows>
+    <dropShadowsOnTiled>no</dropShadowsOnTiled>
     <font place="ActiveWindow">
       <name>sans</name>
       <size>13</size>
@@ -70,24 +72,25 @@
     </font>
   </theme>
 
-  <!--
-    Just as for window-rules, 'identifier' relates to app_id for native Wayland
-    windows and WM_CLASS for XWayland clients.
-  -->
   <windowSwitcher show="yes" preview="yes" outlines="yes" allWorkspaces="no">
     <fields>
-      <field content="type" width="25%" />
-      <field content="trimmed_identifier" width="25%" />
-      <!-- <field content="identifier" width="25%" /> -->
-      <field content="title" width="50%" />
+      <field content="icon" width="5%" />
+      <field content="desktop_entry_name" width="30%" />
+      <field content="title" width="65%" />
+      <!--
+        Just as for window-rules, you can use 'identifier' or
+        'trimmed_identifier' to show the app_id for native wayland clients or
+        WM_CLASS for XWayland clients.
+
+        <field content="trimmed_identifier" width="65%" />
+      -->
     </fields>
   </windowSwitcher>
 
   <!--
-    When using all workspaces option of window switcher, there are extra fields
-    that can be used, workspace (variable length), state (single space),
-    type_short (3 spaces), output (variable length), and can be set up
-    like this. Note: output only shows if more than one output available.
+    Many other kinds of content are supported in the window switcher like below.
+    Some contents are fixed-length and others are variable-length.
+    See "man 5 labwc-config" for details.
 
     <windowSwitcher show="yes" preview="no" outlines="no" allWorkspaces="yes">
       <fields>
@@ -102,12 +105,12 @@
 
     custom format - (introduced in 0.7.2)
     It allows one to replace all the above "fields" with one line, using a
-    printf style format. For field explanations, "man 5 labwc-config".
+    printf style format. For field explanations, see "man 5 labwc-config".
 
     The example below would print "foobar",then type of window (wayland, X),
     then state of window (M/m/F), then output (shows if more than 1 active),
     then workspace name, then identifier/app-id, then the window title.
-    Uses 100% of OSD window width.
+    It uses 100% of OSD window width.
 
     <windowSwitcher show="yes" preview="no" outlines="no" allWorkspaces="yes">
       <fields>
@@ -295,18 +298,6 @@
     <keybind key="W-a">
       <action name="ToggleMaximize" />
     </keybind>
-    <keybind key="A-Left">
-      <action name="MoveToEdge" direction="left" />
-    </keybind>
-    <keybind key="A-Right">
-      <action name="MoveToEdge" direction="right" />
-    </keybind>
-    <keybind key="A-Up">
-      <action name="MoveToEdge" direction="up" />
-    </keybind>
-    <keybind key="A-Down">
-      <action name="MoveToEdge" direction="down" />
-    </keybind>
     <keybind key="W-Left">
       <action name="SnapToEdge" direction="left" />
     </keybind>
@@ -396,18 +387,18 @@
     <doubleClickTime>500</doubleClickTime>
 
     <context name="Frame">
-      <mousebind button="A-Left" action="Press">
+      <mousebind button="W-Left" action="Press">
         <action name="Focus" />
         <action name="Raise" />
       </mousebind>
-      <mousebind button="A-Left" action="Drag">
+      <mousebind button="W-Left" action="Drag">
         <action name="Move" />
       </mousebind>
-      <mousebind button="A-Right" action="Press">
+      <mousebind button="W-Right" action="Press">
         <action name="Focus" />
         <action name="Raise" />
       </mousebind>
-      <mousebind button="A-Right" action="Drag">
+      <mousebind button="W-Right" action="Drag">
         <action name="Resize" />
       </mousebind>
     </context>
@@ -659,9 +650,11 @@
       <tapButtonMap></tapButtonMap>
       <tapAndDrag></tapAndDrag>
       <dragLock></dragLock>
+      <threeFingerDrag></threeFingerDrag>
       <middleEmulation></middleEmulation>
       <disableWhileTyping></disableWhileTyping>
       <clickMethod></clickMethod>
+      <scrollMethod></scrollMethod>
       <sendEventsMode></sendEventsMode>
       <calibrationMatrix></calibrationMatrix>
       <scrollFactor>1.0</scrollFactor>
