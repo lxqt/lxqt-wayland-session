@@ -2,7 +2,7 @@ lxqt-wayland-session-0.2.1 / 2025-07-30
 =======================================
  * Removed unused shortcuts.
  * Updated config files of all compositors.
- * Removed default shortcuts of Labwc.
+ * Removed some default shortcuts from Labwc's config file.
  * Updated Sway's config to 1.11.
  * Updated Labwc's config to 0.9.
  * Updated Hyprland's config to 0.50.
