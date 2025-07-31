@@ -71,9 +71,9 @@ if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
     mkdir -p $XDG_CONFIG_HOME/lxqt/wayland/
 fi
 
+# Check for argument
 if [ -z "$1" ]
     then
-    echo "No argument supplied"
     # Check for compositor in user config file and fallback dirs
     for d in $(echo "$XDG_CONFIG_HOME:$XDG_CONFIG_DIRS" | tr : '\n'); do
         config_file="$d/lxqt/session.conf"
@@ -87,10 +87,11 @@ else
         echo "$1 not found, exiting..."
         exit 0
     else
-    COMPOSITOR=$1
-    echo "Starting LXQt Wayland Session using $1. This is not persistent."
+        COMPOSITOR=$1
+        echo "Starting LXQt Wayland Session using $1. This is not persistent."
     fi
 fi
+
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
 
 valid_layouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')

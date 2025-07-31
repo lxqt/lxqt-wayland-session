@@ -2,7 +2,7 @@
 .SH NAME
 startlxqtwayland \- script to initialize and launch LXQt Wayland sessions
 .SH SYNOPSIS
-.B startlxqtwayland
+.B startlxqtwayland [compositor]
 .SH DESCRIPTION
 \fBstartlxqtwayland\fR is a shell script meant to initialize and launch LXQt Wayland
 sessions.
@@ -20,6 +20,8 @@ Display managers are making use of scripts like \fBstartlxqtwayland\fR automatic
 Information about available desktop environments is provided by files
 \fI$XDG_DATA_DIRS/wayland-sessions/*.desktop\fR, typically
 \fI/usr/share/wayland-sessions/*.desktop\fR.
+.SH OPTIONS
+ A compositor can be provided as option, ignoring the configured compositor.
 .SH BUGS
  Bugs can be reported on https://github.com/lxqt/lxqt-wayland-session/issues.
 .SH SEE ALSO
