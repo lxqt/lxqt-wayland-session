@@ -134,7 +134,7 @@ elif [ "$COMPOSITOR" = "niri" ]; then
         sed -i "s/layout \"us\"/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl"
         fi
     fi
-    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl
+    exec  systemd-cat --identifier=niri $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl
 
 elif [ "$COMPOSITOR" = "kwin_wayland" ]; then
     # Style KDE's QML apps like systemsettings
