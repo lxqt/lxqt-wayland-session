@@ -255,23 +255,25 @@
     <keybind key="C-S-r">
       <action name="Reconfigure"/>
     </keybind>
-    <!-- LXQt Keybindings -->
-    <!-- For advanced shortcut handling please consult
-    https://github.com/lxqt/lxqt/wiki/Wayland#global-shortcuts -->
+    <!-- LXQt Keybindings
+    To open applications inside LXQt session use `lxqt-qdbus run <application>` or
+    `qdbus6 org.lxqt.session /LXQtSession execDesktopFile <desktopfile>`
+    See https://github.com/lxqt/lxqt/wiki/ConfigWaylandSettings#global-shortcuts
+    -->
     <keybind key="W-p">
       <action name="Execute" command="pcmanfm-qt" />
     </keybind>
     <keybind key="W-Return">
-      <action name="Execute" command="qterminal"/>
+      <action name="Execute" command="lxqt-qdbus run qterminal"/>
     </keybind>
     <keybind key="W-f">
-      <action name="Execute" command="featherpad"/>
+      <action name="Execute" command="lxqt-qdbus run featherpad"/>
     </keybind>
     <keybind key="A-F2">
       <action name="Execute" command="lxqt-runner" />
     </keybind>
     <keybind key="Print">
-      <action name="Execute" command="screengrab" />
+      <action name="Execute" command="lxqt-qdbus run screengrab" />
     </keybind>
     <keybind key="W-l">
       <action name="Execute" command="lxqt-leave --lockscreen" />
@@ -314,13 +316,13 @@
       <action name="ShowMenu" menu="client-menu" atCursor="no" />
     </keybind>
     <keybind key="XF86_AudioLowerVolume">
-      <action name="Execute" command="amixer sset Master 5%-" />
+      <action name="Execute" command="lxqt-qdbus volume down" />
     </keybind>
     <keybind key="XF86_AudioRaiseVolume">
-      <action name="Execute" command="amixer sset Master 5%+" />
+      <action name="Execute" command="lxqt-qdbus volume up" />
     </keybind>
     <keybind key="XF86_AudioMute">
-      <action name="Execute" command="amixer sset Master toggle" />
+      <action name="Execute" command="lxqt-qdbus volume mute" />
     </keybind>
     <keybind key="XF86_MonBrightnessUp">
       <action name="Execute" command="lxqt-config-brightness -i" />

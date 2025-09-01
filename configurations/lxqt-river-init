@@ -16,10 +16,14 @@ riverctl spawn "lxqt-session && riverctl exit"
 riverctl keyboard-layout us
 
 # LXQt keybinds
-riverctl map normal Super+Shift Return spawn qterminal
+# To open applications inside LXQt session use `lxqt-qdbus run <application>` or
+# `qdbus6 org.lxqt.session /LXQtSession execDesktopFile <desktopfile>`
+# See https://github.com/lxqt/lxqt/wiki/ConfigWaylandSettings#global-shortcuts
+riverctl map normal Super+Shift Return spawn "lxqt-qdbus run qterminal"
+riverctl map normal Super P spawn "pcmanfm-qt"
 riverctl map normal None F12 spawn "qterminal -d"
 riverctl map normal Alt Space spawn lxqt-runner
-riverctl map normal None Print spawn screengrab
+riverctl map normal None Print spawn "lxqt-dbus run screengrab"
 riverctl map normal Super+Shift Escape spawn "lxqt-leave --lockscreen"
 
 # Super+Q to close the focused view
@@ -143,9 +147,9 @@ do
     riverctl map $mode None XF86Eject spawn 'eject -T'
 
     # Control pulse audio volume with pamixer (https://github.com/cdemoulins/pamixer)
-    riverctl map $mode None XF86AudioRaiseVolume  spawn 'pamixer -i 5'
-    riverctl map $mode None XF86AudioLowerVolume  spawn 'pamixer -d 5'
-    riverctl map $mode None XF86AudioMute         spawn 'pamixer --toggle-mute'
+    riverctl map $mode None XF86AudioRaiseVolume  spawn 'lxqt-qdbus volume up'
+    riverctl map $mode None XF86AudioLowerVolume  spawn 'lxqt-qdbus volume down'
+    riverctl map $mode None XF86AudioMute         spawn 'lxqt-qdbus volume mute'
 
     # Control MPRIS aware media players with playerctl (https://github.com/altdesktop/playerctl)
     riverctl map $mode None XF86AudioMedia spawn 'playerctl play-pause'
