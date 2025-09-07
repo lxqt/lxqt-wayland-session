@@ -1,24 +1,28 @@
-// Default niri config (v25.05) with some additions and modifications
+// Default niri config (v25.08) with some additions and modifications
 // for LXQt. You may find a more recent version in
 // /usr/share/doc/niri/default-config.kdl.
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.
 // Check the wiki for a full description of the configuration:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Introduction
+// https://yalter.github.io/niri/Configuration:-Introduction
 
 
 // Input device configuration.
 // Find the full list of options on the wiki:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Input
+// https://yalter.github.io/niri/Configuration:-Input
 input {
     keyboard {
         xkb {
             // You can set rules, model, layout, variant and options.
             // For more information, see xkeyboard-config(7).
 
-            // For example: layout "us,es"
-            layout "us"
+            // For example:
+            // layout "us,ru"
             // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
+
+            // If this section is empty, niri will fetch xkb settings
+            // from org.freedesktop.locale1. You can control these using
+            // localectl set-x11-keymap.
         }
 
         // Enable numlock on startup, omitting this setting disables it.
@@ -27,6 +31,7 @@ input {
 
     // Next sections include libinput settings.
     // Omitting settings disables them, or leaves them at their default values.
+    // All commented-out settings here are examples, not defaults.
     touchpad {
         // off
         tap
@@ -56,6 +61,7 @@ input {
         // accel-profile "flat"
         // scroll-method "on-button-down"
         // scroll-button 273
+        // scroll-button-lock
         // middle-emulation
     }
 
@@ -71,7 +77,7 @@ input {
 // by running `niri msg outputs` while inside a niri instance.
 // The built-in laptop monitor is usually called "eDP-1".
 // Find more information on the wiki:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Outputs
+// https://yalter.github.io/niri/Configuration:-Outputs
 // Remember to uncomment the node by removing "/-"!
 /-output "eDP-1" {
     // Uncomment this line to disable this output.
@@ -106,7 +112,7 @@ input {
 
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
+// https://yalter.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
     gaps 16
@@ -168,6 +174,9 @@ layout {
         active-color "#7fc8ff"
 
         // Color of the ring on inactive monitors.
+        //
+        // The focus ring only draws around the active window, so the only place
+        // where you can see its inactive-color is on other monitors.
         inactive-color "#505050"
 
         // You can also use gradients. They take precedence over solid colors.
@@ -177,7 +186,7 @@ layout {
         // You can use any CSS linear-gradient tool on the web to set these up.
         // Changing the color space is also supported, check the wiki for more info.
         //
-        // active-gradient from="#80c8ff" to="#bbddff" angle=45
+        // active-gradient from="#80c8ff" to="#c7ff7f" angle=45
 
         // You can also color the gradient relative to the entire view
         // of the workspace, rather than relative to just the window itself.
@@ -199,7 +208,11 @@ layout {
         // Color of the border around windows that request your attention.
         urgent-color "#9b0000"
 
-        // active-gradient from="#ffbb66" to="#ffc880" angle=45 relative-to="workspace-view"
+        // Gradients can use a few different interpolation color spaces.
+        // For example, this is a pastel rainbow gradient via in="oklch longer hue".
+        //
+        // active-gradient from="#e5989b" to="#ffb4a2" angle=45 relative-to="workspace-view" in="oklch longer hue"
+
         // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
     }
 
@@ -255,11 +268,21 @@ layout {
 }
 
 // Add lines like this to spawn processes at startup.
-// Note that running niri as a session supports xdg-desktop-autostart,
+// Note that running niri with LXQt session supports xdg-desktop-autostart,
 // which may be more convenient to use.
+// Applications spawned by niri won't be handled by lxqt-session therefor using "Session Settings
+// → Autostart" is recommended.
 // See the binds section below for more spawn examples.
-// spawn-at-startup "alacritty" "-e" "fish"
-    spawn-at-startup "sh" "-c" "lxqt-session && niri msg action quit -s"
+// spawn-at-startup "waybar"
+// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
+   spawn-sh-at-startup "swaybg -i /usr/share/lxqt/wallpapers/waves-logo.png"
+// The above sets the wallpaper for the overview.
+   spawn-sh-at-startup "lxqt-session && niri msg action quit -s"
+
+hotkey-overlay {
+    // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
+    // skip-at-startup
+}
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -278,7 +301,7 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 // Animation settings.
 // The wiki explains how to configure individual animations:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Animations
+// https://yalter.github.io/niri/Configuration:-Animations
 animations {
     // Uncomment to turn off all animations.
     // off
@@ -289,7 +312,7 @@ animations {
 
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+// https://yalter.github.io/niri/Configuration:-Window-Rules
 
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
@@ -314,6 +337,12 @@ window-rule {
     match title=r#"^Preferen.*|.*file.*|Password.*|Prop.*|Close.*|Select.*$"#
     exclude app-id="lxqt-archiver"
     open-floating true
+}
+
+    // Use wallpaper set with swaybg for the overview background
+layer-rule {
+    match namespace="^wallpaper$"
+    place-within-backdrop true
 }
 
 // Example: block out two password managers from screen capture.
@@ -349,35 +378,39 @@ binds {
     // shows a list of important hotkeys.
     Mod+Shift+A { show-hotkey-overlay; }
 
+    // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
+    // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
+    // For example, this is a standard bind to toggle the screen reader (orca).
+    // Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
+
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+T hotkey-overlay-title="QTerminal" { spawn "qterminal"; }
-    F12 hotkey-overlay-title="Dropdown QTerminal" { spawn "qterminal" "-d"; }
+    F12 hotkey-overlay-title="Dropdown QTerminal" { spawn-sh "qterminal -d"; }
     Alt+Space hotkey-overlay-title="lxqt-runner" { spawn "lxqt-runner"; }
     Mod+P hotkey-overlay-title="Filemanager" { spawn "pcmanfm-qt"; }
     Super+Alt+L hotkey-overlay-title="Exit Options" { spawn "lxqt-leave"; }
-    Super+Shift+Escape hotkey-overlay-title="Lock Screen" { spawn "lxqt-leave" "--lockscreen"; }
-
-    // You can also use a shell. Do this if you need pipes, multiple commands, etc.
-    // Note: the entire command goes as a single argument in the end.
-    // Mod+T { spawn "bash" "-c" "notify-send hello && exec alacritty"; }
+    Super+Shift+Escape hotkey-overlay-title="Lock Screen" { spawn-sh "lxqt-leave --lockscreen"; }
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
-    XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    // Using spawn-sh allows to pass multiple arguments together with the command.
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
 
     // Brightness
-    XF86MonBrightnessUp { spawn "lxqt-config-brightness" "-i"; }
-    XF86MonBrightnessDown { spawn "lxqt-config-brightness" "-d"; }
+    // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
+    // but you need to manually put each argument in separate "" quotes.
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "lxqt-config-brightness i"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "lxqt-config-brightness -d"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
     // or do a four-finger swipe up on a touchpad.
     Mod+O repeat=false { toggle-overview; }
 
-    Mod+Q { close-window; }
+    Mod+Q repeat=false { close-window; }
 
     Mod+Left  { focus-column-left; }
     Mod+Down  { focus-window-down; }
@@ -482,8 +515,8 @@ binds {
     // These binds are also affected by touchpad's natural-scroll, so these
     // example binds are "inverted", since we have natural-scroll enabled for
     // touchpads by default.
-    // Mod+TouchpadScrollDown { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.02+"; }
-    // Mod+TouchpadScrollUp   { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.02-"; }
+    // Mod+TouchpadScrollDown { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02+"; }
+    // Mod+TouchpadScrollUp   { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02-"; }
 
     // You can refer to workspaces by index. However, keep in mind that
     // niri is a dynamic workspace system, so these commands are kind of
@@ -530,6 +563,8 @@ binds {
 
 
     Mod+R { switch-preset-column-width; }
+    // Cycling through the presets in reverse order is also possible.
+    // Mod+R { switch-preset-column-width-back; }
     Mod+Shift+R { switch-preset-window-height; }
     Mod+Ctrl+R { reset-window-height; }
     Mod+F { maximize-column; }
@@ -579,7 +614,7 @@ binds {
     Alt+Print { screenshot-window; }
     // To use ScreenGrab replace with
     // Print { spawn "screengrab"; } // use last setting
-    // Ctrl+Print { spawn "screengrab" "-f"; }
+    // Ctrl+Print { spawn-sh "screengrab -f"; }
     // See "screengrab -h" for all options
 
     // Applications such as remote-desktop clients and software KVM switches may

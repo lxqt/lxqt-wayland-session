@@ -115,10 +115,6 @@ elif [ "$COMPOSITOR" = "labwc" ]; then
 elif [ "$COMPOSITOR" = "niri" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
         cp -v "$share_dir"/lxqt/wayland/lxqt-niri.kdl "$XDG_CONFIG_HOME"/lxqt/wayland/
-        if echo "$valid_layouts" | grep -q "$trylayout"; then
-        layout="layout \"$trylayout\""
-        sed -i "s/layout \"us\"/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl"
-        fi
     fi
     exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl
 
