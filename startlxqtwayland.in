@@ -65,6 +65,9 @@ export QT_ACCESSIBILITY=1
 # use lxqt-applications.menu for main app menu
 export XDG_MENU_PREFIX="lxqt-"
 
+# Ensure this is set always
+export XDG_SESSION_TYPE="wayland"
+
 share_dir="$(dirname $(dirname "$0"))"/share
 
 if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
