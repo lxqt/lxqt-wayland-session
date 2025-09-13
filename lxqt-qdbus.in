@@ -15,9 +15,9 @@ if [ "$MODE" = "run" ]; then
     if which "$2" >/dev/null 2>&1; then
     DESKTOP_FILE_LOCAL=$(grep -irl "Exec=$2" $XDG_DATA_HOME/applications/ | head -n1)
         if [ ! -z "$DESKTOP_FILE_LOCAL" ]; then
-        DESKTOP_FILE="$DESKTOP_FILE_LOCAL"
+            DESKTOP_FILE="$DESKTOP_FILE_LOCAL"
         else
-        DESKTOP_FILE=$(grep -irl "Exec=$2" /usr/share/applications/ | head -n1)
+            DESKTOP_FILE=$(grep -irl "Exec=$2" /usr/share/applications/ | head -n1)
         fi
     qdbus org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
     else
@@ -32,6 +32,20 @@ elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
 elif  [ "$MODE" = "volume" ]; then
     # check for dbus object
     volume=$(qdbus6 org.kde.StatusNotifierWatcher | grep volume | head -n1)
-    qdbus6 org.kde.StatusNotifierWatcher $volume/$ARGUMENT org.lxqt.global_key_shortcuts.client.activated
+    # Fallback for no volume plugin on panels
+    if [[ -z "$volume" ]]; then
+    notify-send "No volume plugin found on panels"
+    echo $ARGUMENT
+        if [[ $ARGUMENT = "up" ]]; then
+            exec pamixer -i 5
+        elif [[ $ARGUMENT = "down" ]]; then
+        echo down
+            exec pamixer -d 5
+        elif [[ $ARGUMENT = "mute" ]]; then
+            exec pamixer --toggle-mute
+        fi
+    else
+        qdbus6 org.kde.StatusNotifierWatcher $volume/$ARGUMENT org.lxqt.global_key_shortcuts.client.activated
+    fi
 fi
 
