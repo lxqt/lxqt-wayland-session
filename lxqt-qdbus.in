@@ -2,6 +2,13 @@
 # Helper script for setting shortcuts on Wayland comositors
 # Arguments: run <application> | openmenu | volume [up|down|mute]
 
+# Search and set qdbus command
+QDBUS=$(command -v qdbus6 qdbus-qt6 qdbus 2>/dev/null |head -n1)
+if [[ -z "${QDBUS:-}" ]]; then
+    notify-send -i lxqt "No qdbus command available, please install it"
+    exit 1
+fi
+
 if [[ "$1" != "run" && "$1" != "openmenu" && "$1" != "volume" ]]; then
     echo "Invalid argument: $1"
     exit 1
@@ -19,14 +26,14 @@ if [ "$MODE" = "run" ]; then
         else
             DESKTOP_FILE=$(grep -irl "Exec=$2" /usr/share/applications/ | head -n1)
         fi
-        qdbus6 org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
+        $QDBUS org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
     else
         notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "Command '$2' not found"
     fi
 
 elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
     # check for dbus object
-    menu=$(qdbus6 org.kde.StatusNotifierWatcher | grep fancy | head -n1)
+    menu=$($QDBUS org.kde.StatusNotifierWatcher | grep fancy | head -n1)
     if [[ -z "$menu" ]]; then
     notify-send --icon=lxqt "No fancy menu plugin found on panels"
     else
@@ -34,7 +41,7 @@ elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
     fi
 elif  [ "$MODE" = "volume" ]; then
     # check for dbus object
-    volume=$(qdbus6 org.kde.StatusNotifierWatcher | grep volume | head -n1)
+    volume=$($QDBUS org.kde.StatusNotifierWatcher | grep volume | head -n1)
     # Fallback for no volume plugin on panels
     if [[ -z "$volume" ]]; then
     notify-send "No volume plugin found on panels" # debug for niri
@@ -47,7 +54,7 @@ elif  [ "$MODE" = "volume" ]; then
             wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
        fi
     else
-        qdbus6 org.kde.StatusNotifierWatcher $volume/$ARGUMENT org.lxqt.global_key_shortcuts.client.activated
+        $QDBUS org.kde.StatusNotifierWatcher $volume/$ARGUMENT org.lxqt.global_key_shortcuts.client.activated
     fi
 fi
 
