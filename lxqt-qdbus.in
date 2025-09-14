@@ -13,37 +13,39 @@ ARGUMENT=$2
 
 if [ "$MODE" = "run" ]; then
     if which "$2" >/dev/null 2>&1; then
-    DESKTOP_FILE_LOCAL=$(grep -irl "Exec=$2" $XDG_DATA_HOME/applications/ | head -n1)
+        DESKTOP_FILE_LOCAL=$(grep -irl "Exec=$2" $XDG_DATA_HOME/applications/ | head -n1)
         if [ ! -z "$DESKTOP_FILE_LOCAL" ]; then
             DESKTOP_FILE="$DESKTOP_FILE_LOCAL"
         else
             DESKTOP_FILE=$(grep -irl "Exec=$2" /usr/share/applications/ | head -n1)
         fi
-    qdbus org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
+        qdbus6 org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
     else
-    notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "Command '$2' not found"
+        notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "Command '$2' not found"
     fi
 
 elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
     # check for dbus object
     menu=$(qdbus6 org.kde.StatusNotifierWatcher | grep fancy | head -n1)
+    if [[ -z "$menu" ]]; then
+    notify-send --icon=lxqt "No fancy menu plugin found on panels"
+    else
     qdbus org.kde.StatusNotifierWatcher $menu/show_hide org.lxqt.global_key_shortcuts.client.activated
-
+    fi
 elif  [ "$MODE" = "volume" ]; then
     # check for dbus object
     volume=$(qdbus6 org.kde.StatusNotifierWatcher | grep volume | head -n1)
     # Fallback for no volume plugin on panels
     if [[ -z "$volume" ]]; then
-    notify-send "No volume plugin found on panels"
+    notify-send "No volume plugin found on panels" # debug for niri
     echo $ARGUMENT
         if [[ $ARGUMENT = "up" ]]; then
-            exec pamixer -i 5
+            wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
         elif [[ $ARGUMENT = "down" ]]; then
-        echo down
-            exec pamixer -d 5
+            wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
         elif [[ $ARGUMENT = "mute" ]]; then
-            exec pamixer --toggle-mute
-        fi
+            wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+       fi
     else
         qdbus6 org.kde.StatusNotifierWatcher $volume/$ARGUMENT org.lxqt.global_key_shortcuts.client.activated
     fi
