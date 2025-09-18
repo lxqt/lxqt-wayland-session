@@ -387,6 +387,7 @@ binds {
     // `qdbus6 org.lxqt.session /LXQtSession execDesktopFile <desktopfile>`
     // See https://github.com/lxqt/lxqt/wiki/ConfigWaylandSettings#global-shortcuts
     Mod+T hotkey-overlay-title="QTerminal" { spawn "lxqt-qdbus run qterminal"; }
+    Alt+F1 hotkey-overlay-title="Open menu" { spawn-sh "lxqt-qdbus openmenu"; }
     F12 hotkey-overlay-title="Dropdown QTerminal" { spawn-sh "qterminal -d"; }
     Alt+Space hotkey-overlay-title="lxqt-runner" { spawn "lxqt-runner"; }
     Mod+P hotkey-overlay-title="Filemanager" { spawn "pcmanfm-qt"; }
@@ -404,7 +405,7 @@ binds {
     // Brightness
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.
-    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "lxqt-config-brightness i"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "lxqt-config-brightness -i"; }
     XF86MonBrightnessDown allow-when-locked=true { spawn-sh "lxqt-config-brightness -d"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
@@ -636,4 +637,12 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
+}
+
+// https://yalter.github.io/niri/Configuration%3A-Debug-Options.html
+debug {
+    // Focus on click from systray, notification ecc:
+    // honor-xdg-activation-with-invalid-serial
+    // Inhibit idleness checks with browsers:
+    // dbus-interfaces-in-non-session-instances
 }
