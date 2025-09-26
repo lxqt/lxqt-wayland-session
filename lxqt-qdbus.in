@@ -36,7 +36,7 @@ elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
     # check for dbus object
     menu=$($QDBUS org.kde.StatusNotifierWatcher | grep fancy | head -n1)
     if [[ -z "$menu" ]]; then
-    	notify-send --icon=lxqt "No fancy menu plugin found on panels"
+        notify-send --icon=lxqt "No fancy menu plugin found on panels"
     else
     $QDBUS org.kde.StatusNotifierWatcher $menu/show_hide org.lxqt.global_key_shortcuts.client.activated
     fi
@@ -44,7 +44,7 @@ elif  [ "$MODE" = "showdesktop" ]; then # show desktop
     # check for dbus object
     showdesktop=$($QDBUS org.kde.StatusNotifierWatcher | grep showdesktop | head -n1)
     if [[ -z "$showdesktop" ]]; then
-    	notify-send --icon=lxqt "No showdesktop plugin found on panels"
+        notify-send --icon=lxqt "No showdesktop plugin found on panels"
     else
         $QDBUS org.kde.StatusNotifierWatcher $showdesktop/show_hide org.lxqt.global_key_shortcuts.client.activated
     fi
@@ -52,16 +52,16 @@ elif  [ "$MODE" = "task" ]; then # activate taskbar button
     # check for dbus object
     taskbar=$($QDBUS org.kde.StatusNotifierWatcher | grep taskbar | head -n1)
     if [[ -z "$taskbar" ]]; then
-    notify-send --icon=lxqt "No taskbar plugin found on panels"
+        notify-send --icon=lxqt "No taskbar plugin found on panels"
     else
-     $QDBUS org.kde.StatusNotifierWatcher $taskbar/task_$2 org.lxqt.global_key_shortcuts.client.activated
+        $QDBUS org.kde.StatusNotifierWatcher $taskbar/task_$2 org.lxqt.global_key_shortcuts.client.activated
     fi
 elif  [ "$MODE" = "volume" ]; then
     # check for dbus object
     volume=$($QDBUS org.kde.StatusNotifierWatcher | grep volume | head -n1)
     # Fallback for no volume plugin on panels
     if [[ -z "$volume" ]]; then
-    	notify-send "No volume plugin found on panels" # debug for niri
+        notify-send "No volume plugin found on panels" # debug for niri
     echo $ARGUMENT
         if [[ $ARGUMENT = "up" ]]; then
             wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
