@@ -9,8 +9,10 @@ if [[ -z "${QDBUS:-}" ]]; then
     exit 1
 fi
 
-if [[ "$1" != "run" && "$1" != "openmenu" && "$1" != "showdesktop" && "$1" != "task" && "$1" != "volume" ]]; then
+valid=("run" "openmenu" "showdesktop" "task" "volume")
+if [[ ! " ${valid[*]} " =~ " $1 " ]]; then
     echo "Invalid argument: $1"
+    echo "Valid arguments are 'run <application>', 'openmenu', 'showdesktop', 'task [1-10]', 'volume [up|down|mute]'"
     exit 1
 fi
 
@@ -48,7 +50,7 @@ elif  [ "$MODE" = "showdesktop" ]; then # show desktop
     fi
 elif  [ "$MODE" = "task" ]; then # activate taskbar button
     # check for dbus object
-    menu=$($QDBUS org.kde.StatusNotifierWatcher | grep taskbar | head -n1)
+    taskbar=$($QDBUS org.kde.StatusNotifierWatcher | grep taskbar | head -n1)
     if [[ -z "$taskbar" ]]; then
     notify-send --icon=lxqt "No taskbar plugin found on panels"
     else
