@@ -1,6 +1,34 @@
 #!/bin/bash
 # Helper script for setting shortcuts on Wayland compositors
-# Arguments: run <application> | openmenu | showdesktop | task [1-10] |volume [up|down|mute]
+
+print_help() {
+    cat <<EOF
+Dbus wrapper for keybinds on Wayland compositors.
+
+Syntax: ${0##*/} [options]
+
+Options:
+  run <application>  Start an application inside lxqt-session
+  openmenu           Open Fancy Menu
+  showdesktop        Show desktop on stacking WMs
+  task [1-10]        Focus Window <number on taskbar
+  -h, --help         Show this help message and exit
+  -v, --version      Show version information
+EOF
+}
+
+case "$1" in
+    -h|--help)
+        print_help
+        exit 0
+        ;;
+      -v|--version)
+        echo "${0##*/} version 0.1"
+        exit 0
+        ;;
+    *)
+        ;;
+esac
 
 # Search and set qdbus command
 QDBUS=$(command -v qdbus6 qdbus-qt6 qdbus 2>/dev/null |head -n1)
@@ -12,7 +40,7 @@ fi
 valid=("run" "openmenu" "showdesktop" "task" "volume")
 if [[ ! " ${valid[*]} " =~ " $1 " ]]; then
     echo "Invalid argument: $1"
-    echo "Valid arguments are 'run <application>', 'openmenu', 'showdesktop', 'task [1-10]', 'volume [up|down|mute]'"
+    print_help
     exit 1
 fi
 
