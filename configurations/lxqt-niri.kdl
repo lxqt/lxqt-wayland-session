@@ -397,9 +397,9 @@ binds {
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
     // Using spawn-sh allows to pass multiple arguments together with the command.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "lxqt-dbus volume up"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "lxqt-dbus volume down"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "lxqt-dbus volume mute"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "lxqt-qdbus volume up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "lxqt-qdbus volume down"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "lxqt-qdbus volume mute"; }
     XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
 
     // Brightness

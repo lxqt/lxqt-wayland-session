@@ -23,7 +23,7 @@ riverctl map normal Super+Shift Return spawn "lxqt-qdbus run qterminal"
 riverctl map normal Super P spawn "pcmanfm-qt"
 riverctl map normal None F12 spawn "qterminal -d"
 riverctl map normal Alt Space spawn lxqt-runner
-riverctl map normal None Print spawn "lxqt-dbus run screengrab"
+riverctl map normal None Print spawn "lxqt-qdbus run screengrab"
 riverctl map normal Super+Shift Escape spawn "lxqt-leave --lockscreen"
 
 # Super+Q to close the focused view
