@@ -288,7 +288,7 @@
         <command>lxqt-leave</command>
       </action>
     </keybind>
-    <keybind key="C-A-D">
+    <keybind key="W-D">
       <action name="Execute" command="lxqt-qdbus showdesktop" />
     </keybind>
     <keybind key="A-F1">
