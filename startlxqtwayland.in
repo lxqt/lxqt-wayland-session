@@ -52,10 +52,14 @@ if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
 fi
 
 # Qt4 platform plugin
-export QT_PLATFORM_PLUGIN="lxqt"
+if [ -z "$QT_PLATFORM_PLUGIN" ]; then
+    export QT_PLATFORM_PLUGIN="lxqt"
+fi
 
 # Qt5/6
-export QT_QPA_PLATFORMTHEME="lxqt"
+if [ -z "$QT_QPA_PLATFORMTHEME" ]; then
+    export QT_QPA_PLATFORMTHEME="lxqt"
+fi
 export QT_EXCLUDE_GENERIC_BEARER=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 
