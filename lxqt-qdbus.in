@@ -54,7 +54,7 @@ if [ "$MODE" = "run" ]; then
         if [ ! -z "$DESKTOP_FILE_LOCAL" ]; then
             DESKTOP_FILE="$DESKTOP_FILE_LOCAL"
         else
-            DESKTOP_FILE=$(grep -irl "Exec=$2" /usr/share/applications/ | head -n1)
+            DESKTOP_FILE=$(grep -irl "Exec=$2" /usr/share/applications/ /usr/local/share/applications/ 2>/dev/null | head -n1)
         fi
         $QDBUS org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
     else
