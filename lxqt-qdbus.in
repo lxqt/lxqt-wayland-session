@@ -1,0 +1,104 @@
+#!/bin/bash
+# Helper script for setting shortcuts on Wayland compositors
+
+print_help() {
+    cat <<EOF
+Dbus wrapper for keybinds on Wayland compositors.
+
+Syntax: ${0##*/} [options]
+
+Options:
+  run <application>  Start an application inside lxqt-session
+  openmenu           Open Fancy Menu
+  showdesktop        Show desktop on stacking WMs
+  task [1-10]        Focus Window <number on taskbar
+  -h, --help         Show this help message and exit
+  -v, --version      Show version information
+EOF
+}
+
+case "$1" in
+    -h|--help)
+        print_help
+        exit 0
+        ;;
+      -v|--version)
+        echo "${0##*/} version 0.1"
+        exit 0
+        ;;
+    *)
+        ;;
+esac
+
+# Search and set qdbus command
+QDBUS=$(command -v qdbus6 qdbus-qt6 qdbus 2>/dev/null |head -n1)
+if [[ -z "${QDBUS:-}" ]]; then
+    notify-send -i lxqt "No qdbus command available, please install it"
+    exit 1
+fi
+
+valid=("run" "openmenu" "showdesktop" "task" "volume")
+if [[ ! " ${valid[*]} " =~ " $1 " ]]; then
+    echo "Invalid argument: $1"
+    print_help
+    exit 1
+fi
+
+MODE=$1
+# argument: <application> | [1-10] | up , down, mute
+ARGUMENT=$2
+
+if [ "$MODE" = "run" ]; then
+    if which "$2" >/dev/null 2>&1; then
+        DESKTOP_FILE_LOCAL=$(grep -irl "Exec=$2" $XDG_DATA_HOME/applications/ | head -n1)
+        if [ ! -z "$DESKTOP_FILE_LOCAL" ]; then
+            DESKTOP_FILE="$DESKTOP_FILE_LOCAL"
+        else
+            DESKTOP_FILE=$(grep -irl "Exec=$2" /usr/share/applications/ /usr/local/share/applications/ 2>/dev/null | head -n1)
+        fi
+        $QDBUS org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
+    else
+        notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "Command '$2' not found"
+    fi
+elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
+    # check for dbus object
+    menu=$($QDBUS org.kde.StatusNotifierWatcher | grep fancy | head -n1)
+    if [[ -z "$menu" ]]; then
+        notify-send --icon=lxqt "No fancy menu plugin found on panels"
+    else
+    $QDBUS org.kde.StatusNotifierWatcher $menu/show_hide org.lxqt.global_key_shortcuts.client.activated
+    fi
+elif  [ "$MODE" = "showdesktop" ]; then # show desktop
+    # check for dbus object
+    showdesktop=$($QDBUS org.kde.StatusNotifierWatcher | grep showdesktop | head -n1)
+    if [[ -z "$showdesktop" ]]; then
+        notify-send --icon=lxqt "No showdesktop plugin found on panels"
+    else
+        $QDBUS org.kde.StatusNotifierWatcher $showdesktop/show_hide org.lxqt.global_key_shortcuts.client.activated
+    fi
+elif  [ "$MODE" = "task" ]; then # activate taskbar button
+    # check for dbus object
+    taskbar=$($QDBUS org.kde.StatusNotifierWatcher | grep taskbar | head -n1)
+    if [[ -z "$taskbar" ]]; then
+        notify-send --icon=lxqt "No taskbar plugin found on panels"
+    else
+        $QDBUS org.kde.StatusNotifierWatcher $taskbar/task_$2 org.lxqt.global_key_shortcuts.client.activated
+    fi
+elif  [ "$MODE" = "volume" ]; then
+    # check for dbus object
+    volume=$($QDBUS org.kde.StatusNotifierWatcher | grep volume | head -n1)
+    # Fallback for no volume plugin on panels
+    if [[ -z "$volume" ]]; then
+        notify-send "No volume plugin found on panels" # debug for niri
+    echo $ARGUMENT
+        if [[ $ARGUMENT = "up" ]]; then
+            wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+        elif [[ $ARGUMENT = "down" ]]; then
+            wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+        elif [[ $ARGUMENT = "mute" ]]; then
+            wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+       fi
+    else
+        $QDBUS org.kde.StatusNotifierWatcher $volume/$ARGUMENT org.lxqt.global_key_shortcuts.client.activated
+    fi
+fi

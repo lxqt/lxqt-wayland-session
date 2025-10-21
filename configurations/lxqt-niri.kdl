@@ -383,8 +383,11 @@ binds {
     // For example, this is a standard bind to toggle the screen reader (orca).
     // Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
 
-    // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T hotkey-overlay-title="QTerminal" { spawn "qterminal"; }
+    // To open applications inside LXQt session use `lxqt-qdbus run <application>` or
+    // `qdbus6 org.lxqt.session /LXQtSession execDesktopFile <desktopfile>`
+    // See https://github.com/lxqt/lxqt/wiki/ConfigWaylandSettings#global-shortcuts
+    Mod+T hotkey-overlay-title="QTerminal" { spawn "lxqt-qdbus run qterminal"; }
+    Alt+F1 hotkey-overlay-title="Open menu" { spawn-sh "lxqt-qdbus openmenu"; }
     F12 hotkey-overlay-title="Dropdown QTerminal" { spawn-sh "qterminal -d"; }
     Alt+Space hotkey-overlay-title="lxqt-runner" { spawn "lxqt-runner"; }
     Mod+P hotkey-overlay-title="Filemanager" { spawn "pcmanfm-qt"; }
@@ -394,15 +397,15 @@ binds {
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
     // Using spawn-sh allows to pass multiple arguments together with the command.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "lxqt-qdbus volume up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "lxqt-qdbus volume down"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "lxqt-qdbus volume mute"; }
     XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
 
     // Brightness
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.
-    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "lxqt-config-brightness i"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "lxqt-config-brightness -i"; }
     XF86MonBrightnessDown allow-when-locked=true { spawn-sh "lxqt-config-brightness -d"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
@@ -634,4 +637,12 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
+}
+
+// https://yalter.github.io/niri/Configuration%3A-Debug-Options.html
+debug {
+    // Focus on click from systray, notification ecc:
+    // honor-xdg-activation-with-invalid-serial
+    // Inhibit idleness checks with browsers:
+    // dbus-interfaces-in-non-session-instances
 }

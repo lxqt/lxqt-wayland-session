@@ -34,7 +34,7 @@ A line `lxqt-session && <exit_compositor_command>` is needed in the autostart co
 ### Compiling source code
 
 Runtime dependencies are [qtxdg-tools](https://github.com/lxqt/qtxdg-tools),
-[lxqt-session](https://github.com/lxqt/lxqt-session) and layer-shell-qt.
+[lxqt-session](https://github.com/lxqt/lxqt-session), `qt6-tools` and `layer-shell-qt`.
 Additional build dependencies are [lxqt-build-tools](https://github.com/lxqt/lxqt-build-tools), CMake and optionally Git to pull latest VCS checkouts.
 
 Code configuration is handled by CMake. CMake variable `CMAKE_INSTALL_PREFIX` has to be set

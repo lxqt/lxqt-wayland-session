@@ -46,8 +46,11 @@ endif()
 set(PREDEF_XDG_DATA_DIRS "${PREDEF_XDG_DATA_DIRS}:/usr/local/share:/usr/share")
 set(PREDEF_XDG_CONFIG_DIRS "/etc:${LXQT_ETC_XDG_DIR}:/usr/share")
 configure_file(startlxqtwayland.in startlxqtwayland @ONLY)
+set(DEFAULT_AUDIO_SINK "@DEFAULT_AUDIO_SINK@")
+configure_file(lxqt-qdbus.in lxqt-qdbus @ONLY)
 install(PROGRAMS
     "${CMAKE_CURRENT_BINARY_DIR}/startlxqtwayland"
+    "${CMAKE_CURRENT_BINARY_DIR}/lxqt-qdbus"
     DESTINATION "${CMAKE_INSTALL_BINDIR}"
     COMPONENT Runtime
 )
