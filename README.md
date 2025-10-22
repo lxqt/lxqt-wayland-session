@@ -25,7 +25,7 @@ lock_command_wayland=swaylock
 If no compositor is found starting Labwc will be tried, opening "Session Settings"
 
 Please refer to each compositors documentation for tweaking.
-See also the [LXQt Wiki](https://lxqt-project.org/wiki/Wayland-Session.html).
+See also the [LXQt Wiki](https://lxqt-project.org/wiki/Wayland-Session).
 
 ### Other compositors
 

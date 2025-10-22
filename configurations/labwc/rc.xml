@@ -264,7 +264,7 @@
     <!-- LXQt Keybindings
     To open applications inside LXQt session use `lxqt-qdbus run <application>` or
     `qdbus6 org.lxqt.session /LXQtSession execDesktopFile <desktopfile>`
-    See https://lxqt-project.org/wiki/Wayland-Session.html#global-shortcuts
+    See https://lxqt-project.org/wiki/Wayland-Session#global-shortcuts
     -->
     <keybind key="W-p">
       <action name="Execute" command="pcmanfm-qt" />
