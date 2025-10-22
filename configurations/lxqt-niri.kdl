@@ -385,8 +385,8 @@ binds {
 
     // To open applications inside LXQt session use `lxqt-qdbus run <application>` or
     // `qdbus6 org.lxqt.session /LXQtSession execDesktopFile <desktopfile>`
-    // See https://github.com/lxqt/lxqt/wiki/ConfigWaylandSettings#global-shortcuts
-    Mod+T hotkey-overlay-title="QTerminal" { spawn "lxqt-qdbus run qterminal"; }
+    // See https://lxqt-project.org/wiki/Wayland-Session.html#global-shortcuts
+    Mod+T hotkey-overlay-title="QTerminal" { spawn-sh "lxqt-qdbus run qterminal"; }
     Alt+F1 hotkey-overlay-title="Open menu" { spawn-sh "lxqt-qdbus openmenu"; }
     F12 hotkey-overlay-title="Dropdown QTerminal" { spawn-sh "qterminal -d"; }
     Alt+Space hotkey-overlay-title="lxqt-runner" { spawn "lxqt-runner"; }
