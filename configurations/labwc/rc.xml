@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  This file contains all supported Labwc v0.9.0 config elements & attributes with mostly
+  This file contains all supported Labwc v0.9.2 config elements & attributes with mostly
   default values. Some LXQt specific settings have been added. You may have a
   updated version in /usr/share/docs/labwc/rc.xml.all
 -->
@@ -16,6 +16,10 @@
     <reuseOutputMode>no</reuseOutputMode>
     <xwaylandPersistence>no</xwaylandPersistence>
     <primarySelection>yes</primarySelection>
+    <!--
+      # See labwc-config(5) for details
+      <promptCommand></promptCommand>
+    -->
   </core>
 
   <placement>
@@ -38,6 +42,7 @@
     </titlebar>
     <cornerRadius>10</cornerRadius>
     <keepBorder>yes</keepBorder>
+    <maximizedDecoration>titlebar</maximizedDecoration>
     <dropShadows>yes</dropShadows>
     <dropShadowsOnTiled>no</dropShadowsOnTiled>
     <font place="ActiveWindow">
@@ -72,7 +77,7 @@
     </font>
   </theme>
 
-  <windowSwitcher show="yes" preview="yes" outlines="yes" allWorkspaces="no">
+  <windowSwitcher show="yes" style="thumbnail" preview="yes" outlines="yes" allWorkspaces="no">
     <fields>
       <field content="icon" width="5%" />
       <field content="desktop_entry_name" width="30%" />
@@ -154,7 +159,8 @@
 
   <snapping>
     <!-- Set range to 0 to disable window snapping completely -->
-    <range>1</range>
+    <range>10</range>
+    <cornerRange>50</cornerRange>
     <overlay enabled="yes">
       <delay inner="500" outer="500" />
     </overlay>
@@ -308,16 +314,16 @@
       <action name="ToggleMaximize" />
     </keybind>
     <keybind key="W-Left">
-      <action name="SnapToEdge" direction="left" />
+      <action name="SnapToEdge" direction="left" combine="yes" />
     </keybind>
     <keybind key="W-Right">
-      <action name="SnapToEdge" direction="right" />
+      <action name="SnapToEdge" direction="right" combine="yes" />
     </keybind>
     <keybind key="W-Up">
-      <action name="SnapToEdge" direction="up" />
+      <action name="SnapToEdge" direction="up" combine="yes" />
     </keybind>
     <keybind key="W-Down">
-      <action name="SnapToEdge" direction="down" />
+      <action name="SnapToEdge" direction="down" combine="yes" />
     </keybind>
     <keybind key="A-Space">
       <action name="ShowMenu" menu="client-menu" atCursor="no" />
@@ -412,42 +418,11 @@
       </mousebind>
     </context>
 
-    <context name="Top">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
+    <context name="Border">
+      <mousebind button="Left" action="Press">
+        <action name="Focus" />
+        <action name="Raise" />
       </mousebind>
-    </context>
-    <context name="Left">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="Right">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="Bottom">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="TRCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="BRCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="TLCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="BLCorner">
       <mousebind button="Left" action="Drag">
         <action name="Resize" />
       </mousebind>
@@ -648,12 +623,17 @@
       - sendEventsMode [yes|no|disabledOnExternalMouse]
       - calibrationMatrix [six float values split by space]
       - scrollFactor [float]
+
+    The following <libinput>...</libinput> block may not be complete for
+    your requirements. Default values are device specific. Only set an option
+    if you require to override the default. Valid values must be inserted.
+
   -->
   <libinput>
     <device category="default">
       <naturalScroll></naturalScroll>
       <leftHanded></leftHanded>
-      <pointerSpeed>1</pointerSpeed>
+      <pointerSpeed></pointerSpeed>
       <accelProfile></accelProfile>
       <tap>yes</tap>
       <tapButtonMap></tapButtonMap>
