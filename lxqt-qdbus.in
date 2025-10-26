@@ -57,8 +57,8 @@ if [ "$MODE" = "run" ]; then
         DESKTOP_FILE=$(grep -irl "Exec=$ARGUMENT" "$dir/applications" 2>/dev/null | head -n1)
         [ -n "$DESKTOP_FILE" ] && break
     done
-    DESKTOP_FILE=$(basename "$DESKTOP_FILE")
-    if [ -n "$DESKTOP_FILE" ] && which "$ARGUMENT" >/dev/null 2>&1; then
+    if [ -n "$DESKTOP_FILE" ] && which "$ARGUMENT" >/dev/null 2>&1 && grep -q "^Exec=.*$ARGUMENT" "$DESKTOP_FILE"; then
+        DESKTOP_FILE=$(basename "$DESKTOP_FILE")
         $QDBUS org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
     else
         notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "No matching .desktop file found for '$ARGUMENT'"
