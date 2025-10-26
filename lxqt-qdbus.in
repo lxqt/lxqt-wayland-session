@@ -49,16 +49,20 @@ MODE=$1
 ARGUMENT=$2
 
 if [ "$MODE" = "run" ]; then
-    if which "$2" >/dev/null 2>&1; then
-        DESKTOP_FILE_LOCAL=$(grep -irl "Exec=$2" $XDG_DATA_HOME/applications/ | head -n1)
-        if [ ! -z "$DESKTOP_FILE_LOCAL" ]; then
-            DESKTOP_FILE="$DESKTOP_FILE_LOCAL"
-        else
-            DESKTOP_FILE=$(grep -irl "Exec=$2" /usr/share/applications/ /usr/local/share/applications/ 2>/dev/null | head -n1)
-        fi
+    for dir in ${XDG_DATA_DIRS//:/ }; do
+        DESKTOP_FILE=$(find "$dir/applications" -type f -name "$ARGUMENT.desktop" -print -quit 2>/dev/null)
+        [ -n "$DESKTOP_FILE" ] && break
+    done
+    [ -z "$DESKTOP_FILE" ] && for dir in ${XDG_DATA_DIRS//:/ }; do
+        DESKTOP_FILE=$(grep -irl "Exec=$ARGUMENT" "$dir/applications" 2>/dev/null | head -n1)
+        [ -n "$DESKTOP_FILE" ] && break
+    done
+    DESKTOP_FILE=$(basename "$DESKTOP_FILE")
+    if [ -n "$DESKTOP_FILE" ] && which "$ARGUMENT" >/dev/null 2>&1; then
         $QDBUS org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
     else
-        notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "Command '$2' not found"
+        notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "No matching .desktop file found for '$ARGUMENT'"
+        exit 1
     fi
 elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
     # check for dbus object
