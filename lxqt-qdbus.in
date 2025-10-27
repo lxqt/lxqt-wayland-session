@@ -50,14 +50,12 @@ ARGUMENT=$2
 
 if [ "$MODE" = "run" ]; then
     for dir in ${XDG_DATA_DIRS//:/ }; do
-        DESKTOP_FILE=$(find "$dir/applications" -type f -name "$ARGUMENT.desktop" -print -quit 2>/dev/null)
+        DESKTOP_FILE=$(grep -l "^Exec=[a-zA-Z0-9_/]*\b$ARGUMENT\b" $dir/applications/* | head -n1)
         [ -n "$DESKTOP_FILE" ] && break
     done
-    [ -z "$DESKTOP_FILE" ] && for dir in ${XDG_DATA_DIRS//:/ }; do
-        DESKTOP_FILE=$(grep -irl "Exec=$ARGUMENT" "$dir/applications" 2>/dev/null | head -n1)
-        [ -n "$DESKTOP_FILE" ] && break
-    done
-    if [ -n "$DESKTOP_FILE" ] && which "$ARGUMENT" >/dev/null 2>&1 && grep -q "^Exec=.*$ARGUMENT" "$DESKTOP_FILE"; then
+    # Checks
+    if [ -n "$DESKTOP_FILE" ] && which "$ARGUMENT" >/dev/null 2>&1 && \
+    ! grep -q "^NoDisplay=true" "$DESKTOP_FILE" >/dev/null 2>&1; then
         DESKTOP_FILE=$(basename "$DESKTOP_FILE")
         $QDBUS org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
     else
