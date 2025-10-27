@@ -50,16 +50,15 @@ ARGUMENT=$2
 
 if [ "$MODE" = "run" ]; then
     for dir in ${XDG_DATA_DIRS//:/ }; do
-        DESKTOP_FILE=$(grep -l "^Exec=[a-zA-Z0-9_/]*\b$ARGUMENT\b" $dir/applications/* | head -n1)
+        DESKTOP_FILE=$(grep -l "^Exec=[a-zA-Z0-9_/]*\b$ARGUMENT\b" $dir/applications/*.desktop | head -n1)
         [ -n "$DESKTOP_FILE" ] && break
     done
     # Checks
-    if [ -n "$DESKTOP_FILE" ] && which "$ARGUMENT" >/dev/null 2>&1 && \
-    ! grep -q "^NoDisplay=true" "$DESKTOP_FILE" >/dev/null 2>&1; then
+    if [ -n "$DESKTOP_FILE" ]; then
         DESKTOP_FILE=$(basename "$DESKTOP_FILE")
         $QDBUS org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
     else
-        notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "No matching .desktop file found for '$ARGUMENT'"
+        notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "No matching desktop entry found for '$ARGUMENT'"
         exit 1
     fi
 elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
