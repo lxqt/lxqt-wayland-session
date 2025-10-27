@@ -8,12 +8,13 @@ Dbus wrapper for keybinds on Wayland compositors.
 Syntax: ${0##*/} [options]
 
 Options:
-  run <application>  Start an application inside lxqt-session
-  openmenu           Open Fancy Menu
-  showdesktop        Show desktop on stacking WMs
-  task [1-10]        Focus Window <number on taskbar
-  -h, --help         Show this help message and exit
-  -v, --version      Show version information
+  run <application>     Start an application inside lxqt-session
+  openmenu              Open Fancy Menu
+  showdesktop           Show desktop on stacking WMs
+  task [1-10]           Focus Window <number on taskbar>
+  volume [up|down|mute] Change volume in volume plugin
+  -h, --help            Show this help message and exit
+  -v, --version         Show version information
 EOF
 }
 
@@ -49,16 +50,17 @@ MODE=$1
 ARGUMENT=$2
 
 if [ "$MODE" = "run" ]; then
-    if which "$2" >/dev/null 2>&1; then
-        DESKTOP_FILE_LOCAL=$(grep -irl "Exec=$2" $XDG_DATA_HOME/applications/ | head -n1)
-        if [ ! -z "$DESKTOP_FILE_LOCAL" ]; then
-            DESKTOP_FILE="$DESKTOP_FILE_LOCAL"
-        else
-            DESKTOP_FILE=$(grep -irl "Exec=$2" /usr/share/applications/ /usr/local/share/applications/ 2>/dev/null | head -n1)
-        fi
+    for dir in ${XDG_DATA_DIRS//:/ }; do
+        DESKTOP_FILE=$(grep -l "^Exec=[a-zA-Z0-9_/]*\b$ARGUMENT\b" $dir/applications/*.desktop 2>/dev/null | head -n1)
+        [ -n "$DESKTOP_FILE" ] && break
+    done
+    # Checks
+    if [ -n "$DESKTOP_FILE" ]; then
+        DESKTOP_FILE=$(basename "$DESKTOP_FILE")
         $QDBUS org.lxqt.session /LXQtSession execDesktopFile $DESKTOP_FILE
     else
-        notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "Command '$2' not found"
+        notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "No matching desktop entry found for '$ARGUMENT'"
+        exit 1
     fi
 elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
     # check for dbus object
