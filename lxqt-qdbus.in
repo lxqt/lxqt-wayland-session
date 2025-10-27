@@ -45,13 +45,6 @@ if [[ ! " ${valid[*]} " =~ " $1 " ]]; then
     exit 1
 fi
 
-valid=("up" "down" "mute" {1..10})
-if [[ ! " ${valid[*]} " =~ " $2 " ]]; then
-    echo "Invalid option: '$2'"
-    print_help
-    exit 1
-fi
-
 MODE=$1
 # argument: <application> | [1-10] | up , down, mute
 ARGUMENT=$2
