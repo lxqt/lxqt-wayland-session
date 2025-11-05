@@ -1,3 +1,10 @@
+lxqt-wayland-session-0.3.0 / 2025-11-05
+=======================================
+ * Added `lxqt-qdbus` as a wrapper for various `qdbus` commands, to make them easier to use.
+ * Used `XDG_SESSION_TYPE=wayland` for starting from tty.
+ * Updated for labwc 0.9.2, niri 25.08 and hyprland 0.51.
+ * Used character classes in `sed` for freeBSD.
+
 lxqt-wayland-session-0.2.1 / 2025-07-30
 =======================================
  * Removed unused shortcuts.
