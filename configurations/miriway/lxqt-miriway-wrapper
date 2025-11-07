@@ -1,0 +1,72 @@
+#!/bin/sh
+
+unset WAYLAND_DISPLAY
+unset DISPLAY
+
+port=0
+while [ -e "${XDG_RUNTIME_DIR}/wayland-${port}" ]; do
+    let port+=1
+done
+wayland_display=wayland-${port}
+
+export WAYLAND_DISPLAY=${wayland_display}
+
+# Support Xwayland when available
+if command -v Xwayland > /dev/null
+then
+  export MIR_SERVER_ENABLE_X11=1
+  MIR_SERVER_XWAYLAND_PATH=$(which Xwayland)
+  export MIR_SERVER_XWAYLAND_PATH
+fi
+
+# Imperfect workaround for layer-shell-qt bug
+# Cf. https://bugs.kde.org/show_bug.cgi?id=500520
+export MIR_ANCHOR_RECTANGLE_UNCONSTRAINED=1
+
+# Use server side decorations whenever possible
+export MIRIWAY_DECORATIONS="prefer-ssd"
+
+# Look in the LXQt namespace for LXQt Miriway configuration
+export MIRIWAY_CONFIG_DIR="lxqt"
+
+# If enabling Xwayland, set up tmpfile to identify X11 DISPLAY
+if [ $MIR_SERVER_ENABLE_X11 -eq 1 ]; then
+    x11_display_file=$(mktemp --tmpdir="${XDG_RUNTIME_DIR}")
+fi
+
+miriway-shell --display-config=static="${XDG_CONFIG_HOME}/miriway-shell.display-config" --add-wayland-extensions=all --lockscreen-app="lxqt-leave --lockscreen" --x11-displayfd 5 5>${x11_display_file} &
+miriway_pid=$!
+
+# Wait until the server starts
+until [ -O "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}" ]
+do
+  if ! kill -0 ${miriway_pid} &> /dev/null
+  then
+    echo "ERROR: miriway-shell [pid=${miriway_pid}] is not running"
+    exit 1
+  fi
+  inotifywait -qq --timeout 5 --event create "$(dirname "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}")"
+done
+
+# Grab the X11 DISPLAY and export it if needed
+if [ $MIR_SERVER_ENABLE_X11 -eq 1 ]; then
+  if inotifywait -qq --timeout 5 --event close_write "${x11_display_file}" && [ -s "${x11_display_file}" ]
+  then
+    # ${x11_display_file} contains the X11 display
+    DISPLAY=:$(cat "${x11_display_file}")
+    export DISPLAY
+    rm "${x11_display_file}"
+  else
+    echo "ERROR: Failed to get X11 display from miriway-shell [pid=${miriway-pid}]"
+    rm "${x11_display_file}"
+    kill ${miriway_pid}
+    exit 1
+  fi
+fi
+
+lxqt-session "$@"
+lxqt_session_exit_code=$?
+
+kill $miriway_pid
+
+exit $lxqt_session_exit_code
