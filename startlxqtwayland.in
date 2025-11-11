@@ -87,16 +87,27 @@ valid_layouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{p
 trylayout=$(echo $LANG | cut -c 1,2)
 
 if  [ -z "$COMPOSITOR" ]; then
-    echo "No compositor configured yet in Session Settings, trying labwc..."
-    COMPOSITOR=labwc
-    export XDG_CURRENT_DESKTOP="LXQt:wlroots"
+    echo "No compositor configured yet in Session Settings, looking for available compositors ..."
+    for compositor in labwc niri Hyprland sway wayfire; do
+        if command -v "$compositor" >/dev/null 2>&1; then
+            COMPOSITOR="$compositor"
+            break
+        fi
+    done
 
-    # enable cursor on VM (systemd only)
-    if type systemd-detect-virt > /dev/null 2>&1 && systemd-detect-virt --quiet; then
-        export WLR_NO_HARDWARE_CURSORS=1
-        echo "Running on virtualized hardware"
+    export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
+
+    if [ "$COMPOSITOR" = "labwc" ]; then
+        exec $COMPOSITOR -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
+    elif [ "$COMPOSITOR" = "niri" ]; then
+        exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/niri.kdl
+    elif [ "$COMPOSITOR" = "Hyprland" ]; then
+        exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/hypr.conf
+    elif [ "$COMPOSITOR" = "sway" ]; then
+        exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/sway.config
+    elif [ "$COMPOSITOR" = "wayfire" ]; then
+        exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/wayfire.ini
     fi
-    exec $COMPOSITOR -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
 
 elif [ "$COMPOSITOR" = "labwc" ]; then
     # Copy default configuration if not existing and set keyboard layout if different from us
