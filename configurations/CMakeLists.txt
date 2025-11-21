@@ -6,6 +6,7 @@ install(FILES
     lxqt-sway.config
     lxqt-river-init
     lxqt-niri.kdl
+    lxqt-niri.kdl.full
     DESTINATION "${CMAKE_INSTALL_DATADIR}/lxqt/wayland"
     COMPONENT Runtime
 )
@@ -17,6 +18,7 @@ install(FILES
 install(DIRECTORY
     labwc
     firstrun
+    niri
     DESTINATION "${CMAKE_INSTALL_DATADIR}/lxqt/wayland"
     COMPONENT Runtime
 )
