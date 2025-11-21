@@ -1,4 +1,4 @@
-.TH lxqt-wayland-session "1" "January 2025" "LXQt 2.1.0" "LXQt Session Module"
+.TH lxqt-wayland-session "1" "November 2025" "LXQt 2.3.0" "LXQt Session Module"
 .SH NAME
 \fBlxqt-wayland-session\fR \- Wayland session for \fBLXQt\fR
 .br
@@ -7,6 +7,8 @@ This module provides the files needed for the Wayland session of the \fBLXQt\fR 
 environment and enables the Wayland settings page in \fBlxqt-config-session\fR.
 .SH FILES
 \fBstartlxqtwayland\fR: Script which starts the compositor and sets the keyboard layout.
+.P
+\fBlxqt-qdbus\fR: Wrapper script for qdbus commands in keybindings. See \fBlxqt-qdbus --help\fR.
 .P
 Desktop entry file stating \fBstartlxqtwayland\fR as binary needed to start LXQt Wayland
 sessions.
@@ -30,10 +32,10 @@ be configured in the compositor's configuration:
 .P
 Limitations in lxqt-panel:
 .P
-* Workspace support in lxqt-panel's taskbar plugin is supported
-only in kwin_wayland.
+* Workspace support in lxqt-panel's taskbar plugin is supported only in kwin_wayland and Wayfire.
 .P
-* Showdesktop plugin and  workspace switcher ar currently supported only in kwin_wayland.
+* Workspace switcher is supported in kwin_wayland, Wayfire and in compositors which
+support the ext-workspace-v1 protocol like niri and labwc.
 .P
 * kbindicator and qeyes plugin are currently not supported under Wayland.
 .SH "REPORTING BUGS"
