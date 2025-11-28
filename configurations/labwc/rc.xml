@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 
 <!--
-  This file contains all supported Labwc v0.9.2 config elements & attributes with mostly
+  This file contains all supported Labwc v0.9.3 config elements & attributes with mostly
   default values. Some LXQt specific settings have been added. You may have a
   updated version in /usr/share/docs/labwc/rc.xml.all
+
+
+  Values for [yes|no] can be replaced by [true|false], [on|off] or [1|0].
+
 -->
 
 <labwc_config>
