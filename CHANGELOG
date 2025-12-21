@@ -1,3 +1,8 @@
+lxqt-wayland-session-0.3.1 / 2025-12-21
+=======================================
+ * Updated manpages.
+ * Updated configurations to cover labwc 0.9.3 and niri 25.11. Also, split niri's config.
+
 lxqt-wayland-session-0.3.0 / 2025-11-05
 =======================================
  * Added `lxqt-qdbus` as a wrapper for various `qdbus` commands, to make them easier to use.
