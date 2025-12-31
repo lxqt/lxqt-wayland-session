@@ -174,7 +174,7 @@ elif [ "$COMPOSITOR" = "Hyprland" ]; then
     # workaround for cursor
     export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_size| tr 'a-z' 'A-Z')
     export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_theme| tr 'a-z' 'A-Z')
-    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
+    exec start-hyprland -- -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
 
 elif [ "$COMPOSITOR" = "river" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]; then
