@@ -1,4 +1,5 @@
 lxqt-notificationd >/dev/null 2>&1 &
+swaybg -i /usr/share/lxqt/wallpapers/waves-logo.png  >/dev/null 2>&1 &
 notify-send -a "Welcome to LXQt - Wayland Session" -i dialog-information -t 30000 "No compositor is selected, please choose one in Wayland Settings." "The session will be restarted after closing the window." >/dev/null 2>&1 &
 
 
