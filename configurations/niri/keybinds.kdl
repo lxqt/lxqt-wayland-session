@@ -28,6 +28,7 @@ binds {
     Alt+Space hotkey-overlay-title="lxqt-runner" { spawn "lxqt-runner"; }
     Mod+P hotkey-overlay-title="Filemanager" { spawn "pcmanfm-qt"; }
     Super+Alt+L hotkey-overlay-title="Exit Options" { spawn "lxqt-leave"; }
+    XF86PowerOff hotkey-overlay-title="Exit Options" { spawn "lxqt-leave"; }
     Super+Shift+Escape hotkey-overlay-title="Lock Screen" { spawn-sh "lxqt-leave --lockscreen"; }
 
     // Example volume keys mappings for PipeWire & WirePlumber.
