@@ -116,6 +116,7 @@ elif [ "$COMPOSITOR" = "labwc" ]; then
     exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
 
 elif [ "$COMPOSITOR" = "niri" ]; then
+    export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:smithay"
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
         cp -v "$share_dir"/lxqt/wayland/lxqt-niri.kdl "$XDG_CONFIG_HOME"/lxqt/wayland/
         cp -av "$share_dir"/lxqt/wayland/niri "$XDG_CONFIG_HOME"/lxqt/wayland/
@@ -164,6 +165,7 @@ elif [ "$COMPOSITOR" = "sway" ]; then
     exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
 
 elif [ "$COMPOSITOR" = "Hyprland" ]; then
+    export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR"
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]; then
         cp "$share_dir"/lxqt/wayland/lxqt-hyprland.conf "$XDG_CONFIG_HOME"/lxqt/wayland/
         if echo "$valid_layouts" | grep -q "$trylayout"; then
