@@ -16,19 +16,19 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
 fi
 
 if [ -z "$XDG_DATA_DIRS" ]; then
-    XDG_DATA_DIRS="@PREDEF_XDG_DATA_DIRS@"
+    XDG_DATA_DIRS="$XDG_DATA_HOME:/usr/local/share:/usr/share"
 else
-    if ! contains "$XDG_DATA_DIRS" "@LXQT_DATA_DIR@"; then
-        XDG_DATA_DIRS="$XDG_DATA_DIRS:@LXQT_DATA_DIR@"
+    if ! contains "$XDG_DATA_DIRS" "/usr/share"; then
+        XDG_DATA_DIRS="$XDG_DATA_DIRS:/usr/share"
     fi
 fi
 export XDG_DATA_DIRS
 
 if [ -z "$XDG_CONFIG_DIRS" ]; then
-    export XDG_CONFIG_DIRS="@PREDEF_XDG_CONFIG_DIRS@"
+    export XDG_CONFIG_DIRS="/etc:/etc/xdg:/usr/share"
 else
-    if ! contains "$XDG_CONFIG_DIRS" '@LXQT_ETC_XDG_DIR@'; then
-        XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:@LXQT_ETC_XDG_DIR@"
+    if ! contains "$XDG_CONFIG_DIRS" '/etc/xdg'; then
+        XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:/etc/xdg"
     fi
 fi
 
@@ -68,11 +68,12 @@ export XDG_MENU_PREFIX="lxqt-"
 # Ensure this is set always
 export XDG_SESSION_TYPE="wayland"
 
-share_dir="$(dirname $(dirname "$0"))"/share
+share_dir="$(dirname "$(dirname "$0")")/share"
 
-if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
-    mkdir -p $XDG_CONFIG_HOME/lxqt/wayland/
-fi
+# Create the wayland configuration directory
+wayland_config_dir="$XDG_CONFIG_HOME/lxqt/wayland"
+mkdir -p "$wayland_config_dir"
+
 # Check for compositor in user config file and fallback dirs
 for d in $(echo "$XDG_CONFIG_HOME:$XDG_CONFIG_DIRS" | tr : '\n'); do
     config_file="$d/lxqt/session.conf"
@@ -96,14 +97,14 @@ if  [ -z "$COMPOSITOR" ]; then
         export WLR_NO_HARDWARE_CURSORS=1
         echo "Running on virtualized hardware"
     fi
-    exec $COMPOSITOR -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
+    exec $COMPOSITOR -C "$wayland_config_dir/firstrun" -S lxqt-config-session
 
 elif [ "$COMPOSITOR" = "labwc" ]; then
     # Copy default configuration if not existing and set keyboard layout if different from us
-    if [ ! -d "$XDG_CONFIG_HOME/labwc" ]; then
-       cp -av "$share_dir"/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
+    if [ ! -d "$wayland_config_dir/labwc" ]; then
+       cp -av "$share_dir/lxqt/wayland/labwc" "$wayland_config_dir"/  # use default location here
        if echo "$valid_layouts" | grep -q "$trylayout"; then
-          echo "XKB_DEFAULT_LAYOUT=$trylayout" >> $XDG_CONFIG_HOME/labwc/environment
+          echo "XKB_DEFAULT_LAYOUT=$trylayout" >> "$wayland_config_dir/labwc/environment"
        fi
     fi
 
@@ -113,79 +114,79 @@ elif [ "$COMPOSITOR" = "labwc" ]; then
         echo "Running on virtualized hardware"
     fi
 
-    exec $COMPOSITOR -C $XDG_CONFIG_HOME/labwc -S lxqt-session
+    exec $COMPOSITOR -C "$wayland_config_dir/labwc" -S lxqt-session
 
 elif [ "$COMPOSITOR" = "niri" ]; then
-    if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
-        cp -v "$share_dir"/lxqt/wayland/lxqt-niri.kdl "$XDG_CONFIG_HOME"/lxqt/wayland/
-        cp -av "$share_dir"/lxqt/wayland/niri "$XDG_CONFIG_HOME"/lxqt/wayland/
+    if [ ! -f "$wayland_config_dir/lxqt-niri.kdl" ]; then
+        cp -v "$share_dir/lxqt/wayland/lxqt-niri.kdl" "$wayland_config_dir/"
+        cp -av "$share_dir/lxqt/wayland/niri" "$wayland_config_dir/"
     fi
-    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl
+    exec $COMPOSITOR -c "$wayland_config_dir/lxqt-niri.kdl"
 
 elif [ "$COMPOSITOR" = "kwin_wayland" ]; then
     # Style KDE's QML apps like systemsettings
     export QT_QUICK_CONTROLS_STYLE=org.kde.desktop
     export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR"
     if echo "$valid_layouts" | grep -q "$trylayout"; then
-        kxkbrc=$XDG_CONFIG_HOME/kxkbrc
+        kxkbrc="$XDG_CONFIG_HOME/kxkbrc"
         layout="LayoutList=$trylayout"
-        if [ -f $XDG_CONFIG_HOME/kxkbrc ]; then
+        if [ -f $kxkbrc ]; then
             if ! grep -q "LayoutList" "$kxkbrc"; then
-                echo $layout >> $XDG_CONFIG_HOME/kxkbrc
+                echo $layout >> "$kxkbrc"
             fi
         else
-            echo "[Layout]" > $XDG_CONFIG_HOME/kxkbrc
-            echo $layout >> $XDG_CONFIG_HOME/kxkbrc
+            echo "[Layout]" > $kxkbrc
+            echo $layout >> $kxkbrc
         fi
     fi
     # WARNING: Option '--no-kactivities' can result in crashes with animations and corner actions.
     exec ${COMPOSITOR}_wrapper --exit-with-session lxqt-session --xwayland
 
 elif [ "$COMPOSITOR" = "wayfire" ]; then
-    if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini" ]; then
-        cp "$share_dir"/lxqt/wayland/lxqt-wayfire.ini "$XDG_CONFIG_HOME"/lxqt/wayland/
+    if [ ! -f "$wayland_config_dir/lxqt-wayfire.ini" ]; then
+        cp "$share_dir/lxqt/wayland/lxqt-wayfire.ini" "$wayland_config_dir/"
         if echo "$valid_layouts" | grep -q "$trylayout"; then
-        layout="xkb_layout = $trylayout"
-        sed -i '/xkb_layout/d' $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
-        sed -i "/\[input\]/a $layout" $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
+            layout="xkb_layout = $trylayout"
+            sed -i '/xkb_layout/d' "$wayland_config_dir/lxqt-wayfire.ini"
+            sed -i "/\[input\]/a $layout" "$wayland_config_dir/lxqt-wayfire.ini"
         fi
     fi
-    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
+    exec $COMPOSITOR -c "$wayland_config_dir/lxqt-wayfire.ini"
 
 elif [ "$COMPOSITOR" = "sway" ]; then
-    if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config" ]; then
-        cp "$share_dir"/lxqt/wayland/lxqt-sway.config "$XDG_CONFIG_HOME"/lxqt/wayland/
+    if [ ! -f "$wayland_config_dir/lxqt-sway.config" ]; then
+        cp "$share_dir/lxqt/wayland/lxqt-sway.config" "$wayland_config_dir/"
         if echo "$valid_layouts" | grep -q "$trylayout"; then
-        layout="xkb_layout $trylayout"
-        sed -i '/xkb_layout/d' $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
-        sed -i "/input \"type\:keyboard\"/a $layout" $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
+            layout="xkb_layout $trylayout"
+            sed -i '/xkb_layout/d' "$wayland_config_dir/lxqt-sway.config"
+            sed -i "/input \"type\:keyboard\"/a $layout" "$wayland_config_dir/lxqt-sway.config"
         fi
     fi
-    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
+    exec $COMPOSITOR -c "$wayland_config_dir/lxqt-sway.config"
 
 elif [ "$COMPOSITOR" = "Hyprland" ]; then
-    if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]; then
-        cp "$share_dir"/lxqt/wayland/lxqt-hyprland.conf "$XDG_CONFIG_HOME"/lxqt/wayland/
+    if [ ! -f "$wayland_config_dir/lxqt-hyprland.conf" ]; then
+        cp "$share_dir/lxqt/wayland/lxqt-hyprland.conf" "$wayland_config_dir/"
         if echo "$valid_layouts" | grep -q "$trylayout"; then
             layout="kb_layout = $trylayout"
-            sed -i "s/kb_layout = us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf"
+            sed -i "s/kb_layout = us/$layout/" "$wayland_config_dir/lxqt-hyprland.conf"
         fi
     fi
     # workaround for cursor
-    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_size| tr 'a-z' 'A-Z')
-    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_theme| tr 'a-z' 'A-Z')
-    exec start-hyprland -- -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
+    export X$(cat "$XDG_CONFIG_HOME/lxqt/session.conf" | grep cursor_size | tr 'a-z' 'A-Z')
+    export X$(cat "$XDG_CONFIG_HOME/lxqt/session.conf" | grep cursor_theme | tr 'a-z' 'A-Z')
+    exec $COMPOSITOR -c "$wayland_config_dir/lxqt-hyprland.conf"
 
 elif [ "$COMPOSITOR" = "river" ]; then
-    if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]; then
-        cp "$share_dir"/lxqt/wayland/lxqt-river-init "$XDG_CONFIG_HOME"/lxqt/wayland/
-        chmod a+x "$XDG_CONFIG_HOME"/lxqt/wayland/lxqt-river-init
+    if [ ! -f "$wayland_config_dir/lxqt-river-init" ]; then
+        cp "$share_dir/lxqt/wayland/lxqt-river-init" "$wayland_config_dir/"
+        chmod a+x "$wayland_config_dir/lxqt-river-init"
         if echo "$valid_layouts" | grep -q "$trylayout"; then
             layout="riverctl keyboard-layout $trylayout"
-            sed -i "s/riverctl keyboard-layout us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init"
+            sed -i "s/riverctl keyboard-layout us/$layout/" "$wayland_config_dir/lxqt-river-init"
         fi
     fi
-    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init
+    exec $COMPOSITOR -c "$wayland_config_dir/lxqt-river-init"
 
 # unknown compositor
 else
