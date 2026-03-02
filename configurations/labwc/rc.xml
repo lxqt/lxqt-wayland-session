@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  This file contains all supported Labwc v0.9.3 config elements & attributes with mostly
+  This file contains all supported Labwc v0.9.4 config elements & attributes with mostly
   default values. Some LXQt specific settings have been added. You may have a
   updated version in /usr/share/docs/labwc/rc.xml.all
 
@@ -81,7 +81,7 @@
     </font>
   </theme>
 
-  <windowSwitcher preview="yes" outlines="yes" allWorkspaces="no" unshade="yes">
+  <windowSwitcher preview="yes" outlines="yes" unshade="yes">
     <osd show="yes" style="classic" output="all" thumbnailLabelFormat="%T" />
     <fields>
       <field content="icon" width="5%" />
@@ -102,7 +102,7 @@
     Some contents are fixed-length and others are variable-length.
     See "man 5 labwc-config" for details.
 
-    <windowSwitcher preview="no" outlines="no" allWorkspaces="yes">
+    <windowSwitcher preview="no" outlines="no">
       <osd show="yes" />
       <fields>
         <field content="workspace" width="5%" />
@@ -123,9 +123,9 @@
     then workspace name, then identifier/app-id, then the window title.
     It uses 100% of OSD window width.
 
-    <windowSwitcher preview="no" outlines="no" allWorkspaces="yes">
+    <windowSwitcher preview="no" outlines="no">
       <osd show="yes" />
-      <field>
+      <fields>
         <field content="custom" format="foobar %b %3s %-10o %-20W %-10i %t" width="100%" />
       </fields>
     </windowSwitcher>
@@ -179,6 +179,7 @@
     Workspaces can be configured like this:
     <desktops>
       <popupTime>1000</popupTime>
+      <initial>Workspace 1</initial>
       <names>
         <name>Workspace 1</name>
         <name>Workspace 2</name>
@@ -632,6 +633,7 @@
       - accelProfile [flat|adaptive]
       - tapButtonMap [lrm|lmr]
       - clickMethod [none|buttonAreas|clickfinger]
+      - scrollMethod [twoFinger|edge|none]
       - sendEventsMode [yes|no|disabledOnExternalMouse]
       - calibrationMatrix [six float values split by space]
       - scrollFactor [float]
@@ -672,8 +674,8 @@
     #     must only apply to the first instance of the window with that
     #     particular 'identifier' or 'title'.
     #   - Matching is case-insensitive and is performed using shell wildcard
-    #     patterns (see glob(7)) so '\*' (not between brackets) matches any string
-    #     and '?' matches any single character.
+    #     patterns (see glob(7)) so '\*' (not between brackets) matches any
+    #     string and '?' matches any single character.
 
     <windowRules>
       <windowRule identifier="*"><action name="Maximize"/></windowRule>
