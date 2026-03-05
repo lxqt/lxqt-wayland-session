@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  This file contains all supported Labwc v0.9.4 config elements & attributes with mostly
+  This file contains all supported Labwc v0.9.5 config elements & attributes with mostly
   default values. Some LXQt specific settings have been added. You may have a
   updated version in /usr/share/docs/labwc/rc.xml.all
 
