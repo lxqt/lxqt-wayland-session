@@ -1,3 +1,9 @@
+lxqt-wayland-session-0.3.2 / 2026-03-02
+=======================================
+* Updated configurations to cover labwc 0.9.5 and Hyprland 0.54.1.
+* Enabled launch of lxqt-leave by pressing the powerbutton in niri configuration.
+* Fixed hyprland config for breaking changes of 0.53.
+
 lxqt-wayland-session-0.3.1 / 2025-12-21
 =======================================
  * Updated manpages.
