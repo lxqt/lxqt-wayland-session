@@ -707,6 +707,11 @@
       </windowRule>
     </windowRules>
   -->
+  <windowRules>
+    <windowRule identifier="qlipper" title="* - *" skipTaskbar="yes">
+      <action name="SetDecorations" decorations="none"/>
+    </windowRule>
+  </windowRules>
 
   <menu>
     <ignoreButtonReleasePeriod>250</ignoreButtonReleasePeriod>
