@@ -1,6 +1,6 @@
 lxqt-wayland-session-0.4.0 / 2026-04-20
 =======================================
-* Bumped the version.
+ * Added support for "openmenu" in lxqt-qdbus script for mainmenu too.
 
 lxqt-wayland-session-0.3.2 / 2026-03-02
 =======================================
