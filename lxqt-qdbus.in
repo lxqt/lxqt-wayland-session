@@ -62,9 +62,9 @@ if [ "$MODE" = "run" ]; then
         notify-send -i configure-shortcuts -a "LXQt Wayland Shortcut" "No matching desktop entry found for '$ARGUMENT'"
         exit 1
     fi
-elif  [ "$MODE" = "openmenu" ]; then # open fancy menu
+elif  [ "$MODE" = "openmenu" ]; then # open main|fancy menu
     # check for dbus object
-    menu=$($QDBUS org.kde.StatusNotifierWatcher | grep fancy | head -n1)
+    menu=$($QDBUS org.kde.StatusNotifierWatcher | grep -E '(fancy|main)menu' | head -n1)
     if [[ -z "$menu" ]]; then
         notify-send --icon=lxqt "No fancy menu plugin found on panels"
     else
