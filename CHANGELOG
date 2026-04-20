@@ -1,3 +1,7 @@
+lxqt-wayland-session-0.4.0 / 2026-04-20
+=======================================
+ * Added support for "openmenu" in lxqt-qdbus script for mainmenu too.
+
 lxqt-wayland-session-0.3.2 / 2026-03-02
 =======================================
 * Updated configurations to cover labwc 0.9.5 and Hyprland 0.54.1.
