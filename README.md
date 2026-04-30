@@ -15,9 +15,17 @@ display managers and default configurations for actually supported compositors w
   
 At startup a basic configuration file for those compositors will be copied to `$XDG_CONFIG_HOME/lxqt/wayland` directory
 if not existing already, except for labwc and `kwin_wayland` where their default configuration location is used.
-If no compositor is already set in `lxqt-config-session` Labwc will be started opening "Session Settings".
+If no compositor is set in `lxqt-config-session` the default configuration in `/usr/share/lxqt/session.conf` or `/usr/locale/share/lxqt/session.conf` will be used to configure the session, example:
+```
+[General]
+leave_confirmation=true
+compositor=labwc
+lock_command_wayland=swaylock
+```
+If no compositor is found starting Labwc will be tried, opening "Session Settings"
 
 Please refer to each compositors documentation for tweaking.
+See also the [LXQt Wiki](https://lxqt-project.org/wiki/Wayland-Session).
 
 ### Other compositors
 
@@ -27,7 +35,7 @@ A line `lxqt-session && <exit_compositor_command>` is needed in the autostart co
 ### Compiling source code
 
 Runtime dependencies are [qtxdg-tools](https://github.com/lxqt/qtxdg-tools),
-[lxqt-session](https://github.com/lxqt/lxqt-session) and layer-shell-qt.
+[lxqt-session](https://github.com/lxqt/lxqt-session), `qt6-tools` and `layer-shell-qt`.
 Additional build dependencies are [lxqt-build-tools](https://github.com/lxqt/lxqt-build-tools), CMake and optionally Git to pull latest VCS checkouts.
 
 Code configuration is handled by CMake. CMake variable `CMAKE_INSTALL_PREFIX` has to be set

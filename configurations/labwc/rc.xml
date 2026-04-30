@@ -1,20 +1,29 @@
 <?xml version="1.0"?>
 
 <!--
-  This file contains all supported config elements & attributes with
+  This file contains all supported Labwc v0.9.5 config elements & attributes with mostly
   default values. Some LXQt specific settings have been added. You may have a
   updated version in /usr/share/docs/labwc/rc.xml.all
+
+
+  Values for [yes|no] can be replaced by [true|false], [on|off] or [1|0].
+
 -->
 
 <labwc_config>
-
   <core>
     <decoration>server</decoration>
     <gap>0</gap>
     <adaptiveSync>no</adaptiveSync>
     <allowTearing>no</allowTearing>
+    <autoEnableOutputs>yes</autoEnableOutputs>
     <reuseOutputMode>no</reuseOutputMode>
-    <xwaylandPersistence>yes</xwaylandPersistence>
+    <xwaylandPersistence>no</xwaylandPersistence>
+    <primarySelection>yes</primarySelection>
+    <!--
+      # See labwc-config(5) for details
+      <promptCommand></promptCommand>
+    -->
   </core>
 
   <placement>
@@ -29,14 +38,17 @@
   <!-- <font><theme> can be defined without an attribute to set all places -->
   <theme>
     <name>Vent</name>
-    <icon></icon>
+    <icon>breeze</icon>
+    <fallbackAppIcon>labwc</fallbackAppIcon>
     <titlebar>
       <layout>icon:iconify,max,close</layout>
       <showTitle>yes</showTitle>
     </titlebar>
     <cornerRadius>10</cornerRadius>
     <keepBorder>yes</keepBorder>
+    <maximizedDecoration>titlebar</maximizedDecoration>
     <dropShadows>yes</dropShadows>
+    <dropShadowsOnTiled>no</dropShadowsOnTiled>
     <font place="ActiveWindow">
       <name>sans</name>
       <size>13</size>
@@ -69,26 +81,29 @@
     </font>
   </theme>
 
-  <!--
-    Just as for window-rules, 'identifier' relates to app_id for native Wayland
-    windows and WM_CLASS for XWayland clients.
-  -->
-  <windowSwitcher show="yes" preview="yes" outlines="yes" allWorkspaces="no">
+  <windowSwitcher preview="yes" outlines="yes" unshade="yes">
+    <osd show="yes" style="classic" output="all" thumbnailLabelFormat="%T" />
     <fields>
-      <field content="type" width="25%" />
-      <field content="trimmed_identifier" width="25%" />
-      <!-- <field content="identifier" width="25%" /> -->
-      <field content="title" width="50%" />
+      <field content="icon" width="5%" />
+      <field content="desktop_entry_name" width="30%" />
+      <field content="title" width="65%" />
+      <!--
+        Just as for window-rules, you can use 'identifier' or
+        'trimmed_identifier' to show the app_id for native wayland clients or
+        WM_CLASS for XWayland clients.
+
+        <field content="trimmed_identifier" width="65%" />
+      -->
     </fields>
   </windowSwitcher>
 
   <!--
-    When using all workspaces option of window switcher, there are extra fields
-    that can be used, workspace (variable length), state (single space),
-    type_short (3 spaces), output (variable length), and can be set up
-    like this. Note: output only shows if more than one output available.
+    Many other kinds of content are supported in the window switcher like below.
+    Some contents are fixed-length and others are variable-length.
+    See "man 5 labwc-config" for details.
 
-    <windowSwitcher show="yes" preview="no" outlines="no" allWorkspaces="yes">
+    <windowSwitcher preview="no" outlines="no">
+      <osd show="yes" />
       <fields>
         <field content="workspace" width="5%" />
         <field content="state" width="3%" />
@@ -101,14 +116,15 @@
 
     custom format - (introduced in 0.7.2)
     It allows one to replace all the above "fields" with one line, using a
-    printf style format. For field explanations, "man 5 labwc-config".
+    printf style format. For field explanations, see "man 5 labwc-config".
 
     The example below would print "foobar",then type of window (wayland, X),
     then state of window (M/m/F), then output (shows if more than 1 active),
     then workspace name, then identifier/app-id, then the window title.
-    Uses 100% of OSD window width.
+    It uses 100% of OSD window width.
 
-    <windowSwitcher show="yes" preview="no" outlines="no" allWorkspaces="yes">
+    <windowSwitcher preview="no" outlines="no">
+      <osd show="yes" />
       <fields>
         <field content="custom" format="foobar %b %3s %-10o %-20W %-10i %t" width="100%" />
       </fields>
@@ -130,6 +146,16 @@
     <popupShow>Never</popupShow>
     <!-- Let client redraw its contents while resizing -->
     <drawContents>yes</drawContents>
+    <!-- Borders are effectively 8 pixels wide regardless of visual appearance -->
+    <minimumArea>8</minimumArea>
+
+    <!--
+      Set cornerRange to a positive value to increase the size of corner
+      regions for mouse actions and diagonal window resizing. When omitted,
+      the default size of the corner region is half of the titlebar height.
+
+      <cornerRange>8</cornerRange>
+    -->
   </resize>
 
   <focus>
@@ -139,8 +165,9 @@
   </focus>
 
   <snapping>
-    <!-- Set range to 0 to disable window snapping completely -->
-    <range>1</range>
+    <!-- Set inner and outer range to 0 to disable window snapping completely -->
+    <range inner="10" outer="10" />
+    <cornerRange>50</cornerRange>
     <overlay enabled="yes">
       <delay inner="500" outer="500" />
     </overlay>
@@ -152,6 +179,7 @@
     Workspaces can be configured like this:
     <desktops>
       <popupTime>1000</popupTime>
+      <initial>Workspace 1</initial>
       <names>
         <name>Workspace 1</name>
         <name>Workspace 2</name>
@@ -195,9 +223,9 @@
     space automatically, so <margin> is only intended for other, specialist
     cases.
 
-    If output is left empty, the margin will be applied to all outputs.
+    If 'output' is not provided, the margin will be applied to all outputs.
 
-    <margin top="" bottom="" left="" right="" output="" />
+    <margin top="10" bottom="10" left="10" right="10" output="HDMI-A-1" />
   -->
 
   <!-- Percent based regions based on output usable area, % char is required -->
@@ -230,7 +258,10 @@
     your favourite terminal or application launcher. See rc.xml for an example.
   -->
   <keyboard>
-    <numlock>on</numlock>
+    <!--
+      # Numlock is not set by default
+      <numlock>on|off</numlock>
+    -->
     <layoutScope>global</layoutScope>
     <repeatRate>25</repeatRate>
     <repeatDelay>600</repeatDelay>
@@ -238,23 +269,25 @@
     <keybind key="C-S-r">
       <action name="Reconfigure"/>
     </keybind>
-    <!-- LXQt Keybindings -->
-    <!-- For advanced shortcut handling please consult
-    https://github.com/lxqt/lxqt/wiki/Wayland#global-shortcuts -->
+    <!-- LXQt Keybindings
+    To open applications inside LXQt session use `lxqt-qdbus run <application>` or
+    `qdbus6 org.lxqt.session /LXQtSession execDesktopFile <desktopfile>`
+    See https://lxqt-project.org/wiki/Wayland-Session#global-shortcuts
+    -->
     <keybind key="W-p">
       <action name="Execute" command="pcmanfm-qt" />
     </keybind>
     <keybind key="W-Return">
-      <action name="Execute" command="qterminal"/>
+      <action name="Execute" command="lxqt-qdbus run qterminal"/>
     </keybind>
     <keybind key="W-f">
-      <action name="Execute" command="featherpad"/>
-    </keybind>
-    <keybind key="A-Space">
-      <action name="Execute" command="lxqt-runner" />
+      <action name="Execute" command="lxqt-qdbus run featherpad"/>
     </keybind>
     <keybind key="A-F2">
       <action name="Execute" command="lxqt-runner" />
+    </keybind>
+    <keybind key="Print">
+      <action name="Execute" command="lxqt-qdbus run screengrab" />
     </keybind>
     <keybind key="W-l">
       <action name="Execute" command="lxqt-leave --lockscreen" />
@@ -269,14 +302,18 @@
         <command>lxqt-leave</command>
       </action>
     </keybind>
+    <keybind key="W-D">
+      <action name="Execute" command="lxqt-qdbus showdesktop" />
+    </keybind>
+    <keybind key="A-F1">
+      <action name="Execute" command="lxqt-qdbus openmenu" />
+    </keybind>
+    <!-- End LXQt Keybindings -->
     <keybind key="A-Tab">
       <action name="NextWindow" />
     </keybind>
-    <keybind key="W-Return">
-      <action name="Execute" command="alacritty" />
-    </keybind>
-    <keybind key="A-F3">
-      <action name="Execute" command="bemenu-run" />
+    <keybind key="A-S-Tab">
+      <action name="PreviousWindow" />
     </keybind>
     <keybind key="A-F4">
       <action name="Close" />
@@ -284,41 +321,29 @@
     <keybind key="W-a">
       <action name="ToggleMaximize" />
     </keybind>
-    <keybind key="A-Left">
-      <action name="MoveToEdge" direction="left" />
-    </keybind>
-    <keybind key="A-Right">
-      <action name="MoveToEdge" direction="right" />
-    </keybind>
-    <keybind key="A-Up">
-      <action name="MoveToEdge" direction="up" />
-    </keybind>
-    <keybind key="A-Down">
-      <action name="MoveToEdge" direction="down" />
-    </keybind>
     <keybind key="W-Left">
-      <action name="SnapToEdge" direction="left" />
+      <action name="SnapToEdge" direction="left" combine="yes" />
     </keybind>
     <keybind key="W-Right">
-      <action name="SnapToEdge" direction="right" />
+      <action name="SnapToEdge" direction="right" combine="yes" />
     </keybind>
     <keybind key="W-Up">
-      <action name="SnapToEdge" direction="up" />
+      <action name="SnapToEdge" direction="up" combine="yes" />
     </keybind>
     <keybind key="W-Down">
-      <action name="SnapToEdge" direction="down" />
+      <action name="SnapToEdge" direction="down" combine="yes" />
     </keybind>
     <keybind key="A-Space">
       <action name="ShowMenu" menu="client-menu" atCursor="no" />
     </keybind>
     <keybind key="XF86_AudioLowerVolume">
-      <action name="Execute" command="amixer sset Master 5%-" />
+      <action name="Execute" command="lxqt-qdbus volume down" />
     </keybind>
     <keybind key="XF86_AudioRaiseVolume">
-      <action name="Execute" command="amixer sset Master 5%+" />
+      <action name="Execute" command="lxqt-qdbus volume up" />
     </keybind>
     <keybind key="XF86_AudioMute">
-      <action name="Execute" command="amixer sset Master toggle" />
+      <action name="Execute" command="lxqt-qdbus volume mute" />
     </keybind>
     <keybind key="XF86_MonBrightnessUp">
       <action name="Execute" command="lxqt-config-brightness -i" />
@@ -356,7 +381,7 @@
       <action name="SnapToRegion" region="bottom-right" />
     </keybind>
   -->
-    <!-- keybind for client-list-combined-menu - will center in middle of screen -->
+  <!-- keybind for client-list-combined-menu - will center in middle of screen -->
   <!--
     <keybind key="W-Space">
       <action name="ShowMenu" menu="client-list-combined-menu" />
@@ -385,58 +410,27 @@
     <doubleClickTime>500</doubleClickTime>
 
     <context name="Frame">
-      <mousebind button="A-Left" action="Press">
+      <mousebind button="W-Left" action="Press">
         <action name="Focus" />
         <action name="Raise" />
       </mousebind>
-      <mousebind button="A-Left" action="Drag">
+      <mousebind button="W-Left" action="Drag">
         <action name="Move" />
       </mousebind>
-      <mousebind button="A-Right" action="Press">
+      <mousebind button="W-Right" action="Press">
         <action name="Focus" />
         <action name="Raise" />
       </mousebind>
-      <mousebind button="A-Right" action="Drag">
+      <mousebind button="W-Right" action="Drag">
         <action name="Resize" />
       </mousebind>
     </context>
 
-    <context name="Top">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
+    <context name="Border">
+      <mousebind button="Left" action="Press">
+        <action name="Focus" />
+        <action name="Raise" />
       </mousebind>
-    </context>
-    <context name="Left">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="Right">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="Bottom">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="TRCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="BRCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="TLCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize" />
-      </mousebind>
-    </context>
-    <context name="BLCorner">
       <mousebind button="Left" action="Drag">
         <action name="Resize" />
       </mousebind>
@@ -576,7 +570,11 @@
     If mouseEmulation is enabled, all touch up/down/motion events are
     translated to mouse button and motion events.
   -->
-  <touch deviceName="" mapToOutput="" mouseEmulation="no"/>
+  <touch>
+    <!-- <deviceName>ELAN2514:00 04F3:2AF1<deviceName> -->
+    <!-- <mapToOutput>HDMI-A-1</mapToOutput> -->
+    <mouseEmulation>no</mouseEmulation>
+  </touch>
 
   <!--
     The tablet cursor movement can be restricted to a single output.
@@ -603,7 +601,8 @@
     When using mouse emulation, the pen tip [tip] and the stylus buttons
     can be set to any available mouse button [Left|Right|Middle|..|Task].
   -->
-  <tablet mapToOutput="" rotate="0" mouseEmulation="no">
+  <tablet rotate="0" mouseEmulation="no">
+    <!-- <mapToOutput>HDMI-A-1</mapToOutput> -->
     <!-- Active area dimensions are in mm -->
     <area top="0.0" left="0.0" width="0.0" height="0.0" />
     <map button="Tip" to="Left" />
@@ -634,25 +633,33 @@
       - accelProfile [flat|adaptive]
       - tapButtonMap [lrm|lmr]
       - clickMethod [none|buttonAreas|clickfinger]
+      - scrollMethod [twoFinger|edge|none]
       - sendEventsMode [yes|no|disabledOnExternalMouse]
       - calibrationMatrix [six float values split by space]
       - scrollFactor [float]
+
+    The following <libinput>...</libinput> block may not be complete for
+    your requirements. Default values are device specific. Only set an option
+    if you require to override the default. Valid values must be inserted.
+
   -->
   <libinput>
     <device category="default">
-      <naturalScroll></naturalScroll>
-      <leftHanded></leftHanded>
-      <pointerSpeed>1</pointerSpeed>
-      <accelProfile></accelProfile>
+      <!-- <naturalScroll>no</naturalScroll> -->
+      <!-- <leftHanded>no</leftHanded> -->
+      <!-- <pointerSpeed>0.0</pointerSpeed> -->
+      <!-- <accelProfile>adaptive</accelProfile> -->
       <tap>yes</tap>
-      <tapButtonMap></tapButtonMap>
-      <tapAndDrag></tapAndDrag>
-      <dragLock></dragLock>
-      <middleEmulation></middleEmulation>
-      <disableWhileTyping></disableWhileTyping>
-      <clickMethod></clickMethod>
-      <sendEventsMode></sendEventsMode>
-      <calibrationMatrix></calibrationMatrix>
+      <!-- <tapButtonMap>lrm</tapButtonMap> -->
+      <!-- <tapAndDrag>yes</tapAndDrag> -->
+      <!-- <dragLock>yes</dragLock> -->
+      <!-- <threeFingerDrag>yes</threeFingerDrag> -->
+      <!-- <middleEmulation>no</middleEmulation> -->
+      <!-- <disableWhileTyping>yes</disableWhileTyping> -->
+      <!-- <clickMethod>buttonAreas</clickMethod> -->
+      <!-- <scrollMethod>twofinger</scrollMethod> -->
+      <!-- <sendEventsMode>yes</sendEventsMode> -->
+      <!-- <calibrationMatrix>1 0 0 0 1 0</calibrationMatrix> -->
       <scrollFactor>1.0</scrollFactor>
     </device>
   </libinput>
@@ -667,8 +674,8 @@
     #     must only apply to the first instance of the window with that
     #     particular 'identifier' or 'title'.
     #   - Matching is case-insensitive and is performed using shell wildcard
-    #     patterns (see glob(7)) so '\*' (not between brackets) matches any string
-    #     and '?' matches any single character.
+    #     patterns (see glob(7)) so '\*' (not between brackets) matches any
+    #     string and '?' matches any single character.
 
     <windowRules>
       <windowRule identifier="*"><action name="Maximize"/></windowRule>
@@ -703,6 +710,7 @@
 
   <menu>
     <ignoreButtonReleasePeriod>250</ignoreButtonReleasePeriod>
+    <showIcons>yes</showIcons>
   </menu>
 
   <!--
@@ -720,7 +728,7 @@
     <height>400</height>
     <initScale>2.0</initScale>
     <increment>0.2</increment>
-    <useFilter>true</useFilter>
+    <useFilter>yes</useFilter>
   </magnifier>
 
 </labwc_config>

@@ -16,19 +16,19 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
 fi
 
 if [ -z "$XDG_DATA_DIRS" ]; then
-    XDG_DATA_DIRS="$XDG_DATA_HOME:/usr/local/share:/usr/share"
+    XDG_DATA_DIRS="@PREDEF_XDG_DATA_DIRS@"
 else
-    if ! contains "$XDG_DATA_DIRS" "/usr/share"; then
-        XDG_DATA_DIRS="$XDG_DATA_DIRS:/usr/share"
+    if ! contains "$XDG_DATA_DIRS" "@LXQT_DATA_DIR@"; then
+        XDG_DATA_DIRS="$XDG_DATA_DIRS:@LXQT_DATA_DIR@"
     fi
 fi
 export XDG_DATA_DIRS
 
 if [ -z "$XDG_CONFIG_DIRS" ]; then
-    export XDG_CONFIG_DIRS="/etc:/etc/xdg:/usr/share"
+    export XDG_CONFIG_DIRS="@PREDEF_XDG_CONFIG_DIRS@"
 else
-    if ! contains "$XDG_CONFIG_DIRS" '/etc/xdg'; then
-        XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:/etc/xdg"
+    if ! contains "$XDG_CONFIG_DIRS" '@LXQT_ETC_XDG_DIR@'; then
+        XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:@LXQT_ETC_XDG_DIR@"
     fi
 fi
 
@@ -47,7 +47,7 @@ mkdir -p "$XDG_DESKTOP_DIR"
 # Launch DBus if needed
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
     if [ -z "$XDG_RUNTIME_DIR" ] || ! [ -S "$XDG_RUNTIME_DIR/bus" ] || ! [ -O "$XDG_RUNTIME_DIR/bus" ]; then
-        eval "$(dbus-launch --sh-syntax --exit-with-session)" || echo "startlxqt: error executing dbus-launch" >&2
+        eval "$(dbus-launch --sh-syntax --exit-with-session)" || echo "startlxqtwayland: error executing dbus-launch" >&2
     fi
 fi
 
@@ -65,19 +65,23 @@ export QT_ACCESSIBILITY=1
 # use lxqt-applications.menu for main app menu
 export XDG_MENU_PREFIX="lxqt-"
 
+# Ensure this is set always
+export XDG_SESSION_TYPE="wayland"
+
+share_dir="$(dirname $(dirname "$0"))"/share
+
 if [ ! -d "$XDG_CONFIG_HOME/lxqt/wayland" ]; then
     mkdir -p $XDG_CONFIG_HOME/lxqt/wayland/
 fi
-
-if grep -q "compositor" "$XDG_CONFIG_HOME/lxqt/session.conf"; then
-    COMPOSITOR=`cat "$XDG_CONFIG_HOME"/lxqt/session.conf|grep compositor |awk -F'=' '{sub(".*/", "", $2); print $2}'`
-fi
+# Check for compositor in user config file and fallback dirs
+for d in $(echo "$XDG_CONFIG_HOME:$XDG_CONFIG_DIRS" | tr : '\n'); do
+    config_file="$d/lxqt/session.conf"
+    [ -f "$config_file" ] && [ -r "$config_file" ] || continue
+    COMPOSITOR="$(sed -nre '/^compositor[[:space:]]*=/ { s@^[^=]+=[[:space:]]*(/|[^[:space:]]+.*/)?([^/]+)?$@\2@; p; }' "$config_file")"
+    [ -z "$COMPOSITOR" ] || break
+done
 
 export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR:wlroots"
-
-export MOZ_ENABLE_WAYLAND=1
-
-share_dir="$(dirname $(dirname "$0"))"/share
 
 valid_layouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
 trylayout=$(echo $LANG | cut -c 1,2)
@@ -114,10 +118,7 @@ elif [ "$COMPOSITOR" = "labwc" ]; then
 elif [ "$COMPOSITOR" = "niri" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
         cp -v "$share_dir"/lxqt/wayland/lxqt-niri.kdl "$XDG_CONFIG_HOME"/lxqt/wayland/
-        if echo "$valid_layouts" | grep -q "$trylayout"; then
-        layout="layout \"$trylayout\""
-        sed -i "s/layout \"us\"/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl"
-        fi
+        cp -av "$share_dir"/lxqt/wayland/niri "$XDG_CONFIG_HOME"/lxqt/wayland/
     fi
     exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl
 
@@ -170,7 +171,10 @@ elif [ "$COMPOSITOR" = "Hyprland" ]; then
             sed -i "s/kb_layout = us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf"
         fi
     fi
-    exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
+    # workaround for cursor
+    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_size| tr 'a-z' 'A-Z')
+    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_theme| tr 'a-z' 'A-Z')
+    exec start-hyprland -- -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
 
 elif [ "$COMPOSITOR" = "river" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]; then
