@@ -296,10 +296,20 @@
     <keybind key="F12">
       <action name="Execute" command="qterminal -d" />
     </keybind>
-    <!-- Powerbutton-->
+    <!-- Powerbuttons-->
     <keybind key="XF86PowerOff">
       <action name="Execute">
         <command>lxqt-leave</command>
+      </action>
+    </keybind>
+    <keybind key="XF86Suspend">
+      <action name="Execute">
+        <command>lxqt-leave --suspend</command>
+      </action>
+    </keybind>
+    <keybind key="XF86Sleep">
+      <action name="Execute">
+        <command>lxqt-leave --hibernate</command>
       </action>
     </keybind>
     <keybind key="W-D">
