@@ -1,4 +1,5 @@
--- This is an example Hyprland Lua config file.
+-- This is the example Hyprland v0.55.1 config file with some additions for LXQt.
+-- A newer version may be available in /usr/share/hypr/hyprland.lua.
 -- Refer to the wiki for more information.
 -- https://wiki.hypr.land/Configuring/Start/
 
@@ -326,7 +327,7 @@ hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = tr
 -- See https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 -- and https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 
---hl.window_rule({ match = { class = "^(lxqt-.*|pavu.*|.*copyq|sddm-conf|qarma|.*portal-lxqt)$" }, float = true })
+hl.window_rule({ match = { class = "^(lxqt-.*|pavu.*|.*copyq|sddm-conf|qarma|.*portal-lxqt)$" }, float = true })
 hl.window_rule({ match = { class = "lxqt-archiver" }, tile = true })
 hl.window_rule({ match = { title = "^(.*Preferen.*)$" }, float = true })
 hl.window_rule({ match = { float = true }, dim_around = true })
