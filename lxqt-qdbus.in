@@ -73,7 +73,7 @@ elif  [ "$MODE" = "openmenu" ]; then # open main|fancy menu
     if [[ -z "$menu" ]]; then
         notify-send --icon=lxqt "No fancy menu plugin found on panels"
     else
-    $QDBUS org.kde.StatusNotifierWatcher $menu/show_hide org.lxqt.global_key_shortcuts.client.activated
+        $QDBUS org.kde.StatusNotifierWatcher $menu/show_hide org.lxqt.global_key_shortcuts.client.activated
     fi
 
 elif  [ "$MODE" = "lxqt-clip" ]; then # open lxqt-clip
@@ -82,7 +82,7 @@ elif  [ "$MODE" = "lxqt-clip" ]; then # open lxqt-clip
     if [[ -z "$clip" ]]; then
         notify-send --icon=lxqt "Is lxqt-clip installed and running?"
     else
-    $QDBUS org.lxqt.lxqt-clip /org/lxqt/clip show
+        $QDBUS org.lxqt.lxqt-clip /org/lxqt/clip show
     fi
 
 elif  [ "$MODE" = "showdesktop" ]; then # show desktop
