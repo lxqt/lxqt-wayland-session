@@ -17,6 +17,7 @@
     <adaptiveSync>no</adaptiveSync>
     <allowTearing>no</allowTearing>
     <autoEnableOutputs>yes</autoEnableOutputs>
+    <hdr>no</hdr>
     <reuseOutputMode>no</reuseOutputMode>
     <xwaylandPersistence>no</xwaylandPersistence>
     <primarySelection>yes</primarySelection>
@@ -307,6 +308,11 @@
     <keybind key="W-D">
       <action name="Execute" command="lxqt-qdbus showdesktop" />
     </keybind>
+    <!-- Use showdesktop action from labwc instead
+    <keybind key="W-d">
+      <action name="ToggleShowDesktop" />
+    </keybind>
+    -->
     <keybind key="A-F1">
       <action name="Execute" command="lxqt-qdbus openmenu" />
     </keybind>
