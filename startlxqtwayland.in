@@ -164,17 +164,20 @@ elif [ "$COMPOSITOR" = "sway" ]; then
     exec $COMPOSITOR -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
 
 elif [ "$COMPOSITOR" = "Hyprland" ]; then
-    if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]; then
-        cp "$share_dir"/lxqt/wayland/lxqt-hyprland.conf "$XDG_CONFIG_HOME"/lxqt/wayland/
-        if echo "$valid_layouts" | grep -q "$trylayout"; then
-            layout="kb_layout = $trylayout"
-            sed -i "s/kb_layout = us/$layout/" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf"
+    if [  -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]; then
+        # workaround for cursor
+        export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_size| tr 'a-z' 'A-Z')
+        export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_theme| tr 'a-z' 'A-Z')
+        exec start-hyprland -- -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
+    else
+        if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.lua" ]; then
+            cp "$share_dir"/lxqt/wayland/lxqt-hyprland.lua "$XDG_CONFIG_HOME"/lxqt/wayland/
+            if echo "$valid_layouts" | grep -q "$trylayout"; then
+                sed -i "s/= \"us\",/= \"$trylayout\",/g" "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.lua"
+            fi
         fi
+        exec start-hyprland -- -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.lua
     fi
-    # workaround for cursor
-    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_size| tr 'a-z' 'A-Z')
-    export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_theme| tr 'a-z' 'A-Z')
-    exec start-hyprland -- -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf
 
 elif [ "$COMPOSITOR" = "river" ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]; then

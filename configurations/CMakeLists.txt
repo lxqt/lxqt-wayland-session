@@ -1,7 +1,7 @@
 # install default config files to /usr/share/lxqt/wayland
 
 install(FILES
-    lxqt-hyprland.conf
+    lxqt-hyprland.lua
     lxqt-wayfire.ini
     lxqt-sway.config
     lxqt-river-init

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  This file contains all supported Labwc v0.9.5 config elements & attributes with mostly
+  This file contains all supported Labwc v0.20.0 config elements & attributes with mostly
   default values. Some LXQt specific settings have been added. You may have a
   updated version in /usr/share/docs/labwc/rc.xml.all
 
@@ -17,6 +17,7 @@
     <adaptiveSync>no</adaptiveSync>
     <allowTearing>no</allowTearing>
     <autoEnableOutputs>yes</autoEnableOutputs>
+    <hdr>no</hdr>
     <reuseOutputMode>no</reuseOutputMode>
     <xwaylandPersistence>no</xwaylandPersistence>
     <primarySelection>yes</primarySelection>
@@ -162,6 +163,8 @@
     <followMouse>no</followMouse>
     <followMouseRequiresMovement>yes</followMouseRequiresMovement>
     <raiseOnFocus>no</raiseOnFocus>
+    <!-- Delay (ms) before applying raise-on-focus. 0 = immediate. -->
+    <raiseOnFocusDelay>0</raiseOnFocusDelay>
   </focus>
 
   <snapping>
@@ -315,6 +318,11 @@
     <keybind key="W-D">
       <action name="Execute" command="lxqt-qdbus showdesktop" />
     </keybind>
+    <!-- Use showdesktop action from labwc instead
+    <keybind key="W-d">
+      <action name="ToggleShowDesktop" />
+    </keybind>
+    -->
     <keybind key="A-F1">
       <action name="Execute" command="lxqt-qdbus openmenu" />
     </keybind>
@@ -627,9 +635,11 @@
     *relativeMotionSensitivity* controls the speed of the cursor. Using
     a value lower than 1.0 decreases the speed, using a value greater than
     1.0 increases the speed of the cursor.
+    The pressure range of a tablet tool can be controlled by adjusting
+    *minPressure* and *maxPressure*.
   -->
-  <tabletTool motion="absolute" relativeMotionSensitivity="1.0" />
-
+  <tabletTool motion="absolute" relativeMotionSensitivity="1.0"
+              minPressure="0.0" maxPressure="1.0" />
   <!--
     The *category* attribute is optional and can be set to touch, touchpad,
     non-touch, default or the name of a device. You can obtain device names by
@@ -643,7 +653,7 @@
       - accelProfile [flat|adaptive]
       - tapButtonMap [lrm|lmr]
       - clickMethod [none|buttonAreas|clickfinger]
-      - scrollMethod [twoFinger|edge|none]
+      - scrollMethod [twoFinger|edge|onbutton|none]
       - sendEventsMode [yes|no|disabledOnExternalMouse]
       - calibrationMatrix [six float values split by space]
       - scrollFactor [float]
@@ -668,6 +678,7 @@
       <!-- <disableWhileTyping>yes</disableWhileTyping> -->
       <!-- <clickMethod>buttonAreas</clickMethod> -->
       <!-- <scrollMethod>twofinger</scrollMethod> -->
+      <!-- <scrollButton>274</scrollButton> -->
       <!-- <sendEventsMode>yes</sendEventsMode> -->
       <!-- <calibrationMatrix>1 0 0 0 1 0</calibrationMatrix> -->
       <scrollFactor>1.0</scrollFactor>
