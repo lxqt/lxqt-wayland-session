@@ -1,3 +1,12 @@
+lxqt-wayland-session-0.4.1 / 2026-05-28
+=======================================
+ * Updated wiki link in niri configs.
+ * Updated for labwc 0.10.0.
+ * Migrated Hyprland config to lua for 0.55 and fixed error with legacy config.
+ * Bumped version in lxqt-sway.config and removed duplicated keybind.
+ * Added method to show lxqt-clip to lxqt-qdbus script.
+ * Added powerkeys actions shortcuts for suspend and sleep (hibernate).
+
 lxqt-wayland-session-0.4.0 / 2026-04-20
 =======================================
  * Added support for "openmenu" in lxqt-qdbus script for mainmenu too.
