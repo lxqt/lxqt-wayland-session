@@ -77,29 +77,32 @@ fi
 for d in $(echo "$XDG_CONFIG_HOME:$XDG_CONFIG_DIRS" | tr : '\n'); do
     config_file="$d/lxqt/session.conf"
     [ -f "$config_file" ] && [ -r "$config_file" ] || continue
-    COMPOSITOR_CMD="$(sed -nre '/^compositor[[:space:]]*=/ { s@^[^=]+=[[:space:]]*(/|[^[:space:]]+.*/)?([^/]+)?$@\2@; p; }' "$config_file")"
+    COMPOSITOR_CMD="$(sed -nre '/^compositor[[:space:]]*=/ { s@^[^=]+=[[:space:]]*([^[:space:]]+.*)$@\1@; p; }' "$config_file")"
     [ -z "$COMPOSITOR_CMD" ] || break
 done
 
 # Strip compositor command arguments
-export XDG_CURRENT_DESKTOP="LXQt:${COMPOSITOR_CMD%% *}:wlroots"
+COMPOSITOR="${COMPOSITOR_CMD%%[[:space:]]*}"
+# and command path
+COMPOSITOR="${COMPOSITOR##*/}"
+export XDG_CURRENT_DESKTOP="LXQt:${COMPOSITOR}:wlroots"
 
 valid_layouts=$(grep -A98 '! layout' /usr/share/X11/xkb/rules/base.lst | awk '{print $1}' | grep -v '!')
 trylayout=$(echo $LANG | cut -c 1,2)
 
 if  [ -z "$COMPOSITOR_CMD" ]; then
     echo "No compositor configured yet in Session Settings, trying labwc..."
-    COMPOSITOR=labwc
-    export XDG_CURRENT_DESKTOP="LXQt:wlroots"
+    COMPOSITOR_CMD='labwc'
+    export XDG_CURRENT_DESKTOP="LXQt:labwc:wlroots"
 
     # enable cursor on VM (systemd only)
     if type systemd-detect-virt > /dev/null 2>&1 && systemd-detect-virt --quiet; then
         export WLR_NO_HARDWARE_CURSORS=1
         echo "Running on virtualized hardware"
     fi
-    exec $COMPOSITOR -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
+    exec $COMPOSITOR_CMD -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
 
-elif [[ "$COMPOSITOR_CMD" == labwc* ]]; then
+elif [ "$COMPOSITOR" = 'labwc' ]; then
     # Copy default configuration if not existing and set keyboard layout if different from us
     if [ ! -d "$XDG_CONFIG_HOME/labwc" ]; then
        cp -av "$share_dir"/lxqt/wayland/labwc "$XDG_CONFIG_HOME"/  # use default location here
@@ -116,14 +119,14 @@ elif [[ "$COMPOSITOR_CMD" == labwc* ]]; then
 
     exec $COMPOSITOR_CMD -S lxqt-session
 
-elif [[ "$COMPOSITOR_CMD" == niri* ]]; then
+elif [ "$COMPOSITOR" = 'niri' ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl" ]; then
         cp -v "$share_dir"/lxqt/wayland/lxqt-niri.kdl "$XDG_CONFIG_HOME"/lxqt/wayland/
         cp -av "$share_dir"/lxqt/wayland/niri "$XDG_CONFIG_HOME"/lxqt/wayland/
     fi
     exec $COMPOSITOR_CMD -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-niri.kdl
 
-elif [ "$COMPOSITOR_CMD" = "kwin_wayland" ]; then
+elif [ "$COMPOSITOR" = 'kwin_wayland' ]; then
     # Style KDE's QML apps like systemsettings
     export QT_QUICK_CONTROLS_STYLE=org.kde.desktop
     export XDG_CURRENT_DESKTOP="LXQt:$COMPOSITOR"
@@ -142,7 +145,7 @@ elif [ "$COMPOSITOR_CMD" = "kwin_wayland" ]; then
     # WARNING: Option '--no-kactivities' can result in crashes with animations and corner actions.
     exec ${COMPOSITOR}_wrapper --exit-with-session lxqt-session --xwayland
 
-elif [[ "$COMPOSITOR_CMD" == wayfire* ]]; then
+elif [ "$COMPOSITOR" = 'wayfire' ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini" ]; then
         cp "$share_dir"/lxqt/wayland/lxqt-wayfire.ini "$XDG_CONFIG_HOME"/lxqt/wayland/
         if echo "$valid_layouts" | grep -q "$trylayout"; then
@@ -153,7 +156,7 @@ elif [[ "$COMPOSITOR_CMD" == wayfire* ]]; then
     fi
     exec $COMPOSITOR_CMD -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-wayfire.ini
 
-elif [[ "$COMPOSITOR_CMD" == sway* ]]; then
+elif [ "$COMPOSITOR" = 'sway' ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config" ]; then
         cp "$share_dir"/lxqt/wayland/lxqt-sway.config "$XDG_CONFIG_HOME"/lxqt/wayland/
         if echo "$valid_layouts" | grep -q "$trylayout"; then
@@ -164,7 +167,7 @@ elif [[ "$COMPOSITOR_CMD" == sway* ]]; then
     fi
     exec $COMPOSITOR_CMD -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-sway.config
 
-elif [ "$COMPOSITOR_CMD" = "Hyprland" ]; then
+elif [ "$COMPOSITOR" = 'Hyprland' ]; then
     if [  -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.conf" ]; then
         # workaround for cursor
         export X$(cat $XDG_CONFIG_HOME/lxqt/session.conf|grep cursor_size| tr 'a-z' 'A-Z')
@@ -180,7 +183,7 @@ elif [ "$COMPOSITOR_CMD" = "Hyprland" ]; then
         exec start-hyprland -- -c $XDG_CONFIG_HOME/lxqt/wayland/lxqt-hyprland.lua
     fi
 
-elif [[ "$COMPOSITOR_CMD" == river* ]]; then
+elif [ "$COMPOSITOR" = 'river' ]; then
     if [ ! -f "$XDG_CONFIG_HOME/lxqt/wayland/lxqt-river-init" ]; then
         cp "$share_dir"/lxqt/wayland/lxqt-river-init "$XDG_CONFIG_HOME"/lxqt/wayland/
         chmod a+x "$XDG_CONFIG_HOME"/lxqt/wayland/lxqt-river-init
