@@ -109,6 +109,8 @@ if  [ -z "$COMPOSITOR" ]; then
         exec start-hyprland -- -c "$share_dir"/lxqt/wayland/firstrun/hypr.lua
     elif [ "$COMPOSITOR" = "sway" ]; then
         exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/sway.config
+    elif  [ -z "$COMPOSITOR" ]; then
+        echo "No supported compositor found. Please start a LXQt X11 session to configure its Wayland session."
     fi
 
 elif [ "$COMPOSITOR" = "labwc" ]; then
