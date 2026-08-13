@@ -88,7 +88,7 @@ trylayout=$(echo $LANG | cut -c 1,2)
 
 if  [ -z "$COMPOSITOR" ]; then
     echo "No compositor configured yet in Session Settings, looking for available compositors ..."
-    for compositor in labwc niri Hyprland sway wayfire; do
+    for compositor in labwc niri kwin_wayland wayfire Hyprland sway ; do
         if command -v "$compositor" >/dev/null 2>&1; then
             COMPOSITOR="$compositor"
             break
@@ -101,12 +101,14 @@ if  [ -z "$COMPOSITOR" ]; then
         exec $COMPOSITOR -C "$share_dir"/lxqt/wayland/firstrun -S lxqt-config-session
     elif [ "$COMPOSITOR" = "niri" ]; then
         exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/niri.kdl
+    elif [ "$COMPOSITOR" = "kwin_wayland" ]; then
+        exec $COMPOSITOR --exit-with-session lxqt-config-session
+    elif [ "$COMPOSITOR" = "wayfire" ]; then
+        exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/wayfire.ini
     elif [ "$COMPOSITOR" = "Hyprland" ]; then
         exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/hypr.conf
     elif [ "$COMPOSITOR" = "sway" ]; then
         exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/sway.config
-    elif [ "$COMPOSITOR" = "wayfire" ]; then
-        exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/wayfire.ini
     fi
 
 elif [ "$COMPOSITOR" = "labwc" ]; then
