@@ -106,7 +106,7 @@ if  [ -z "$COMPOSITOR" ]; then
     elif [ "$COMPOSITOR" = "wayfire" ]; then
         exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/wayfire.ini
     elif [ "$COMPOSITOR" = "Hyprland" ]; then
-        exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/hypr.conf
+        exec start-hyprland -- -c "$share_dir"/lxqt/wayland/firstrun/hypr.lua
     elif [ "$COMPOSITOR" = "sway" ]; then
         exec $COMPOSITOR -c "$share_dir"/lxqt/wayland/firstrun/sway.config
     fi
