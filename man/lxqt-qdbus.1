@@ -1,0 +1,48 @@
+.TH LXQT-QDBUS "1" "August 2026" "LXQt 0.4.1" "LXQt Wayland session"
+.SH NAME
+lxqt-qdbus \- D-Bus wrapper for keybinds on Wayland compositors
+.SH SYNOPSIS
+.B lxqt-qdbus
+.RI [ options ]
+.RI [ argument ]
+.SH DESCRIPTION
+\fBlxqt-qdbus\fR is a helper script used to set up keyboard shortcuts on
+Wayland compositors that lack native LXQt integration. It wraps
+\fBqdbus\fR calls to the LXQt session and its modules, so compositor
+keybind configuration files can invoke common LXQt actions.
+.SH OPTIONS
+.TP
+\fBrun\fR \fIapplication\fR
+Start an application inside \fBlxqt-session\fR.
+.TP
+\fBopenmenu\fR
+Open the Fancy Menu.
+.TP
+\fBlxqt-clip\fR
+Show \fBlxqt-clip\fR.
+.TP
+\fBshowdesktop\fR
+Show the desktop on stacking window managers.
+.TP
+\fBrestart\fR \fImodule\fR
+Restart an LXQt module. Main modules: \fBdesktop\fR, \fBpanel\fR,
+\fBrunner\fR, \fBnotifications\fR, \fBpowermanagement\fR,
+\fBpolicykit-agent\fR.
+.TP
+\fBtask\fR \fI1-10\fR
+Focus the window at the given position on the taskbar.
+.TP
+\fBvolume\fR \fIup\fR|\fIdown\fR|\fImute\fR
+Change the volume via the panel's volume plugin, falling back to
+\fBwpctl\fR if no such plugin is found.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Show a help message and exit.
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+Show version information and exit.
+.SH BUGS
+Bugs can be reported on https://github.com/lxqt/lxqt-wayland-session/issues.
+.SH SEE ALSO
+.BR lxqt-wayland-session (1)
+.BR startlxqtwayland (1)
