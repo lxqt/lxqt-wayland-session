@@ -1,3 +1,9 @@
+lxqt-wayland-session-0.5.0 / 2026-11-05
+=======================================
+ * Added manpage for lxqt-qdbus.
+ * Added more fallbacks when no compositor is set.
+ * CMake maintenance.
+
 lxqt-wayland-session-0.4.1 / 2026-05-28
 =======================================
  * Updated wiki link in niri configs.
