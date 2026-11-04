@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  This file contains all supported Labwc v0.20.0 config elements & attributes with mostly
+  This file contains all supported Labwc v0.20.3 config elements & attributes with mostly
   default values. Some LXQt specific settings have been added. You may have a
   updated version in /usr/share/docs/labwc/rc.xml.all
 
@@ -24,6 +24,7 @@
     <!--
       # See labwc-config(5) for details
       <promptCommand></promptCommand>
+      <errorCommand></errorCommand>
     -->
   </core>
 
@@ -173,6 +174,8 @@
     <cornerRange>50</cornerRange>
     <overlay enabled="yes">
       <delay inner="500" outer="500" />
+      <!-- Specify whether to draw the snap overlay above or below the window being dragged -->
+      <placement>below</placement>
     </overlay>
     <topMaximize>yes</topMaximize>
     <notifyClient>always</notifyClient>
@@ -251,8 +254,13 @@
     The following keybind modifiers are supported:
       W - window/super/logo
       A - alt
-      C - ctrl
       S - shift
+      C - ctrl
+
+    Note that the names above are only for modifiers. To use them as stand-
+    alone keybinds, use Super_L, Alt_L, or Shift_L respectively (or their
+    _R counterparts if desired). Ctrl_L and Ctrl_R are not supported as
+    keybinds.
 
     Use <keyboard><default /> to load all the default keybinds (those listed
     below). If the default keybinds are largely what you want, a sensible
@@ -369,6 +377,33 @@
     <keybind key="XF86_MonBrightnessDown">
       <action name="Execute" command="lxqt-config-brightness -d" />
     </keybind>
+
+    <!--
+    The following keys combinations are not bound by default, but the examples show how users can associate then with programs
+    -->
+    <!--
+    <keybind key="XF86Display">
+      <action name="Execute">
+        <command>wdisplays</command>
+      </action>
+    </keybind>
+    <keybind key="XF86Mail">
+      <action name="Execute" command="thunderbird" />
+    </keybind>
+    <keybind key="XF86MyComputer">
+    	<action name="Execute" command="pcmanfm-qt" />
+    </keybind>
+    <keybind key="XF86Calculator">
+    	<action name="Execute" command="kcalc" />
+    </keybind>
+    <keybind key="XF86Music">
+    	<action name="Execute" command="qmmp" />
+    </keybind>
+    <keybind key="XF86WWW">
+      <action name="Execute" command = "firefox" />
+    </keybind>
+    -->
+
   <!-- SnapToRegion via W-Numpad -->
   <!--
     <keybind key="W-KP_7">
@@ -650,12 +685,14 @@
 
     All values are [yes|no] except for:
       - pointerSpeed [-1.0 to 1.0]
-      - accelProfile [flat|adaptive]
+      - accelProfile [flat|adaptive|custom]
       - tapButtonMap [lrm|lmr]
       - clickMethod [none|buttonAreas|clickfinger]
+      - clickfingerButtonMap [lrm|lmr]
       - scrollMethod [twoFinger|edge|onbutton|none]
       - sendEventsMode [yes|no|disabledOnExternalMouse]
       - calibrationMatrix [six float values split by space]
+      - rotationAngle [0-359]
       - scrollFactor [float]
 
     The following <libinput>...</libinput> block may not be complete for
@@ -677,11 +714,27 @@
       <!-- <middleEmulation>no</middleEmulation> -->
       <!-- <disableWhileTyping>yes</disableWhileTyping> -->
       <!-- <clickMethod>buttonAreas</clickMethod> -->
+      <!-- <clickfingerButtonMap>lrm</clickfingerButtonMap> -->
       <!-- <scrollMethod>twofinger</scrollMethod> -->
       <!-- <scrollButton>274</scrollButton> -->
       <!-- <sendEventsMode>yes</sendEventsMode> -->
       <!-- <calibrationMatrix>1 0 0 0 1 0</calibrationMatrix> -->
+      <!-- <rotationAngle>0</rotationAngle> -->
       <scrollFactor>1.0</scrollFactor>
+      <!--
+        Opt-in example tuned on a Dell XPS 15 9520 for precise low-speed
+        two-finger scrolling while retaining responsive faster scrolling.
+        Values are device- and user-specific, not universal defaults.
+        Motion and Fallback remain 1:1, not adaptive-profile equivalents.
+        Points specify output speed; step specifies input-speed spacing in
+        device units/ms. Curves are ignored unless accelProfile is custom.
+        pointerSpeed has no effect with custom. Missing Motion/Scroll uses
+        Fallback; missing Fallback means no acceleration.
+        <accelProfile>custom</accelProfile>
+        <motionCurve step="1" points="0 1" />
+        <scrollCurve step="0.10" points="0 0.015 0.040 0.075 0.120 0.210 0.348 0.546 0.800 0.990 1.100" />
+        <fallbackCurve step="1" points="0 1" />
+       -->
     </device>
   </libinput>
 
