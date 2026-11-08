@@ -573,7 +573,26 @@
         <action name="GoToDesktop" to="right" wrap="yes" />
       </mousebind>
     </context>
-
+    <context name="Top">
+      <mousebind button="Left" action="DoubleClick">
+        <action name="ToggleMaximize" direction="vertical" />
+      </mousebind>
+    </context>
+    <context name="Bottom">
+      <mousebind button="Left" action="DoubleClick">
+        <action name="ToggleMaximize" direction="vertical" />
+      </mousebind>
+    </context>
+    <context name="Left">
+      <mousebind button="Left" action="DoubleClick">
+        <action name="ToggleMaximize" direction="horizontal" />
+      </mousebind>
+    </context>
+    <context name="Right">
+      <mousebind button="Left" action="DoubleClick">
+        <action name="ToggleMaximize" direction="horizontal" />
+      </mousebind>
+    </context>
   </mouse>
 
   <!--
