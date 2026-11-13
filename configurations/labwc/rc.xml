@@ -84,19 +84,7 @@
   </theme>
 
   <windowSwitcher preview="yes" outlines="yes" unshade="yes">
-    <osd show="yes" style="classic" output="all" thumbnailLabelFormat="%T" />
-    <fields>
-      <field content="icon" width="5%" />
-      <field content="desktop_entry_name" width="30%" />
-      <field content="title" width="65%" />
-      <!--
-        Just as for window-rules, you can use 'identifier' or
-        'trimmed_identifier' to show the app_id for native wayland clients or
-        WM_CLASS for XWayland clients.
-
-        <field content="trimmed_identifier" width="65%" />
-      -->
-    </fields>
+    <osd show="yes" style="thumbnail" output="all" thumbnailLabelFormat="%T" />
   </windowSwitcher>
 
   <!--
